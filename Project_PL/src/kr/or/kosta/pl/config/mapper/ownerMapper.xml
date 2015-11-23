@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ownerMapper">
+  	
+  	<!-- Owner 외부매핑 -->
+  	<!-- mybatis-confog.xml에서 별칭설정을 해주었기때문에 type을 owner로 사용 가능 -->
+	<resultMap type="owner" id="owner-resultmap">
+		<id property="ownerId" column="owner_id"/>
+		<result property="ownerPassword" column="owner_password"/>
+		<result property="ownerName" column="owner_name"/>
+		<result property="ownerPhone" column="owner_phone"/>
+	</resultMap>
+	
+	<!-- product 외부매핑 -->
+	<resultMap type="product" id="product-resultmap">
+		<id property="itemId" column="item_id"/>
+		<result property="itemName" column="item_name"/>
+		<result property="itemPrice" column="item_price"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="storeId" column="store_id"/>
+		<result property="itemExpirationDate" column="item_expiration_date"/>
+		<result property="itemCount" column="item_count"/>
+		<result property="serverIndex" column="server_index"/>
+	</resultMap>
+	
+	<!-- 공통 sql문  -->
+	<sql id="select-column-sql">owner_id, owner_password, owner_name, owner_phone</sql>
+	<sql id="selectOwner-sql">
+		select <include refid="select-column-sql"/>
+		from pl_owner
+	</sql>
+  
+ 
+  
+  
+  
+  	<!--기본 sql문 -->
+  	
+  	<insert id="insertOwner" parameterType="owner">
+  		insert into pl_owner (<include refid="select-column-sql"/>)
+  		values (#{ownerId},#{ownerPassword},#{ownerName},#{ownerPhone})
+  	</insert>
+  	
+  	<select id="selectOwnerById" parameterType="string" resultMap="owner-resultmap">
+  		<include refid="selectOwner-sql"/>
+  		where owner_id = #{ownerId}
+  	</select>
+  	
+  	<delete id="deleteOwnerById" parameterType="string">
+  		delete from pl_owner where owner_id=#{ownerId}
+  	</delete>
+  	
+  	<update id="updateOwner" parameterType="owner">
+  		update pl_owner set owner_id=#{ownerId}, owner_password=#{ownerPassword}, owner_name=#{ownerName},
+  		owner_phone=#{ownerPhone}
+  		where owner_id=#{ownerId}
+  	</update>
+  	
+  	<select id="selectOwners" resultMap="owner-resultmap">
+  		<include refid="selectOwner-sql"/>
+  	</select>
+  	
+  	<select id="selectOwnersByName" parameterType="string" resultMap="owner-resultmap">
+  		<include refid="selectOwner-sql"/>
+  		where owner_name = #{ownerName}
+  	</select>
+  	
+	<select id="selectCountOwners" resultType="_int">
+		select count(owner_id) from pl_owner
+	</select>
+	
+	<select id="selectCountProducts" resultType="_int" parameterType="string" >
+		select count(server_index) from pl_server_item 
+		where store_id=(select store_id from pl_store where owner_id=#{value})
+	</select>
+	
+	<!-- 편의점 전체물품 조회 sql -->
+	<select id="selectProductsPaging" parameterType="hashmap" resultMap="product-resultmap">
+	select item_name, item_price, item_count, item_expiration_date, item_id, category_id, store_id 
+	from(
+			select ceil(rownum/#{contentPerPage}) page,item_name, item_price, item_count, item_expiration_date, item_id, category_id, store_id 
+			from(	
+				select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id 
+				from PL_ITEM_INFO e, PL_SERVER_ITEM d
+				where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) and e.item_id = d.item_id
+			)
+	)
+	where page = #{pageNo}
+	</select>
+	
+	<!-- 물품이름으로 재고 검색하는 sql -->
+	<select id="selectProductByName" parameterType="hashmap" resultMap="product-resultmap">
+		select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id 
+				from PL_ITEM_INFO e, PL_SERVER_ITEM d
+				where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) and e.item_id = d.item_id 
+				and e.item_name like '%'||#{productName}||'%'
+	</select>
+	
+
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
