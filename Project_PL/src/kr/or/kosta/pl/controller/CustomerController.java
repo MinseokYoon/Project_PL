@@ -111,28 +111,6 @@ public class CustomerController {
 	
 
 
-	/*-----------------------------장바구니 이동.------------------------------------------*/
-	
-	@RequestMapping("/cart")
-	public String cart(@RequestParam String storeId, @RequestParam String itemId, @RequestParam String countItem ){
-		int storeIdd = Integer.parseInt(storeId);
-		int itemIdd = Integer.parseInt(itemId);			//내용들 숫자 변환
-		int countItemm = Integer.parseInt(countItem);
-		
-		return "";		//장바구니 페이지
-	}
-	
-	
-	/*------------------------------------물품 다중 조회------------------------------------------*/
-
-	@RequestMapping("/search_item")
-	public String searchItem(@RequestParam String itemName, ModelMap model){
-		
-		model.addAttribute("item", service.findItemByNameMany(itemName));
-		model.addAttribute("itemName", itemName);
-		return "/WEB-INF/customer/item_list/search_item.jsp";
-	}
-
 	/*------------------------------------장바구니 추가------------------------------------------*/
 	@RequestMapping("/cart")
 	public String cart(@RequestParam String storeId, @RequestParam String itemId, @RequestParam String countItem,
@@ -148,6 +126,19 @@ public class CustomerController {
 		
 		return "/WEB-INF/customer/cart/cart_form.jsp";		//장바구니 페이지
 	}
+	
+	
+	/*------------------------------------물품 다중 조회------------------------------------------*/
+
+	@RequestMapping("/search_item")
+	public String searchItem(@RequestParam String itemName, ModelMap model){
+		
+		model.addAttribute("item", service.findItemByNameMany(itemName));
+		model.addAttribute("itemName", itemName);
+		return "/WEB-INF/customer/item_list/search_item.jsp";
+	}
+
+	
 
 
 	

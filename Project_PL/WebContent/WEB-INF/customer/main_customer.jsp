@@ -39,7 +39,7 @@
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="login.html"><i class="fa fa-user"></i>마이페이지</a></li>
-								<li><a href="login.html"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
+								<li><a href="${initParam.rootPath }/customer/cart.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
