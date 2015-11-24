@@ -157,7 +157,7 @@
 								<div id="beverage" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="#">매장명 검색</a></li>
+											<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
 											<li><a href="#">지역검색</a></li>
 											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 										</ul>
@@ -206,12 +206,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="choose">
-										<ul class="nav nav-pills nav-justified">
-											<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-											<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-										</ul>
-									</div>
+									
 								</div>
 							</div>
 						</c:forEach>

@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,7 @@ import kr.or.kosta.pl.service.CustomerService;
 import kr.or.kosta.pl.validate.CustomerValidator;
 import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Customer;
+import kr.or.kosta.pl.vo.Store;
 
 @Controller
 @RequestMapping("/customer") // view& section을 어디서 찾아야 할까
@@ -88,30 +90,76 @@ public class CustomerController {
 	
 	/*----------------------위치 페이지 이동 (좌측 메뉴)-----------------------------------*/
 	
+	@RequestMapping("find_store_name_form.do")
+	public String findStore(){
+		return "/WEB-INF/customer/find_store/find_store_name.jsp";
+	}
+	
 	@RequestMapping("/find_store_nearby")
 	public String findStoreNearby(){
 		return "/WEB-INF/customer/find_store/find_store_nearby.jsp";
 	}
 	
-	
-	
-/*---------------------------------물품 상세 정보 페이지 (매장도 조회)---------------------------------------*/
-	
-	@RequestMapping("/item.do")
-	public String itemPage(@RequestParam(value="itemName") String itemName, @RequestParam int categoryId, ModelMap model){			//들어가야 할 정보는??
-		
-		
-		
-		System.out.println(itemName);
-		model.addAttribute("item", service.findItemById(itemName));
-		
-		model.addAttribute("list", service.findItemListByCategorySmallRecommand(categoryId));  
-		
-		model.addAttribute("store", service.findStoreNameByCount(itemName));
-		
-		return "/WEB-INF/customer/item_list/item.jsp";
+	/*---------------------------------매장이름으로 조회---------------------------------------*/
+	@RequestMapping("find_store_name.do")
+	public String findStore(@RequestParam(value="findStoreName") String storeName, ModelMap model){
+		List<Store> list = service.findStoreName(storeName);
+		model.addAttribute("findstore",list);
+		return "/WEB-INF/customer/find_store/find_store_name_success.jsp";
 	}
 	
+	/*---------------------------------카테고리 페이지 (매장 이름 으로 조회)---------------------------------------*/
+	@RequestMapping("find_store_categoryPage")
+	public String findStoreCategoryPage(@RequestParam int categoryId, int storeId, ModelMap model){
+		model.addAttribute("list", service.findItemListByCategoryMain(categoryId));
+		model.addAttribute("storeId",storeId);
+		
+		if(categoryId ==1){
+			return "/WEB-INF/customer/item_list/item_list_each/item_list_food.jsp";
+		} else if(categoryId ==2){
+			return "/WEB-INF/customer/item_list/item_list_each/item_list_beverage.jsp";
+		} else if(categoryId ==3){
+			return "/WEB-INF/customer/item_list/item_list_each/item_list_snack.jsp";
+		} else if(categoryId ==4){
+			return "/WEB-INF/customer/item_list/item_list_each/item_list_icecream.jsp";
+		} else if(categoryId ==5){
+			return "/WEB-INF/customer/item_list/item_list_each/item_list_daily.jsp";
+		} else{
+			return "redirect:/customer/find_store_name.do";	//else 때문에 그냥 함
+		}
+	}
+	
+	
+	/*---------------------------------물품 상세 정보 페이지 (매장도 조회)---------------------------------------*/
+	
+	@RequestMapping("/item.do")
+	public String itemPage(@RequestParam(value="itemName") String itemName, @RequestParam int categoryId, @RequestParam(defaultValue="0") int storeId, ModelMap model){			//들어가야 할 정보는??
+		
+		if(storeId == 0){
+			
+			model.addAttribute("item", service.findItemById(itemName));
+			
+			model.addAttribute("list", service.findItemListByCategorySmallRecommand(categoryId));  
+			
+			model.addAttribute("store", service.findStoreNameByCount(itemName));
+			
+			return "/WEB-INF/customer/item_list/item.jsp";
+			
+		}else{
+			
+			model.addAttribute("item", service.findItemById(itemName));
+			
+			model.addAttribute("list", service.findItemListByCategorySmallRecommand(categoryId));  
+			
+			model.addAttribute("store", service.findStoreNameByCount(itemName));
+			
+			model.addAttribute("storeId", service.findStoreById(storeId));
+			
+			return "/WEB-INF/customer/item_list/item.jsp";
+		}
+		
+	
+	}
 
 
 	/*------------------------------------장바구니 추가------------------------------------------*/

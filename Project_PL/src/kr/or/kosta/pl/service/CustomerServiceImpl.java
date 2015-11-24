@@ -158,6 +158,18 @@ public class CustomerServiceImpl implements CustomerService{
 		return board;
 	}
 	
+	/*매장찾는 서비스 메소드임플*/
+	@Override
+	public List<Store> findStoreName(String storeName) {
+		return dao.selectStoreName(storeName);
+	}
+
+	@Override
+	public Store findStoreById(int storeId) {
+		
+		return dao.selectStoreById(storeId);
+	}
+	
 	
 	
 

@@ -25,22 +25,14 @@
 	</resultMap>
 	
 	<resultMap type="Store" id="storelist-resultmap">
-      <id property="storeId" column="store_id"/>
-      <result property="storeName" column="store_name"/>
-      <result property="ownerId" column="owner_id"/>
-      <result property="storeAddress" column="store_address"/>
-      <result property="storePhone" column="store_phone"/>
-      <result property="storeLicense" column="store_license"/>
-   </resultMap>
-	
-	<resultMap type="board" id="board-resultMap">
-		<id property="boardIndex" column="board_idx"/>
-		<result property="boardTitle" column="board_title"/>
-		<result property="boardDate" column="board_date"/>
-		<result property="boardReadCount" column="board_read_count"/>
-		<result property="boardContent" column="board_content"/>
-		<result property="boardWriter" column="board_writer"/>
+		<id property="storeId" column="store_id"/>
+		<result property="storeName" column="store_name"/>
+		<result property="ownerId" column="owner_id"/>
+		<result property="storeAddress" column="store_address"/>
+		<result property="storePhone" column="store_phone"/>
+		<result property="storeLicense" column="store_license"/>
 	</resultMap>
+	
 	
 	<!-- **************************선지정  참조용******************************************* -->
 
@@ -55,12 +47,10 @@
 		#{customerPoint} 
 	</sql>
 	
-	<!-- 장바구니 column -->
 	<sql id="select-cart-colum-sql">
 		cart_number, customer_id, store_id, item_id,cart_count, cart_date
 	
 	</sql>
-	
 	
 	<!-- ***************************마이페이지******************************************** -->
 	
@@ -69,7 +59,6 @@
 		values (<include refid="select-value-sql"/>)
 	</insert>
 	
-	
 	<!-- ***************************상점조회******************************************** -->
 	<select id="selectStoreByCount" parameterType="string" resultMap="storelist-resultmap">
 		select p.store_id, p.store_name, p.owner_id, p.store_address, p.store_phone, p.store_license
@@ -77,7 +66,19 @@
 		where i.item_id=s.item_id and s.store_id=p.store_id and i.item_name=#{value} 
 		and s.item_count>0 order by p.store_name asc
 	</select>
-
+	
+	<!-- 매장 이름으로 찾기 -->
+	<select id="findStoreName" parameterType="string" resultMap="storelist-resultmap">
+		select store_id, store_name,owner_id, store_address, store_phone, store_license from pl_store	
+		where store_name like '%'||#{storeName}||'%'	 
+	</select>
+	
+	<!--매장 아이디로 찾기-->
+	<select id = "selectStoreById" parameterType="_int" resultMap="storelist-resultmap">
+	
+		select store_id, store_name,owner_id, store_address, store_phone, store_license from pl_store 
+		where store_id = #{value}
+	</select>
 
 		
 	<!-- ***************************사람 조회******************************************** -->
@@ -98,14 +99,14 @@
 		select i.item_id, i.item_name, i.item_price, i.category_id, c.category_name from PL_ITEM_INFO i, PL_CATEGORY c  where i.item_name=#{value} and i.category_id = c.category_id
 	</select>
 	
-	<!-- 카테고리로 조회 -->
-	<select id="selectItemListByCategory" parameterType="_int" resultMap="itemlist-resultmap">
-		select i.item_id, i.item_name, i.item_price, i.category_id, c.category_name from PL_ITEM_INFO i, PL_CATEGORY c  where i.category_id=#{value} and i.category_id = c.category_id
-	</select>
-	
 	<!-- 이름으로 물품 다중 조회 -->
 	<select id="selectItemByNameMany" parameterType="string" resultMap="itemlist-resultmap">
 		select i.item_id, i.item_name, i.item_price, i.category_id, c.category_name from PL_ITEM_INFO i, PL_CATEGORY c  where i.item_name like'%'||#{value}||'%' and i.category_id = c.category_id
+	</select>
+	
+	<!-- 카테고리로 조회 -->
+	<select id="selectItemListByCategory" parameterType="_int" resultMap="itemlist-resultmap">
+		select i.item_id, i.item_name, i.item_price, i.category_id, c.category_name from PL_ITEM_INFO i, PL_CATEGORY c  where i.category_id=#{value} and i.category_id = c.category_id
 	</select>
 	
 	<!-- ***************************장바구니******************************************** -->
@@ -115,25 +116,6 @@
 		values (cart_index_seq.nextval, #{customerId}, #{storeId}, #{itemId}, #{countItem}, sysdate)
 	</insert>
 
-
-	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
-		select board_idx, board_title, board_date, board_read_count, board_content, board_writer
-		from (
-			select ceil(rownum/10) page, board_idx, board_title, board_date, board_read_count, board_content, board_writer
-			from (
-				select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board order by board_idx desc
-			)
-		) where page = #{pageNo}
-	</select>
-	
-	<select id="selectBoardCount" resultType="_int">
-		select count(board_idx) from pl_board
-	</select>
-	
-	<select id="selectBoardInfo" parameterType="_int" resultMap="board-resultMap">
-		select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board where board_idx=#{index}
-	</select>
-	
 	
 	
 	

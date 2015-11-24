@@ -156,9 +156,9 @@
 								<div id="beverage" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="#">매장명 검색</a></li>
+											<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
 											<li><a href="#">지역검색</a></li>
-											<li><a href="#">주변 편의점</a></li>
+											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 										</ul>
 									</div>
 								</div>
@@ -182,7 +182,7 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items">
 						<!--features_items-->
-						<h2 class="title text-center">오늘의 상품</h2>
+						<h2 class="title text-center">오늘의 과자</h2>
 						<c:forEach items="${requestScope.list }" var="pd" begin="0" end="5">
 							<div class="col-sm-4">
 								<div class="product-image-wrapper">
@@ -191,7 +191,7 @@
 											<img src="${initParam.rootPath}/images/${pd.categoryId }/${pd.itemName }.png" alt="" />
 											<h2>${pd.itemPrice}</h2>
 											<p>${pd.itemName }</p>
-											<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName}&categoryId=${pd.categoryId}" class="btn btn-default add-to-cart">
+											<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName}&categoryId=${pd.categoryId}&storeId=${requestScope.storeId}" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i>물품 조회
 											</a>
 										</div>
@@ -199,7 +199,7 @@
 											<div class="overlay-content">
 												<h2>${pd.itemPrice}</h2>
 												<p>${pd.itemName }</p>
-												<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}" class="btn btn-default add-to-cart">
+												<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}&storeId=${requestScope.storeId}" class="btn btn-default add-to-cart">
 													<i class="fa fa-shopping-cart"></i>물품 조회
 												</a>
 											</div>
@@ -212,7 +212,7 @@
 					<!--features_items-->
 					<div class="recommended_items">
 						<!--recommended_items-->
-						<h2 class="title text-center">추천 물품</h2>
+						<h2 class="title text-center">추천 과자</h2>
 						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
 							<div class="carousel-inner">
 								<div class="item active">
@@ -224,7 +224,7 @@
 														<img src="${initParam.rootPath}/images/${pd.categoryId }/${pd.itemName }.png" alt="" />
 														<h2>${pd.itemPrice}</h2>
 														<p>${pd.itemName }</p>
-														<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}" class="btn btn-default add-to-cart">
+														<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}&storeId=${requestScope.storeId}" class="btn btn-default add-to-cart">
 															<i class="fa fa-shopping-cart"></i>물품 조회
 														</a>
 													</div>
@@ -242,7 +242,7 @@
 														<img src="${initParam.rootPath}/images/${pd.categoryId }/${pd.itemName }.png" alt="" />
 														<h2>${pd.itemPrice}</h2>
 														<p>${pd.itemName }</p>
-														<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}" class="btn btn-default add-to-cart">
+														<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}&storeId=${requestScope.storeId}" class="btn btn-default add-to-cart">
 															<i class="fa fa-shopping-cart"></i>장바구니 담기
 														</a>
 													</div>

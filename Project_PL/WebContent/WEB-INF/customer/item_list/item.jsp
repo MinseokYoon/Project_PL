@@ -117,9 +117,9 @@
 								<div id="beverage" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="">매장명 검색</a></li>
+											<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
 											<li><a href="#">지역검색</a></li>
-											<li><a href="#">주변 편의점</a></li>
+											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 										</ul>
 									</div>
 								</div>
@@ -188,13 +188,25 @@
 								<input type="hidden" name=itemId value="${requestScope.item.itemId }">
 								<img src="/Project_PL/images/product-details/new.jpg" class="newarrival" alt="" />
 								<h2>${requestScope.item.itemName}</h2>
-								<p><b>매장 선택</b><select name="storeId">			<!-- 이름으로 받는 거임 -->
-									<option value="default">매장을 선택해 주세요.</option>
-									<c:forEach items="${requestScope.store}" var="store">
-										<option value="${store.storeId}">${store.storeName} </option>
-									</c:forEach>
+								<p><b>매장 선택</b>
 								
-								</select></p>
+								<c:choose>
+									<c:when test="${empty requestScope.storeId}" >
+										<select name="storeId">			<!-- 물품 이름으로 매장 다중으로 받아옴 -->
+											<option value="default">매장을 선택해 주세요.</option>
+											<c:forEach items="${requestScope.store}" var="store">
+												<option value="${store.storeId}">${store.storeName} </option>
+											</c:forEach>
+										</select>
+									</c:when>
+									<c:otherwise>
+										<br>
+										<input type="hidden" name="storeId" value="${requestScope.storeId.storeId }">
+										<input type="text" readonly="readonly" value="${requestScope.storeId.storeName}">		
+									</c:otherwise>
+								</c:choose>
+
+								</p>
 								<img src="/Project_PL/images/product-details/rating.png" alt="" />
 								
 								<span>
@@ -212,7 +224,6 @@
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->
-
 
 					<div class="category-tab shop-details-tab">
 						<!--category-tab-->

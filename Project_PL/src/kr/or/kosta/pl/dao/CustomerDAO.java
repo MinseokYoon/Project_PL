@@ -30,4 +30,8 @@ public interface CustomerDAO {
 	int selectCountBoards();
 	
 	Board selectBoardByIndex(int index);
+	
+	List<Store> selectStoreName(String storeName);
+	
+	Store selectStoreById(int storeId);
 }

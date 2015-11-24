@@ -129,5 +129,23 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public Board selectBoardByIndex(int index) {
 		return session.selectOne("customerMapper.selectBoardInfo", index);
 	}
+	
+
+
+	/*매장찾기*/
+	@Override
+	public List<Store> selectStoreName(String storeName) {
+		return session.selectList("customerMapper.findStoreName",storeName);
+
+	}
+
+	@Override
+	public Store selectStoreById(int storeId) {
+		
+		return session.selectOne("customerMapper.selectStoreById", storeId);
+	}
+	
+
+
 
 }

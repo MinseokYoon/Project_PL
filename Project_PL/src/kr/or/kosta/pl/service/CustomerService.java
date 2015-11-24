@@ -37,4 +37,8 @@ public interface CustomerService {
 	Map getAllBoard(int pageNo);
 	
 	Board getBoardInfo(int index);
+	
+	List<Store> findStoreName(String storeName);
+	
+	Store findStoreById(int storeId);
 }
