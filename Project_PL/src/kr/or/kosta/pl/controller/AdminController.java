@@ -242,7 +242,10 @@ public class AdminController {
 		int index = Integer.parseInt(boardIndex);
 		Board board = service.getBoardInfo(index);
 
+		System.out.println("--");
+		
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_admin.jsp";
 	}
+	//2차커밋
 }
