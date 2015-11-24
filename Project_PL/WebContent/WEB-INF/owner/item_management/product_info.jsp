@@ -60,7 +60,7 @@ function resultOuputMessage(){
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href=""><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/index.do"><i class="fa fa-user"></i> 로그아웃</a></li>
 							</ul>
 						</div>
