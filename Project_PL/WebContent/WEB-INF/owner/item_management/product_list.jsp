@@ -184,26 +184,26 @@ function productSearchCheck(){
 					</c:when>
 				<c:otherwise>
 						<table style="width: 800px" border="1">
-							<tr>
-								<th>물품 이름</th>
-								<th>물품 가격</th>
-								<th>물품 개수</th>
-								<th>물품 유통기한</th>
-								<th>물품 ID</th>
-								<th>카테고리 ID</th>
-								<th>편의점 ID</th>
+							<tr  >
+								<th style="text-align: center; background-color: #fe980f;">물품 이름</th>
+								<th style="text-align: center; background-color: #fe980f;">물품 가격</th>
+								<th style="text-align: center; background-color: #fe980f;">물품 개수</th>
+								<th style="text-align: center; background-color: #fe980f;">물품 유통기한</th>
+								<th style="text-align: center; background-color: #fe980f;">물품 ID</th>
+								<th style="text-align: center; background-color: #fe980f;">카테고리 ID</th>
+								<th style="text-align: center; background-color: #fe980f;">편의점 ID</th>
 							</tr>
 							<c:forEach items="${requestScope.list }" var="product">
 								<tr>
-									<td><a
+									<td style="text-align: center;"><a
 										href="${initParam.rootPath }/owner/productInfo.do?productName=${product.itemName}">
 											${product.itemName } </a></td>
-									<td>${product.itemPrice }</td>
-									<td>${product.itemCount }</td>
-									<td>${product.itemExpirationDate }</td>
-									<td>${product.itemId }</td>
-									<td>${product.categoryId }</td>
-									<td>${product.storeId }</td>
+									<td style="text-align: center;">${product.itemPrice }</td>
+									<td style="text-align: center;">${product.itemCount }</td>
+									<td style="text-align: center;">${product.itemExpirationDate }</td>
+									<td style="text-align: center;">${product.itemId }</td>
+									<td style="text-align: center;">${product.categoryId }</td>
+									<td style="text-align: center;">${product.storeId }</td>
 								</tr>
 							</c:forEach>
 							<tr>
