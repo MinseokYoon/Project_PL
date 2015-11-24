@@ -133,6 +133,12 @@ create sequence board_index_seq
 	nocycle
 	nocache;
 	
+create sequence cart_index_seq
+   start with 1
+   increment by 1
+   maxvalue 99999999
+   nocycle
+   nocache;
 	
 
 -- 모든 테이블 드랍 --

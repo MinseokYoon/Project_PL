@@ -1,5 +1,7 @@
 package kr.or.kosta.pl.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -109,15 +111,20 @@ public class CustomerController {
 	
 
 
-	/*-----------------------------장바구니 이동.------------------------------------------*/
-	
+	/*------------------------------------장바구니 추가------------------------------------------*/
 	@RequestMapping("/cart")
-	public String cart(@RequestParam String storeId, @RequestParam String itemId, @RequestParam String countItem ){
+	public String cart(@RequestParam String storeId, @RequestParam String itemId, @RequestParam String countItem,
+						HttpSession session){	//장바구니 페이지 이동 flag필요
+		Customer customer = (Customer)session.getAttribute("sessionUser");
+		
+		String customerId = customer.getCustomerId();
 		int storeIdd = Integer.parseInt(storeId);
 		int itemIdd = Integer.parseInt(itemId);			//내용들 숫자 변환
 		int countItemm = Integer.parseInt(countItem);
 		
-		return "";		//장바구니 페이지
+		service.addCart(customerId, storeIdd, itemIdd, countItemm);
+		
+		return "/WEB-INF/customer/cart/cart_form.jsp";		//장바구니 페이지
 	}
 	
 	
@@ -130,6 +137,9 @@ public class CustomerController {
 		model.addAttribute("itemName", itemName);
 		return "/WEB-INF/customer/item_list/search_item.jsp";
 	}
+
+	
+
 
 	
 	

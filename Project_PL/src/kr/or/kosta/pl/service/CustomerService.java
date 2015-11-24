@@ -29,4 +29,6 @@ public interface CustomerService {
 	List<Product> findItemByNameMany(String itemName);
 	
 	List<Store> findStoreNameByCount(String itemName);
+	
+	void addCart(String customerId, int storeId, int itemId, int countItem);
 }

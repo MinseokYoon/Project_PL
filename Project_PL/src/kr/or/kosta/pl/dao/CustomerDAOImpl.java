@@ -1,6 +1,7 @@
 package kr.or.kosta.pl.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -100,5 +101,18 @@ public class CustomerDAOImpl implements CustomerDAO{
 		list = session.selectList("customerMapper.selectStoreByCount", itemName);
 		return list;
 	}
+	
+	@Override
+	public int insertCart(String customerId, int storeId, int itemId, int countItem) {
+		// TODO 중복 검사 해 주어야 함
+		HashMap parameter = new HashMap();
+		parameter.put("customerId", customerId);
+		parameter.put("storeId", storeId);
+		parameter.put("itemId", itemId);
+		parameter.put("countItem", countItem);
+		
+		return session.insert("customerMapper.insertCart", parameter);
+	}
+	
 
 }

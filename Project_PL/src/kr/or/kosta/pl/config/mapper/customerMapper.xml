@@ -46,6 +46,13 @@
 		#{customerPoint} 
 	</sql>
 	
+	<!-- 장바구니 column -->
+	<sql id="select-cart-colum-sql">
+		cart_number, customer_id, store_id, item_id,cart_count, cart_date
+	
+	</sql>
+	
+	
 	<!-- ***************************마이페이지******************************************** -->
 	
 	<insert id="insertCustomer" parameterType="customer">
@@ -92,6 +99,14 @@
 		select i.item_id, i.item_name, i.item_price, i.category_id, c.category_name from PL_ITEM_INFO i, PL_CATEGORY c  where i.item_name like'%'||#{value}||'%' and i.category_id = c.category_id
 	</select>
 	
+	<!-- ***************************장바구니******************************************** -->
+	<!-- 장바구니 추가 -->
+	<insert id="insertCart" parameterType="map">
+		insert into pl_cart (<include refid="select-cart-colum-sql"/>) 
+		values (cart_index_seq.nextval, #{customerId}, #{storeId}, #{itemId}, #{countItem}, sysdate)
+	</insert>
+
+
 	
 	
 	
