@@ -160,7 +160,7 @@
 					</div>
 				</div>
 				<h2>게시판</h2>
-				<table width="500px">
+				<table width="500px" border="1">
 					<tr height="30" bgcolor="#C6DBDC">
 						<th align="center">글번호</th>
 						<th align="center">제목</th>
