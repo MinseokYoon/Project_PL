@@ -132,4 +132,6 @@ public class OwnerController {
 		
 		return "/WEB-INF/owner/item_management/product_search_result.jsp";
 	}
+	//asdfasdf
+	
 }
