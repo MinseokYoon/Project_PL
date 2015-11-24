@@ -161,6 +161,7 @@ function productSearchCheck(){
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
+								</div>
 							</div>
 							<div id="food" class="panel-collapse collapse">
 								<div class="panel-body">
@@ -169,29 +170,6 @@ function productSearchCheck(){
 										<li><a href="#">주문처리</a></li>
 									</ul>
 								</div>
-							</div>
-						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">재고관리</a>
-								</h4>
-							</div>
-						</div>
-
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a href="#">고객센터</a>
-								</h4>
-							</div>
-						</div>
-
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title">
-									<a href="#">게시판</a>
-								</h4>
 							</div>
 						</div>
 					</div>
