@@ -63,7 +63,7 @@ public interface AdminDAO {
 	//물품 수
 	int selectCountProducts();
 	
-	public List<Board> selectBoardsPaging(int pageNo);
+	List<Board> selectBoardsPaging(int pageNo);
 	
 	int selectCountBoards();
 	

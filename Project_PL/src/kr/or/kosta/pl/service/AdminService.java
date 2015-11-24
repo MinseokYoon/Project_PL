@@ -42,7 +42,7 @@ public interface AdminService {
 	
 	void updateProduct(Product newPro) throws AdminNotFoundException;
 	
-	public Map getAllBoard(int pageNo);
+	Map getAllBoard(int pageNo);
 	
-	public Board getBoardInfo(int index);
+	Board getBoardInfo(int index);
 }

@@ -3,6 +3,7 @@ package kr.or.kosta.pl.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Owner;
 import kr.or.kosta.pl.vo.Product;
 
@@ -28,4 +29,10 @@ public interface OwnerDAO {
 	int selectCountProducts(String ownerId);//ok
 
 	List<Product> selectProductByName(String productName,String ownerId); // 물품이름으로 검색하는 메소드
+	
+	List<Board> selectBoardsPaging(int pageNo);
+	
+	int selectCountBoards();
+	
+	Board selectBoardByIndex(int index);
 }

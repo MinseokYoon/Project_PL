@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <% if(session.getAttribute("sessionUser") != null) { %>
 
@@ -26,7 +27,7 @@
 </head>
 <body>
 	<header id="header"><!--header-->		
-			<div class="header-middle"><!--header-middle-->
+		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-14">
@@ -47,6 +48,7 @@
 			</div>
 		</div><!--/header-middle-->
 	</header><!--/header-->
+	
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -82,6 +84,7 @@
 									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
+							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -94,6 +97,7 @@
 									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
+							
 						</div>
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
@@ -101,7 +105,7 @@
 						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
 							<i class="fa fa-angle-right"></i>
 						</a>
-					</div>
+					</div>			
 				</div>
 			</div>
 		</div>
@@ -125,11 +129,8 @@
 								<div id="food" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="#">식품</a></li>
-											<li><a href="#">음료</a></li>
-											<li><a href="#">과자</a></li>
-											<li><a href="#">아이스크림</a></li>
-											<li><a href="#">생활용품</a></li>
+											<li><a href="#">주문현황</a></li>
+											<li><a href="#">주문처리</a></li>
 										</ul>
 									</div>
 								</div>
@@ -137,21 +138,13 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#beverage">
-											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-											재고관리
+										<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">재고관리</a>
+											
 										</a>
 									</h4>
 								</div>
-								<div id="beverage" class="panel-collapse collapse">
-									<div class="panel-body">
-										<ul>
-											<li><a href="#">재고 현황</a></li>
-											<li><a href="#">입고</a></li>
-										</ul>
-									</div>
-								</div>
 							</div>
+						
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="#">고객센터</a></h4>
@@ -166,7 +159,62 @@
 						</div><!--/category-products-->					
 					</div>
 				</div>
-				점주
+				<h2>게시판</h2>
+				<table width="500px">
+					<tr height="30" bgcolor="#C6DBDC">
+						<th align="center">글번호</th>
+						<th align="center">제목</th>
+						<th align="center">작성자</th>
+						<th align="center">작성일</th>
+						<th align="center">조회수</th>
+					</tr>
+					<c:forEach items="${requestScope.list }" var="board">
+						<tr height="30">
+							<td align="center">${board.boardIndex }</td>
+							<td align="center"><a
+								href="${initParam.rootPath }/owner/boardInfo.do?boardIndex=${board.boardIndex}">
+									${board.boardTitle} </a></td>
+							<td align="center">${board.boardWriter }</td>
+							<td align="center">${board.boardDate }</td>
+							<td align="center">${board.boardReadCount}</td>
+						<tr>
+					</c:forEach>
+					<tr>
+						<td colspan="5" align="center">
+							<c:choose>
+								<c:when test="${requestScope.pagingBean.previousPageGroup }">
+									<a href="${initParam.rootPath }/owner/boardList.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
+										◀
+									</a>
+								</c:when>
+								<c:otherwise>
+ 										◀
+ 								</c:otherwise>
+							</c:choose> 
+							<!-- 
+								 Page Group 내의 page들 링크 처리
+								 	- PageGroup의 시작/끌 페이지 번호 - 반복문 처리
+							--> 
+							<c:forEach begin="${requestScope.pagingBean.startPageOfPageGroup }" end="${requestScope.pagingBean.endPageOfPageGroup }" var="page">
+								<a href="${initParam.rootPath }/owner/boardList.do?pageNo=${page }">${page }</a>&nbsp&nbsp
+							</c:forEach> 
+							<!-- 
+								1. 다음 페이지 그룹으로 이동 처리
+								  다음페이지 그룹이 있으면 링크처리 없으면 -> 모양만 나오도록 처리.
+							--> 
+							<c:choose>
+								<c:when test="${requestScope.pagingBean.nextPageGroup }">
+									<a href="${initParam.rootPath }/owner/boardList.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
+										▶
+									</a>
+								</c:when>
+								<c:otherwise>
+ 										▶
+ 								</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</section>
@@ -195,6 +243,7 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -209,6 +258,7 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -223,6 +273,7 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -256,7 +307,7 @@
 			</div>
 		</div>
 	</footer><!--/Footer-->
-  
+	
     <script src="${initParam.rootPath}/js/jquery.js"></script>
 	<script src="${initParam.rootPath}/js/bootstrap.min.js"></script>
 	<script src="${initParam.rootPath}/js/jquery.scrollUp.min.js"></script>

@@ -2,6 +2,7 @@ package kr.or.kosta.pl.dao;
 
 import java.util.List;
 
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
@@ -23,4 +24,10 @@ public interface CustomerDAO {
 	List<Store> selectStoreNameByCount(String itemName);
 	
 	int insertCart(String customerId, int storeId, int itemId, int countItem);
+	
+	List<Board> selectBoardsPaging(int pageNo);
+	
+	int selectCountBoards();
+	
+	Board selectBoardByIndex(int index);
 }

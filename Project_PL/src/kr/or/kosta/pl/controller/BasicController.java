@@ -104,12 +104,17 @@ public class BasicController {
 	
 	@RequestMapping("/ownerBoard")
 	public String ownerBoard() {
-		return "/WEB-INF/board/board_owner.jsp";
+		return "/owner/boardList.do";
+	}
+	
+	@RequestMapping("/customerBoard")
+	public String customerBoard() {
+		return "/customer/boardList.do";
 	}
 	
 	@RequestMapping("/adminBoard")
 	public String adminBoard() {
-		return "/Project_pl/admin/boardList.do";
+		return "/admin/boardList.do";
 	}
 	
 	/*--------------------------------로그인이 필요합니다.---------------------------------*/

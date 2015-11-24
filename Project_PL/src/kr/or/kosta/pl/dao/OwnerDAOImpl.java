@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import common.util.PagingBean;
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Owner;
 import kr.or.kosta.pl.vo.Product;
 
@@ -95,6 +96,19 @@ public class OwnerDAOImpl implements OwnerDAO {
 	}
 
 
+	@Override
+	public List<Board> selectBoardsPaging(int pageNo) {
+		return session.selectList("ownerMapper.selectBoardsPaging", pageNo);
+	}
+	
+	@Override
+	public int selectCountBoards() {
+		return session.selectOne("ownerMapper.selectBoardCount");
+	}
 
+	@Override
+	public Board selectBoardByIndex(int index) {
+		return session.selectOne("ownerMapper.selectBoardInfo", index);
+	}
 	
 }

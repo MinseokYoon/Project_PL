@@ -1,8 +1,10 @@
 package kr.or.kosta.pl.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.or.kosta.pl.exception.DuplicatedIdException;
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
@@ -31,4 +33,8 @@ public interface CustomerService {
 	List<Store> findStoreNameByCount(String itemName);
 	
 	void addCart(String customerId, int storeId, int itemId, int countItem);
+	
+	Map getAllBoard(int pageNo);
+	
+	Board getBoardInfo(int index);
 }

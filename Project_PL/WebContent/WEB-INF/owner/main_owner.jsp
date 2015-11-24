@@ -138,8 +138,6 @@
 								<div class="panel-heading">
 									<h4 class="panel-title">
 										<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">재고관리</a>
-											
-										</a>
 									</h4>
 								</div>
 							</div>

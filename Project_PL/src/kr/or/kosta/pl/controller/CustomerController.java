@@ -1,5 +1,7 @@
 package kr.or.kosta.pl.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.service.CustomerService;
 import kr.or.kosta.pl.validate.CustomerValidator;
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Customer;
 
 @Controller
@@ -138,8 +141,28 @@ public class CustomerController {
 		return "/WEB-INF/customer/item_list/search_item.jsp";
 	}
 
-	
+	@RequestMapping("/boardList")
+	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
+		int page = Integer.parseInt(pageNo);
+		System.out.println("pageNo = " + page);
+		Map map = service.getAllBoard(page);
 
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("pagingBean", map.get("pagingBean"));
+		return "/WEB-INF/board/board_customer.jsp";
+	}
+	
+	
+	@RequestMapping("/boardInfo")
+	public String boardInfo(@RequestParam String boardIndex, ModelMap model) {
+		int index = Integer.parseInt(boardIndex);
+		Board board = service.getBoardInfo(index);
+
+		System.out.println("--asdfasdf");
+		
+		model.addAttribute("board", board);
+		return "/WEB-INF/board/board_info_customer.jsp";
+	}
 
 	
 	

@@ -1,13 +1,17 @@
 package kr.or.kosta.pl.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import common.util.PagingBean;
 import kr.or.kosta.pl.dao.CustomerDAO;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
@@ -136,7 +140,23 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 	
 	
+	@Override
+	public Map getAllBoard(int pageNo) {
+		HashMap map = new HashMap();
+		List<Board> list = dao.selectBoardsPaging(pageNo);
+		PagingBean pagingBean = new PagingBean(dao.selectCountBoards(), pageNo);
+		
+		map.put("list", list);
+		map.put("pagingBean", pagingBean);
+
+		return map;
+	}
 	
+	@Override
+	public Board getBoardInfo(int index) {
+		Board board = dao.selectBoardByIndex(index);
+		return board;
+	}
 	
 	
 	

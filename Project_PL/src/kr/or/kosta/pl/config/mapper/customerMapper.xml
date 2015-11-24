@@ -33,6 +33,15 @@
       <result property="storeLicense" column="store_license"/>
    </resultMap>
 	
+	<resultMap type="board" id="board-resultMap">
+		<id property="boardIndex" column="board_idx"/>
+		<result property="boardTitle" column="board_title"/>
+		<result property="boardDate" column="board_date"/>
+		<result property="boardReadCount" column="board_read_count"/>
+		<result property="boardContent" column="board_content"/>
+		<result property="boardWriter" column="board_writer"/>
+	</resultMap>
+	
 	<!-- **************************선지정  참조용******************************************* -->
 
 	<sql id="select-column-sql">
@@ -107,7 +116,23 @@
 	</insert>
 
 
+	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
+		select board_idx, board_title, board_date, board_read_count, board_content, board_writer
+		from (
+			select ceil(rownum/10) page, board_idx, board_title, board_date, board_read_count, board_content, board_writer
+			from (
+				select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board order by board_idx desc
+			)
+		) where page = #{pageNo}
+	</select>
 	
+	<select id="selectBoardCount" resultType="_int">
+		select count(board_idx) from pl_board
+	</select>
+	
+	<select id="selectBoardInfo" parameterType="_int" resultMap="board-resultMap">
+		select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board where board_idx=#{index}
+	</select>
 	
 	
 	

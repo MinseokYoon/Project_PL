@@ -12,6 +12,7 @@ import common.util.PagingBean;
 import kr.or.kosta.pl.dao.OwnerDAO;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.exception.OwnerNotFoundException;
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Owner;
 import kr.or.kosta.pl.vo.Product;
 
@@ -136,5 +137,23 @@ public class OwnerServiceImpl implements OwnerService {
 	@Override
 	public List<Product> findProductByName(String productName,String ownerId) {
 		return dao.selectProductByName(productName,ownerId);
+	}
+	
+	@Override
+	public Map getAllBoard(int pageNo) {
+		HashMap map = new HashMap();
+		List<Board> list = dao.selectBoardsPaging(pageNo);
+		PagingBean pagingBean = new PagingBean(dao.selectCountBoards(), pageNo);
+		
+		map.put("list", list);
+		map.put("pagingBean", pagingBean);
+
+		return map;
+	}
+	
+	@Override
+	public Board getBoardInfo(int index) {
+		Board board = dao.selectBoardByIndex(index);
+		return board;
 	}
 }

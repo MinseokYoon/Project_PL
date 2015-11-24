@@ -139,7 +139,7 @@ $(document).ready(function(){
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/boardList.do">게시판</a></h4>
+									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/adminBoard.do">게시판</a></h4>
 								</div>
 							</div>
 						</div><!--/category-products-->					

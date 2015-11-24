@@ -7,6 +7,7 @@ import java.util.Map;
 
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.exception.OwnerNotFoundException;
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Owner;
 import kr.or.kosta.pl.vo.Product;
 
@@ -78,12 +79,14 @@ public interface OwnerService{
 	int getAllCountOwners();
 
 	
-	public Map getAllProductsPaging(int pageNo,String ownerId);
+	Map getAllProductsPaging(int pageNo,String ownerId);
 
 
-	public List<Product> findProductByName(String productName,String ownerId);
+	List<Product> findProductByName(String productName,String ownerId);
 
-
+	Map getAllBoard(int pageNo);
+	
+	Board getBoardInfo(int index);
 	
 	
 }

@@ -18,6 +18,7 @@ import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.exception.OwnerNotFoundException;
 import kr.or.kosta.pl.service.OwnerService;
 import kr.or.kosta.pl.validate.OwnerValidator;
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Owner;
 import kr.or.kosta.pl.vo.Product;
 
@@ -133,5 +134,27 @@ public class OwnerController {
 		return "/WEB-INF/owner/item_management/product_search_result.jsp";
 	}
 	//asdfasdf
+	
+	@RequestMapping("/boardList")
+	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
+		int page = Integer.parseInt(pageNo);
+		System.out.println("pageNo = " + page);
+		Map map = service.getAllBoard(page);
+
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("pagingBean", map.get("pagingBean"));
+		return "/WEB-INF/board/board_owner.jsp";
+	}
+	
+	@RequestMapping("/boardInfo")
+	public String boardInfo(@RequestParam String boardIndex, ModelMap model) {
+		int index = Integer.parseInt(boardIndex);
+		Board board = service.getBoardInfo(index);
+
+		System.out.println("--asdfasdf");
+		
+		model.addAttribute("board", board);
+		return "/WEB-INF/board/board_info_owner.jsp";
+	}
 	
 }

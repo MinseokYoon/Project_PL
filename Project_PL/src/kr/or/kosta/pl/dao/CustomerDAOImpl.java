@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
@@ -114,5 +115,19 @@ public class CustomerDAOImpl implements CustomerDAO{
 		return session.insert("customerMapper.insertCart", parameter);
 	}
 	
+	@Override
+	public List<Board> selectBoardsPaging(int pageNo) {
+		return session.selectList("customerMapper.selectBoardsPaging", pageNo);
+	}
+	
+	@Override
+	public int selectCountBoards() {
+		return session.selectOne("customerMapper.selectBoardCount");
+	}
+
+	@Override
+	public Board selectBoardByIndex(int index) {
+		return session.selectOne("customerMapper.selectBoardInfo", index);
+	}
 
 }

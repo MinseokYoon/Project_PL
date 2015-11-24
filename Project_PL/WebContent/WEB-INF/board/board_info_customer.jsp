@@ -181,58 +181,55 @@
 					</div>
 				</div>
 				<h2>게시판</h2>
-				<table width="500px">
-					<tr height="30" bgcolor="#C6DBDC">
-						<th align="center">글번호</th>
-						<th align="center">제목</th>
-						<th align="center">작성자</th>
-						<th align="center">작성일</th>
-						<th align="center">조회수</th>
+				<table width="500px" align="center" border="1">
+					<tr height="30px">
+						<td width="100px" align="center" colspan="2"  bgcolor="#C6DBDC">
+							글번호
+						</td>
+						<td align="center">
+							${requestScope.board.boardIndex }
+						</td>
+						<td width="100px" align="center"  bgcolor="#C6DBDC">
+							제목
+						</td>
+						<td align="center" colspan="2">
+							${requestScope.board.boardTitle }
+						</td>
 					</tr>
-					<c:forEach items="${requestScope.list }" var="board">
-						<tr height="30">
-							<td align="center">${board.boardIndex }</td>
-							<td align="center"><a
-								href="${initParam.rootPath }/customer/boardInfo.do?boardIndex=${board.boardIndex}">
-									${board.boardTitle} </a></td>
-							<td align="center">${board.boardWriter }</td>
-							<td align="center">${board.boardDate }</td>
-							<td align="center">${board.boardReadCount}</td>
-						<tr>
-					</c:forEach>
-					<tr>
-						<td colspan="5" align="center">
-							<c:choose>
-								<c:when test="${requestScope.pagingBean.previousPageGroup }">
-									<a href="${initParam.rootPath }/customer/boardList.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
-										◀
-									</a>
-								</c:when>
-								<c:otherwise>
- 										◀
- 								</c:otherwise>
-							</c:choose> 
-							<!-- 
-								 Page Group 내의 page들 링크 처리
-								 	- PageGroup의 시작/끌 페이지 번호 - 반복문 처리
-							--> 
-							<c:forEach begin="${requestScope.pagingBean.startPageOfPageGroup }" end="${requestScope.pagingBean.endPageOfPageGroup }" var="page">
-								<a href="${initParam.rootPath }/customer/boardList.do?pageNo=${page }">${page }</a>&nbsp&nbsp
-							</c:forEach> 
-							<!-- 
-								1. 다음 페이지 그룹으로 이동 처리
-								  다음페이지 그룹이 있으면 링크처리 없으면 -> 모양만 나오도록 처리.
-							--> 
-							<c:choose>
-								<c:when test="${requestScope.pagingBean.nextPageGroup }">
-									<a href="${initParam.rootPath }/customer/boardList.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
-										▶
-									</a>
-								</c:when>
-								<c:otherwise>
- 										▶
- 								</c:otherwise>
-							</c:choose>
+					<tr height="30px">
+						<td width="90" align="center" colspan="2"  bgcolor="#C6DBDC">
+							제목
+						</td>
+						<td align="center" colspan="2">
+							${requestScope.board.boardTitle }
+						</td>
+						<td width="90" align="center"  bgcolor="#C6DBDC">
+							작성자
+						</td>
+						<td align="center" colspan="2">
+							${requestScope.board.boardWriter }
+						</td>
+					</tr>
+					<tr height="30px">
+						<td width="90" align="center" colspan="2"  bgcolor="#C6DBDC">
+							작성일
+						</td>
+						<td align="center" colspan="2">
+							${requestScope.board.boardDate }
+						</td>
+						<td width="90" align="center"  bgcolor="#C6DBDC">
+							조회수
+						</td>
+						<td align="center" colspan="2">
+							${requestScope.board.boardReadCount }
+						</td>
+					</tr>
+					<tr height="200px">
+						<td width="90" align="center" colspan="" bgcolor="#C6DBDC">
+							내용
+						</td>
+						<td align="center" colspan="5" valign="middle" style="width:400px;">
+							<textarea rows=20 cols=40 style="vertical-align: middle; width: 400px;" readonly>${requestScope.board.boardContent }</textarea>
 						</td>
 					</tr>
 				</table>
