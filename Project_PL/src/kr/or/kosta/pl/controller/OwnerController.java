@@ -93,7 +93,7 @@ public class OwnerController {
 		service.updateOwner(owner);
 		Owner newOwner = service.findOwnerById(owner.getOwnerId());
 		session.setAttribute("sessionUser", newOwner);
-		return "/WEB-INF/mypage/owner/mypage_owner.jsp";
+		return "redirect:/owner/ownerMypageForm.do";
 	}
 	
 

@@ -2,6 +2,8 @@ package kr.or.kosta.pl.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.or.kosta.pl.exception.AdminNotFoundException;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.service.AdminService;
 import kr.or.kosta.pl.validate.AdminValidator;
@@ -83,20 +86,14 @@ public class AdminController {
 	}
 
 	// 수정 처리
-	@RequestMapping("modify")
-	public String modify(@ModelAttribute Admin admin, Errors errors, @RequestParam(defaultValue = "1") String pageNo,
-			ModelMap model) throws Exception {
-		new AdminValidator().validate(admin, errors);
-
-		if (errors.hasErrors()) {
-			return "test1/modify_form.tiles";
-		}
+	@RequestMapping("/modify")
+	public String modify(@ModelAttribute Admin admin, HttpSession session) throws AdminNotFoundException{
 		service.updateAdmin(admin);
-		model.addAttribute("adminId", admin.getAdminId());
-		model.addAttribute("pageNo", pageNo);
-		return "redirect:/admin/findById.do";
+		Admin newAdmin = service.findAdminById(admin.getAdminId());
+		session.setAttribute("sessionUser", newAdmin);
+		return "redirect:/admin/adminMypageForm.do";
 	}
-
+	
 	// 관리자 삭제 처리 HandlerattributeValue
 	@RequestMapping("remove.do")
 	public String remove(@RequestParam(defaultValue = "") String adminId,
@@ -224,6 +221,12 @@ public class AdminController {
 	public String idDuplicatedCheck2(@RequestParam int itemId) {
 		Product pro = service.findProductByItemId(itemId);
 		return String.valueOf(pro != null); // 중복인 경우 "true" 리턴
+	}
+	
+
+	@RequestMapping("/adminMypageForm")
+	public String ownerMypageForm() {
+		return "/WEB-INF/mypage/admin/mypage_admin.jsp";
 	}
 
 	@RequestMapping("/boardList")
