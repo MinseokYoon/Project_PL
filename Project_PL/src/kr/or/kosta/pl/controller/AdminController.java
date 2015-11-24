@@ -242,7 +242,7 @@ public class AdminController {
 		int index = Integer.parseInt(boardIndex);
 		Board board = service.getBoardInfo(index);
 
-		System.out.println("--");
+		System.out.println("--asdfasdf");
 		
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_admin.jsp";
