@@ -33,6 +33,21 @@
 		<result property="storeLicense" column="store_license"/>
 	</resultMap>
 	
+	<resultMap type="Cart" id="cartlist-resultmap">
+		<constructor>
+			<idArg column="cart_number" javaType="_int"/>
+			<arg column="customer_id" javaType="string"/>
+			<arg column="store_id" javaType="_int"/>
+			<arg column="item_id" javaType="_int"/>
+			<arg column="cart_count" javaType="_int"/>
+			<arg column="cart_date" javaType="Date"/>
+			<arg column="item_name" javaType="string"/>
+			<arg column="item_price" javaType="_int"/>
+			<arg column="category_id" javaType="_int"/>
+			<arg column="category_name" javaType="string"/>
+		</constructor>
+	</resultMap>
+	
 	
 	<!-- **************************선지정  참조용******************************************* -->
 
@@ -58,6 +73,13 @@
 		insert into pl_customer(<include refid="select-column-sql"/>) 
 		values (<include refid="select-value-sql"/>)
 	</insert>
+			
+	<!-- ***************************고객 조회******************************************** -->
+	<select id="selectCustomerById" parameterType="string" resultMap="customer-resultmap">
+		select <include refid="select-column-sql"/> store_id from pl_customer
+		where customer_id= #{value}
+	
+	</select>
 	
 	<!-- ***************************상점조회******************************************** -->
 	<select id="selectStoreByCount" parameterType="string" resultMap="storelist-resultmap">
@@ -78,14 +100,6 @@
 	
 		select store_id, store_name,owner_id, store_address, store_phone, store_license from pl_store 
 		where store_id = #{value}
-	</select>
-
-		
-	<!-- ***************************사람 조회******************************************** -->
-	<select id="selectCustomerById" parameterType="string" resultMap="customer-resultmap">
-		select <include refid="select-column-sql"/> store_id from pl_customer
-		where customer_id= #{value}
-	
 	</select>
 	
 	<!-- ***************************물품 조회******************************************** -->
@@ -115,6 +129,14 @@
 		insert into pl_cart (<include refid="select-cart-colum-sql"/>) 
 		values (cart_index_seq.nextval, #{customerId}, #{storeId}, #{itemId}, #{countItem}, sysdate)
 	</insert>
+	
+	<!-- 장바구니 조회 -->
+	<select id="selectCartByCustomerId" parameterType="string" resultMap="cartlist-resultmap">
+		select c.cart_number, c.customer_id, c.store_id, c.item_id, c.cart_count, c.cart_date, 
+				i.item_name, i.item_price, i.category_id, t.category_name 
+		from pl_cart c, pl_item_info i, pl_category t 
+		where c.item_id = i.item_id and i.category_id = t.category_id and c.customer_id=#{value}
+	</select>
 
 	
 	

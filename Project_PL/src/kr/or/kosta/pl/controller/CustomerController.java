@@ -17,6 +17,7 @@ import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.service.CustomerService;
 import kr.or.kosta.pl.validate.CustomerValidator;
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Cart;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Store;
 
@@ -24,13 +25,30 @@ import kr.or.kosta.pl.vo.Store;
 @RequestMapping("/customer") // view& section을 어디서 찾아야 할까
 public class CustomerController {
 	
+	@Autowired
+	private CustomerService service;
+	
 	@RequestMapping("/index")
 	public String index_customer(){
 		return "/WEB-INF/customer/main_customer.jsp";
 	}
 
-	@Autowired
-	private CustomerService service;
+	@RequestMapping("/cartpage")
+	public String cartPage(HttpSession session, ModelMap model){
+		
+		//if (session.getAttribute("sessionUser").getClass() == Customer.class)
+		//세션에서 어떤 유저인지를 검사 하려면!!!
+		Customer customer = (Customer)session.getAttribute("sessionUser");
+		
+		List<Cart> cart = service.findCartByCusotmerId(customer.getCustomerId());
+		
+		model.addAttribute("cart", cart);
+		System.out.println(cart);
+		
+		return "/WEB-INF/customer/cart/cart_form.jsp";
+	}
+	
+	
 	
 	/*-----------------------------------회원 가입------------------------------------------------*/
 	@RequestMapping("/add.do")

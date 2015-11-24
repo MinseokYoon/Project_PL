@@ -12,6 +12,7 @@ import common.util.PagingBean;
 import kr.or.kosta.pl.dao.CustomerDAO;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Cart;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
@@ -169,6 +170,13 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return dao.selectStoreById(storeId);
 	}
+
+	@Override
+	public List<Cart> findCartByCusotmerId(String customerId) {
+		
+		return dao.selectCartByCustomerId(customerId);
+	}
+	
 	
 	
 	

@@ -37,9 +37,9 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="logo pull-left">
-						<a href="${initParam.rootPath }/basic/item_list.do"><img
-							src="${initParam.rootPath }/images/pline.png" alt="" /></a>
-					</div>
+							<a href="${initParam.rootPath }/basic/item_list.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a> 
+							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.customerName }</b>님 환영합니다.
+						</div>
 				</div>
 				<div class="col-sm-8">
 					<div class="shop-menu pull-right">
@@ -48,8 +48,7 @@
 									class="fa fa-user"></i>
 									<li><a href="login.html"><i class="fa fa-user"></i>
 											마이페이지</a></li>
-									<li><a href="login.html"><i
-											class="fa fa-shopping-cart"></i> 장바구니</a></li>
+									<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 									<li><a href="${initParam.rootPath }/basic/index.do"><i
 											class="fa fa-lock"></i> 로그아웃</a></li>
 						</ul>

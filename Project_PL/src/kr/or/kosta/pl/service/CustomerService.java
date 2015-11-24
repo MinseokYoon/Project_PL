@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Cart;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
@@ -41,4 +42,6 @@ public interface CustomerService {
 	List<Store> findStoreName(String storeName);
 	
 	Store findStoreById(int storeId);
+	
+	List<Cart> findCartByCusotmerId(String customerId);
 }

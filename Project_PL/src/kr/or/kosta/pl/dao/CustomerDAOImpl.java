@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Cart;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
@@ -129,8 +130,6 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public Board selectBoardByIndex(int index) {
 		return session.selectOne("customerMapper.selectBoardInfo", index);
 	}
-	
-
 
 	/*매장찾기*/
 	@Override
@@ -144,6 +143,13 @@ public class CustomerDAOImpl implements CustomerDAO{
 		
 		return session.selectOne("customerMapper.selectStoreById", storeId);
 	}
+	
+	@Override
+	public List<Cart> selectCartByCustomerId(String customerId) {
+	
+		return session.selectList("customerMapper.selectCartByCustomerId", customerId);
+	}
+	
 	
 
 

@@ -203,3 +203,9 @@ select board_idx, board_title, board_date, board_read_count, board_content, boar
 
 		
 		select count(board_idx) from pl_board
+		
+		
+select c.cart_number, c.customer_id, c.store_id, c.item_id, c.cart_count, c.cart_date, 
+		i.item_name, i.item_price, i.category_id, t.category_name 
+from pl_cart c, pl_item_info i, pl_category t 
+where c.item_id = i.item_id and i.category_id = t.category_id and c.customer_id='zzangnara52'
