@@ -21,4 +21,6 @@ public interface CustomerDAO {
 	List<Product> selectItemByNameMany(String itemName);
 	
 	List<Store> selectStoreNameByCount(String itemName);
+	
+	int insertCart(String customerId, int storeId, int itemId, int countItem);
 }

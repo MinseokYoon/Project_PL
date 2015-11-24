@@ -185,40 +185,37 @@
 							</div>
 						</div>
 						<div class="col-sm-7">
-							<div class="product-information">
-								<!--/product-information-->
-								<form action="">
-									<input type="hidden" name=itemId value="${requestScope.item.itemId }"> 
-									<img src="${initParam.rootPath}/images/product-details/new.jpg" class="newarrival" alt="" />
-									<h2>${requestScope.item.itemName}</h2>
-									<p>
-										<b>매장 선택</b>
-										<select name="storeId">
-											<!-- 이름으로 받는 거임 -->
-											<option value="default">매장을 선택해 주세요.</option>
-											<c:forEach items="${requestScope.store}" var="store">
-												<option value="${store.storeId}">${store.storeName}</option>
-											</c:forEach>
-										</select>
-									</p>
-									<img src="${initParam.rootPath}/images/product-details/rating.png" alt="" />
-									<span> 
-										<span>${requestScope.item.itemPrice}원</span> <label>Quantity:</label>
-										<input type="text" value="1" name="countItem" /> 
-										<!-- 숫자만 들어오는것 오류 확인해야함 -->
-										<button type="submit" class="btn btn-fefault cart">
-											<i class="fa fa-shopping-cart"></i> Add to cart
-										</button>
-									</span>
-									<p>
-										<b>분류:</b> ${requestScope.item.categoryName }
-									</p>
-								</form>
-							</div>
-							<!--/product-information-->
+							<div class="product-information"><!--/product-information-->
+							<form action="${initParam.rootPath }/customer/cart.do">
+								<input type="hidden" name=itemId value="${requestScope.item.itemId }">
+								<img src="/Project_PL/images/product-details/new.jpg" class="newarrival" alt="" />
+								<h2>${requestScope.item.itemName}</h2>
+								<p><b>매장 선택</b><select name="storeId">			<!-- 이름으로 받는 거임 -->
+									<option value="default">매장을 선택해 주세요.</option>
+									<c:forEach items="${requestScope.store}" var="store">
+										<option value="${store.storeId}">${store.storeName} </option>
+									</c:forEach>
+								
+								</select></p>
+								<img src="/Project_PL/images/product-details/rating.png" alt="" />
+								
+								<span>
+									<span>${requestScope.item.itemPrice}원</span>
+									<label>Quantity:</label>
+									<input type="number" value="1" name="countItem"/>  <!-- 숫자만 들어오는것 오류 확인해야함 -->
+									<button type="submit" class="btn btn-fefault cart">
+										<i class="fa fa-shopping-cart"></i>
+										Add to cart
+									</button>
+								</span>
+								
+								<p><b>분류:</b> ${requestScope.item.categoryName }</p>
+							</form>	
+							</div><!--/product-information-->
 						</div>
-					</div>
-					<!--/product-details-->
+					</div><!--/product-details-->
+
+
 					<div class="category-tab shop-details-tab">
 						<!--category-tab-->
 						<div class="col-sm-12">

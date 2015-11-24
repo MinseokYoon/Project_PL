@@ -129,6 +129,12 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 	
 	
+	@Override
+	public void addCart(String customerId, int storeId, int itemId, int countItem) {
+	
+		dao.insertCart(customerId, storeId, itemId, countItem);
+	}
+	
 	
 	
 	
