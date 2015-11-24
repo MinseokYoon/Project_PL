@@ -43,13 +43,13 @@ function productSearchCheck(){
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-14">
 						<div class="logo pull-left">
 							<a href="${initParam.rootPath }/basic/ownerHome.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a>
 							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.ownerName }</b>님 환영합니다.
 						</div>
 					</div>
-					<div class="col-sm-8">
+					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
@@ -192,7 +192,9 @@ function productSearchCheck(){
 							<c:forEach items="${requestScope.productList }" var="productList">
 								<tr>
 									<td>
-										<a href="${requestScope.rootPath }/owner/storedAndReleased.do">${productList.itemName }</a>
+										<a href="${initParam.rootPath }/owner/productInfo.do?productName=${productList.itemName}">
+											${productList.itemName }
+										</a>
 									</td> 
 									<td>${productList.itemPrice }</td>
 									<td>${productList.itemCount }</td>

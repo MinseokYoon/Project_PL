@@ -35,4 +35,8 @@ public interface OwnerDAO {
 	int selectCountBoards();
 	
 	Board selectBoardByIndex(int index);
+
+	Product selectOneProduct(String pName, String ownerId);
+
+	int updateInputProduct(String ownerId, int resultCount,int itemId); 
 }

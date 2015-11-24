@@ -131,9 +131,80 @@ public class OwnerController {
 		productList = service.findProductByName(resultValue,ownerId);
 		model.addAttribute("productList",productList); 
 		
+		
+		
 		return "/WEB-INF/owner/item_management/product_search_result.jsp";
 	}
-	//asdfasdf
+	
+	//편의점 물품 정보
+			@RequestMapping("/productInfo")
+			public String productStoredAndReleased(@RequestParam String productName,ModelMap model,HttpSession session){
+				Owner owner = (Owner)session.getAttribute("sessionUser");
+				String ownerId = owner.getOwnerId();
+				//String pName = productName;
+				
+				Product product = null;
+				product = service.findOneProductByName(productName, ownerId); 
+				model.addAttribute("product",product);
+				
+				//여기 고쳐야 함 
+				System.out.println(product.getItemId());
+				System.out.println(product.getItemName());
+				
+				return "/WEB-INF/owner/item_management/product_info.jsp";
+				
+			}
+			
+			
+			//물품 - 입고 처리 Handler
+			@RequestMapping("/input")
+			public String inputProduct(@RequestParam String itemCount,@RequestParam String inputCount,@RequestParam String productId,@RequestParam String productName,HttpSession session,ModelMap model){
+				//System.out.println(itemCount); 물품 개수 따온거
+				Owner owner = (Owner)session.getAttribute("sessionUser");
+				String ownerId = owner.getOwnerId();
+				String pCount = itemCount;// 원래 물품개수
+				String inCount = inputCount;//입고 물품개수
+				String pId = productId; //물품 Id
+				
+				//System.out.println(productId);
+				//System.out.println(itemCount + " - " + inputCount);
+				int resultCount = Integer.parseInt(pCount) + Integer.parseInt(inCount);
+				//System.out.println(resultCount); //원래 물품 개수 + 입고된 물품 개수 
+				int itemId = Integer.parseInt(pId);
+				//System.out.println("테스트 : "+resultCount+itemId);
+				
+				service.updateCountProduct(ownerId,resultCount,itemId);
+				
+				Product product = null;
+				product = service.findOneProductByName(productName, ownerId); 
+				model.addAttribute("product",product);
+				
+				return "/WEB-INF/owner/item_management/product_info.jsp";
+				
+			}
+			
+			//물품 - 출고 처리 Handler
+			@RequestMapping("/output")
+			public String outputProduct(@RequestParam String itemCount,@RequestParam String outputCount,@RequestParam String productId,@RequestParam String productName,HttpSession session,ModelMap model){
+				//System.out.println(itemCount); 물품 개수 따온거
+				Owner owner = (Owner)session.getAttribute("sessionUser");
+				String ownerId = owner.getOwnerId();
+				String pCount = itemCount;// 원래 물품개수
+				String outCount = outputCount;//입고 물품개수
+				String pId = productId; //물품 Id
+				
+				int resultCount = Integer.parseInt(pCount) - Integer.parseInt(outCount);
+				int itemId = Integer.parseInt(pId);
+				
+				service.updateCountProduct(ownerId,resultCount,itemId);
+				
+				Product product = null;
+				product = service.findOneProductByName(productName, ownerId); 
+				model.addAttribute("product",product);
+				
+				return "/WEB-INF/owner/item_management/product_info.jsp";
+				
+			}
 	
 	@RequestMapping("/boardList")
 	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {

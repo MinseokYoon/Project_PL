@@ -156,4 +156,14 @@ public class OwnerServiceImpl implements OwnerService {
 		Board board = dao.selectBoardByIndex(index);
 		return board;
 	}
+	
+	public Product findOneProductByName(String pName, String ownerId) {
+		
+		return dao.selectOneProduct(pName,ownerId);
+	}
+
+	@Override
+	public int updateCountProduct(String ownerId, int resultCount ,int itemId) {
+		return dao.updateInputProduct(ownerId,resultCount,itemId);
+	}
 }

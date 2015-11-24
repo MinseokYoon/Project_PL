@@ -21,6 +21,7 @@
 		<result property="itemExpirationDate" column="item_expiration_date"/>
 		<result property="itemCount" column="item_count"/>
 		<result property="serverIndex" column="server_index"/>
+		<result property="categoryName" column="category_name"/>
 	</resultMap>
 	
 	<resultMap type="board" id="board-resultMap">
@@ -106,6 +107,7 @@
 	</select>
 	
 
+
 	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer
 		from (
@@ -115,6 +117,26 @@
 			)
 		) where page = #{pageNo}
 	</select>
+
+	<!-- 물품 한개만 검색하는 sql -->
+	<select id="selectOneProduct" parameterType="hashmap" resultMap="product-resultmap">
+		select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id, c.category_name
+				from PL_ITEM_INFO e, PL_SERVER_ITEM d,pl_category c
+				where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) 
+				and e.item_id = d.item_id 
+				and e.item_name = #{productName} 
+				and c.category_id = e.category_id 
+	</select>
+	
+	
+	<!-- 물품 입고하는 sql -->
+	<update id="updateInputProduct" parameterType="hashmap">
+		update pl_server_item
+		set item_count = #{resultCount}
+		where store_id = (select store_id from PL_STORE where owner_id=#{ownerId}) 
+		and item_id = #{itemId}
+	</update>
+
 	
 	<select id="selectBoardCount" resultType="_int">
 		select count(board_idx) from pl_board

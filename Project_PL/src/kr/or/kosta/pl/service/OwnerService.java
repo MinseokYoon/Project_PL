@@ -87,6 +87,8 @@ public interface OwnerService{
 	Map getAllBoard(int pageNo);
 	
 	Board getBoardInfo(int index);
-	
-	
+
+	Product findOneProductByName(String pName, String ownerId);
+
+	int updateCountProduct(String ownerId, int resultCount, int itemId);
 }
