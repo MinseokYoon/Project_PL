@@ -28,4 +28,8 @@ public interface OwnerDAO {
 	int selectCountProducts(String ownerId);//ok
 
 	List<Product> selectProductByName(String productName,String ownerId); // 물품이름으로 검색하는 메소드
+
+	Product selectOneProduct(String pName, String ownerId);
+
+	int updateInputProduct(String ownerId, int resultCount,int itemId); 
 }

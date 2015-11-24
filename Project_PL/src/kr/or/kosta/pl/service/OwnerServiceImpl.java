@@ -137,4 +137,16 @@ public class OwnerServiceImpl implements OwnerService {
 	public List<Product> findProductByName(String productName,String ownerId) {
 		return dao.selectProductByName(productName,ownerId);
 	}
+	
+	@Override
+	public Product findOneProductByName(String pName, String ownerId) {
+		
+		return dao.selectOneProduct(pName,ownerId);
+	}
+
+	@Override
+	public int updateCountProduct(String ownerId, int resultCount ,int itemId) {
+		return dao.updateInputProduct(ownerId,resultCount,itemId);
+		
+	}
 }

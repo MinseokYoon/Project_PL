@@ -83,7 +83,10 @@ public interface OwnerService{
 
 	public List<Product> findProductByName(String productName,String ownerId);
 
+	Product findOneProductByName(String pName, String ownerId);
 
+
+	int updateCountProduct(String ownerId, int resultCount, int itemId);
 	
 	
 }

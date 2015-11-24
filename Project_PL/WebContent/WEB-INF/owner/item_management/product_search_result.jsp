@@ -194,7 +194,7 @@ function productSearchCheck(){
 							<c:forEach items="${requestScope.productList }" var="productList">
 								<tr>
 									<td>
-										<a href="${requestScope.rootPath }/owner/storedAndReleased.do">${productList.itemName }</a>
+										<a href="${initParam.rootPath }/owner/productInfo.do">${productList.itemName }</a>
 									</td> 
 									<td>${productList.itemPrice }</td>
 									<td>${productList.itemCount }</td>
