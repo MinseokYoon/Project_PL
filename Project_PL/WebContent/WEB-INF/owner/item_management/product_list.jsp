@@ -44,13 +44,13 @@ function productSearchCheck(){
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-14">
 						<div class="logo pull-left">
-							<a href="${initParam.rootPath }/basic/ownerHome.do"><img src="/Project_PL/images/home/pl_logo.png" alt="" /></a>
+							<a href="${initParam.rootPath }/basic/ownerHome.do"><img src="/Project_PL/images/pline.png" alt="" /></a>
 							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.ownerName }</b>님 환영합니다.
 						</div>
 					</div>
-					<div class="col-sm-8">
+					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>

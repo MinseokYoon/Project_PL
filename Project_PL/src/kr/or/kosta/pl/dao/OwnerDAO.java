@@ -33,3 +33,4 @@ public interface OwnerDAO {
 
 	int updateInputProduct(String ownerId, int resultCount,int itemId); 
 }
+//asdasdasd

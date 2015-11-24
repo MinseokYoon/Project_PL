@@ -130,6 +130,8 @@ public class OwnerController {
 		productList = service.findProductByName(resultValue,ownerId);
 		model.addAttribute("productList",productList); 
 		
+		
+		
 		return "/WEB-INF/owner/item_management/product_search_result.jsp";
 	}
 	
@@ -138,12 +140,15 @@ public class OwnerController {
 			public String productStoredAndReleased(@RequestParam String productName,ModelMap model,HttpSession session){
 				Owner owner = (Owner)session.getAttribute("sessionUser");
 				String ownerId = owner.getOwnerId();
-				String pName = productName;
+				//String pName = productName;
 				
 				Product product = null;
-				product = service.findOneProductByName(pName, ownerId); 
-				
+				product = service.findOneProductByName(productName, ownerId); 
 				model.addAttribute("product",product);
+				
+				//여기 고쳐야 함 
+				System.out.println(product.getItemId());
+				System.out.println(product.getItemName());
 				
 				return "/WEB-INF/owner/item_management/product_info.jsp";
 				
