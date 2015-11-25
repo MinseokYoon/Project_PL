@@ -1,8 +1,9 @@
 package kr.or.kosta.pl.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Cart {
+public class Cart implements Serializable {
 	
 	private int cartNumber;
 	private String customerId;
