@@ -142,17 +142,23 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	
 	@Override
+	public List<Board> getNotice() {
+		List<Board> list = dao.selectNotice();
+		return list;
+	}
+
+	@Override
 	public Map getAllBoard(int pageNo) {
 		HashMap map = new HashMap();
 		List<Board> list = dao.selectBoardsPaging(pageNo);
 		PagingBean pagingBean = new PagingBean(dao.selectCountBoards(), pageNo);
-		
+
 		map.put("list", list);
 		map.put("pagingBean", pagingBean);
 
 		return map;
 	}
-	
+
 	@Override
 	public Board getBoardInfo(int index) {
 		Board board = dao.selectBoardByIndex(index);

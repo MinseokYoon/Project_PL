@@ -117,10 +117,15 @@ public class CustomerDAOImpl implements CustomerDAO{
 	}
 	
 	@Override
+	public List<Board> selectNotice() {
+		return session.selectList("customerMapper.selectNotice");
+	}
+	
+	@Override
 	public List<Board> selectBoardsPaging(int pageNo) {
 		return session.selectList("customerMapper.selectBoardsPaging", pageNo);
 	}
-	
+
 	@Override
 	public int selectCountBoards() {
 		return session.selectOne("customerMapper.selectBoardCount");

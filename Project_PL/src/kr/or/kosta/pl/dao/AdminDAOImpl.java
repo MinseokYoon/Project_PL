@@ -134,6 +134,11 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
+	public List<Board> selectNotice() {
+		return session.selectList("adminMapper.selectNotice");
+	}
+	
+	@Override
 	public List<Board> selectBoardsPaging(int pageNo) {
 		return session.selectList("adminMapper.selectBoardsPaging", pageNo);
 	}

@@ -103,16 +103,6 @@ public class OwnerDAOImpl implements OwnerDAO {
 		return session.selectOne("ownerMapper.selectOneProduct",map);
 	}
 
-	@Override
-	public List<Board> selectBoardsPaging(int pageNo) {
-		return session.selectList("ownerMapper.selectBoardsPaging", pageNo);
-	}
-	
-	@Override
-	public int selectCountBoards() {
-		return session.selectOne("ownerMapper.selectBoardCount");
-	}
-	
 	
 	public int updateInputProduct(String ownerId, int resultCount,int itemId) {
 		HashMap map = new HashMap();
@@ -120,6 +110,21 @@ public class OwnerDAOImpl implements OwnerDAO {
 		map.put("resultCount",resultCount);
 		map.put("itemId", itemId);
 		return session.update("ownerMapper.updateInputProduct",map);
+	}
+
+	@Override
+	public List<Board> selectNotice() {
+		return session.selectList("ownerMapper.selectNotice");
+	}
+	
+	@Override
+	public List<Board> selectBoardsPaging(int pageNo) {
+		return session.selectList("ownerMapper.selectBoardsPaging", pageNo);
+	}
+
+	@Override
+	public int selectCountBoards() {
+		return session.selectOne("ownerMapper.selectBoardCount");
 	}
 
 	@Override

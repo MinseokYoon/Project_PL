@@ -61,7 +61,6 @@ function productSearchCheck(){
 			</div>
 		</div><!--/header-middle-->
 	</header><!--/header-->
-	
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -97,7 +96,6 @@ function productSearchCheck(){
 									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
-							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -110,7 +108,6 @@ function productSearchCheck(){
 									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
-							
 						</div>	
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
@@ -119,7 +116,6 @@ function productSearchCheck(){
 							<i class="fa fa-angle-right"></i>
 						</a>
 					</div>
-					
 				</div>
 			</div>
 		</div>

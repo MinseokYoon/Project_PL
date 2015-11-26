@@ -60,6 +60,8 @@ public interface AdminDAO {
 
 	// 물품 수
 	int selectCountProducts();
+	
+	List<Board> selectNotice();
 
 	List<Board> selectBoardsPaging(int pageNo);
 

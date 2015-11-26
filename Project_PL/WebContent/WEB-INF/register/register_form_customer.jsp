@@ -200,7 +200,6 @@
 									<h2>24 DEC 2014</h2>
 								</div>
 							</div>
-		
 							<div class="col-sm-3">
 								<div class="video-gallery text-center">
 									<a href="#">
@@ -215,7 +214,6 @@
 									<h2>24 DEC 2014</h2>
 								</div>
 							</div>
-		
 							<div class="col-sm-3">
 								<div class="video-gallery text-center">
 									<a href="#">
@@ -230,7 +228,6 @@
 									<h2>24 DEC 2014</h2>
 								</div>
 							</div>
-		
 							<div class="col-sm-3">
 								<div class="video-gallery text-center">
 									<a href="#">

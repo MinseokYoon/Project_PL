@@ -69,7 +69,6 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-	
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -84,7 +83,6 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-	
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -99,7 +97,6 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-	
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -137,11 +134,11 @@
 		</footer>
 		<!--/Footer-->
 	
-		<script src="js/jquery.js"></script>
-		<script src="js/price-range.js"></script>
-		<script src="js/jquery.scrollUp.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/jquery.prettyPhoto.js"></script>
-		<script src="js/main.js"></script>
+		<script src="${initParam.rootPath}/js/jquery.js"></script>
+		<script src="${initParam.rootPath}/js/price-range.js"></script>
+		<script src="${initParam.rootPath}/js/jquery.scrollUp.min.js"></script>
+		<script src="${initParam.rootPath}/js/bootstrap.min.js"></script>
+		<script src="${initParam.rootPath}/js/jquery.prettyPhoto.js"></script>
+		<script src="${initParam.rootPath}/js/main.js"></script>
 	</body>
 </html>

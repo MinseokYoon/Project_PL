@@ -210,8 +210,10 @@ public class OwnerController {
 	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
 		int page = Integer.parseInt(pageNo);
 		System.out.println("pageNo = " + page);
+		List<Board> notice = service.getNotice();
 		Map map = service.getAllBoard(page);
 
+		model.addAttribute("notice", notice);
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("pagingBean", map.get("pagingBean"));
 		return "/WEB-INF/board/board_owner.jsp";

@@ -83,7 +83,6 @@
 									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
-							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -96,7 +95,6 @@
 									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
-							
 						</div>
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
@@ -185,7 +183,6 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -200,7 +197,6 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -215,7 +211,6 @@
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">

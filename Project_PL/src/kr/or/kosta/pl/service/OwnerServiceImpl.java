@@ -28,9 +28,6 @@ public class OwnerServiceImpl implements OwnerService {
 		this.dao = dao;
 	}
 	
-	
-	
-	
 	/**
 	 * 점장을 등록하는 메소드.
 	 *  - 점장 id (id)는 중복될 수 없다.
@@ -53,7 +50,6 @@ public class OwnerServiceImpl implements OwnerService {
 		dao.insertOwner(owner);
 		
 	}
-	
 	
 	
 	//점장id로 점장 삭제하는 메소드 
@@ -140,17 +136,23 @@ public class OwnerServiceImpl implements OwnerService {
 	}
 	
 	@Override
+	public List<Board> getNotice() {
+		List<Board> list = dao.selectNotice();
+		return list;
+	}
+
+	@Override
 	public Map getAllBoard(int pageNo) {
 		HashMap map = new HashMap();
 		List<Board> list = dao.selectBoardsPaging(pageNo);
 		PagingBean pagingBean = new PagingBean(dao.selectCountBoards(), pageNo);
-		
+
 		map.put("list", list);
 		map.put("pagingBean", pagingBean);
 
 		return map;
 	}
-	
+
 	@Override
 	public Board getBoardInfo(int index) {
 		Board board = dao.selectBoardByIndex(index);

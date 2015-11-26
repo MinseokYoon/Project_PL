@@ -98,7 +98,6 @@ function productSearchCheck(){
 									<img src="/Project_PL/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
-							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -111,9 +110,7 @@ function productSearchCheck(){
 									<img src="/Project_PL/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
-							
 						</div>
-						
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
 						</a>
@@ -126,7 +123,6 @@ function productSearchCheck(){
 			</div>
 		</div>
 	</section><!--/slider-->
-
 	<section>
 	<div class="container">
 		<div class="row">
@@ -182,9 +178,9 @@ function productSearchCheck(){
 					<c:when test="${fn:length(requestScope.list)==0 }">
 						등록된 물품이 없습니다.
 					</c:when>
-				<c:otherwise>
+					<c:otherwise>
 						<table style="width: 800px" border="1">
-							<tr  >
+							<tr>
 								<th style="text-align: center; background-color: #fe980f;">물품 이름</th>
 								<th style="text-align: center; background-color: #fe980f;">물품 가격</th>
 								<th style="text-align: center; background-color: #fe980f;">물품 개수</th>
@@ -195,9 +191,7 @@ function productSearchCheck(){
 							</tr>
 							<c:forEach items="${requestScope.list }" var="product">
 								<tr>
-									<td style="text-align: center;"><a
-										href="${initParam.rootPath }/owner/productInfo.do?productName=${product.itemName}">
-											${product.itemName } </a></td>
+									<td style="text-align: center;"><a href="${initParam.rootPath }/owner/productInfo.do?productName=${product.itemName}"> ${product.itemName }</a></td>
 									<td style="text-align: center;">${product.itemPrice }</td>
 									<td style="text-align: center;">${product.itemCount }</td>
 									<td style="text-align: center;">${product.itemExpirationDate }</td>
@@ -207,43 +201,43 @@ function productSearchCheck(){
 								</tr>
 							</c:forEach>
 							<tr>
-								<td colspan="7" align="center"><c:choose>
+								<td colspan="7" align="center">
+									<c:choose>
 										<c:when test="${requestScope.pagingBean.previousPageGroup }">
-											<a
-												href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
-												◀ </a>
+											<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
+												◀ 
+											</a>
 										</c:when>
 										<c:otherwise>
-								 		◀
-								 	</c:otherwise>
-									</c:choose> <!-- Page Group 내의 page들 링크 처리
-									- PageGroup의 시작/끝페이지 번호 - 반복문 처리
-								 --> <c:forEach
-										begin="${requestScope.pagingBean.startPageOfPageGroup }"
-										end="${requestScope.pagingBean.endPageOfPageGroup }"
-										var="page">
+								 			◀
+								 		</c:otherwise>
+									</c:choose> 
+									<!-- Page Group 내의 page들 링크 처리
+										- PageGroup의 시작/끝페이지 번호 - 반복문 처리
+									 --> 
+									<c:forEach begin="${requestScope.pagingBean.startPageOfPageGroup }" end="${requestScope.pagingBean.endPageOfPageGroup }" var="page">
 										<c:choose>
-											<c:when
-												test="${page == requestScope.pagingBean.currentPage }">
-											[${page}]
-										</c:when>
+											<c:when test="${page == requestScope.pagingBean.currentPage }">
+												[${page}]
+											</c:when>
 											<c:otherwise>
-												<a
-													href="${initParam.rootPath }/owner/product_list.do?pageNo=${page }">
-													${page } </a>
+												<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${page }"> ${page } </a>
 											</c:otherwise>
 										</c:choose>
-									&nbsp;&nbsp;
-								</c:forEach> <!-- 3. 다음 페이지 그룹 링크
-								    다음 페이지 그룹이 있으면 링크 처리 없으면 그냥 화살표만 나오도록 처리.
-								 --> <c:choose>
+										&nbsp;&nbsp;
+									</c:forEach> 
+									<!-- 3. 다음 페이지 그룹 링크
+									   	 다음 페이지 그룹이 있으면 링크 처리 없으면 그냥 화살표만 나오도록 처리.
+									--> 
+									<c:choose>
 										<c:when test="${requestScope.pagingBean.nextPageGroup }">
-											<a
-												href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
-												▶ </a>
+											<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
+												▶ 
+											</a>
 										</c:when>
 										<c:otherwise>▶</c:otherwise>
-									</c:choose></td>
+									</c:choose>
+								</td>
 							</tr>
 						</table>
 					</c:otherwise>
@@ -255,14 +249,10 @@ function productSearchCheck(){
 					<!-- 	<input type="submit" value="검색">  -->
 					</form>
 				</div>
-			
-					
 			</div>
-
 		</div>
 	</div>
 	</section>
-
 	<footer id="footer"><!--Footer-->
 		<div class="footer-top">
 			<div class="container">
@@ -288,7 +278,6 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -303,7 +292,6 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -318,7 +306,6 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
-						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -351,10 +338,7 @@ function productSearchCheck(){
 				</div>
 			</div>
 		</div>
-		
 	</footer><!--/Footer-->
-	
-
   
     <script src="/Project_PL/js/jquery.js"></script>
 	<script src="/Project_PL/js/bootstrap.min.js"></script>

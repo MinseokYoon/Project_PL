@@ -39,6 +39,7 @@ public interface CustomerDAO {
 	List<Cart> selectCartByCustomerId(String customerId);
 	
 	int deleteCart(String customerId, int storeId, int itemId);
-	
-	
+
+	List<Board> selectNotice();
+
 }

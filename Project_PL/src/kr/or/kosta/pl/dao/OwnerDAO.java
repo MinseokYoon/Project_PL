@@ -38,5 +38,7 @@ public interface OwnerDAO {
 
 	Product selectOneProduct(String pName, String ownerId);
 
-	int updateInputProduct(String ownerId, int resultCount,int itemId); 
+	int updateInputProduct(String ownerId, int resultCount,int itemId);
+
+	List<Board> selectNotice(); 
 }

@@ -41,8 +41,12 @@ public interface AdminService {
 	void removeProduct(int itemId) throws AdminNotFoundException;
 
 	void updateProduct(Product newPro) throws AdminNotFoundException;
+	
+	//////////////////////////// 게시판 //////////////////////////////////////////////////////
 
 	Map getAllBoard(int pageNo);
+	
+	List<Board> getNotice();
 
 	Board getBoardInfo(int index);
 

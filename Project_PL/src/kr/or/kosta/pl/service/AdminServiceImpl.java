@@ -146,6 +146,12 @@ public class AdminServiceImpl implements AdminService {
 		dao.updateProduct(newPro);
 
 	}
+	
+	@Override
+	public List<Board> getNotice() {
+		List<Board> list = dao.selectNotice();
+		return list;
+	}
 
 	@Override
 	public Map getAllBoard(int pageNo) {

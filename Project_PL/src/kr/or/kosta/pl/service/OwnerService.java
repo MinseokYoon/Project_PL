@@ -91,4 +91,7 @@ public interface OwnerService{
 	Product findOneProductByName(String pName, String ownerId);
 
 	int updateCountProduct(String ownerId, int resultCount, int itemId);
+
+
+	List<Board> getNotice();
 }

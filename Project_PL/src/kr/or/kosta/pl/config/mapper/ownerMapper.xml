@@ -31,6 +31,8 @@
 		<result property="boardReadCount" column="board_read_count"/>
 		<result property="boardContent" column="board_content"/>
 		<result property="boardWriter" column="board_writer"/>
+		<result property="boardCategory" column="board_category"/>
+		<result property="boardCategoryName" column="board_category_name"/>
 	</resultMap>
 	
 	<!-- 공통 sql문  -->
@@ -105,18 +107,6 @@
 				where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) and e.item_id = d.item_id 
 				and e.item_name like '%'||#{productName}||'%'
 	</select>
-	
-
-
-	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
-		select board_idx, board_title, board_date, board_read_count, board_content, board_writer
-		from (
-			select ceil(rownum/10) page, board_idx, board_title, board_date, board_read_count, board_content, board_writer
-			from (
-				select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board order by board_idx desc
-			)
-		) where page = #{pageNo}
-	</select>
 
 	<!-- 물품 한개만 검색하는 sql -->
 	<select id="selectOneProduct" parameterType="hashmap" resultMap="product-resultmap">
@@ -136,7 +126,17 @@
 		where store_id = (select store_id from PL_STORE where owner_id=#{ownerId}) 
 		and item_id = #{itemId}
 	</update>
-
+	
+	
+	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
+		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name
+		from (
+			select ceil(rownum/10) page, board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name
+			from (
+				select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name from pl_board where board_category=1 order by board_date desc
+			)
+		) where page = #{pageNo}
+	</select>
 	
 	<select id="selectBoardCount" resultType="_int">
 		select count(board_idx) from pl_board
@@ -146,6 +146,10 @@
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board where board_idx=#{index}
 	</select>
 	
+	<select id="selectNotice" resultMap="board-resultMap">
+		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name 
+		from (select * from pl_board where board_category=2 order by board_date desc) where rownum between 1 and 3
+	</select>
 </mapper>
 
 

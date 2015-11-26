@@ -34,7 +34,7 @@ create table PL_CUSTOMER (
 	CUSTOMER_PASSWORD VARCHAR2(32) NOT NULL,
 	CUSTOMER_NAME VARCHAR2(15) NOT NULL,
 	CUSTOMER_ADDRESS VARCHAR2(150) NOT NULL,
-	CUSTOMER_BIRTH NUMBER(8) NOT NULL,
+	CUSTOMER_BIRTH VARCHAR2(8) NOT NULL,
 	CUSTOMER_GENDER NUMBER(1) NOT NULL,
 	CUSTOMER_PHONE VARCHAR2(11) NOT NULL,
 	CUSTOMER_EMAIL VARCHAR2(30) NOT NULL,
@@ -108,7 +108,9 @@ create table PL_BOARD (
 	BOARD_DATE DATE NOT NULL,
 	BOARD_READ_COUNT NUMBER(3) NOT NULL,
 	BOARD_CONTENT VARCHAR2(300) NOT NULL,
-	BOARD_WRITER VARCHAR2(15) NOT NULL
+	BOARD_WRITER VARCHAR2(15) NOT NULL,
+	BOARD_CATEGORY NUMBER(1) NOT NULL,
+	BOARD_CATEGORY_NAME VARCHAR2(6) NOT NULL
 )
 --
 --create table PL_SERVICE_CENTER (
@@ -160,6 +162,7 @@ drop table PL_STORE
 
 drop table PL_OWNER
 
+drop table PL_BOARD
 
 
 -- 서버 물품 인덱스 시퀀스 드랍 --
@@ -206,4 +209,37 @@ select board_idx, board_title, board_date, board_read_count, board_content, boar
 		
 insert into PL_STORE values(100, '안녕', 'dongshin', '경기도', '01043636', '5555')		
 		
-delete
+
+select * from (select * from pl_board order by board_date desc) order by board_category desc
+
+select * from (select * from pl_board order by board_category desc) order by board_date desc
+
+select * from pl_board order by board_category, board_date desc
+
+
+(select * from pl_board where board_category=2 order by board_date desc)
+union
+(select * from pl_board where board_category=1 order by board_date desc)
+
+
+select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name
+		from (
+			select ceil(rownum/10) page, board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name
+			from (
+				select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name from pl_board where board_category=1 order by board_date desc
+			)
+		) where page = 1
+
+-- 공지사항 최신 3개와 나머지 일반 게시글  합쳐서 각각 날짜 순으로 조회 --
+select * from (select * from pl_board where board_category=2 order by board_date desc) where rownum between 1 and 3
+union all
+select * from (select * from pl_board where board_category=1 order by board_date desc)
+
+
+-- 공지게시글 최신 3개 글 가져오기 (최신 날짜 순) --
+select * from (select * from pl_board where board_category=2 order by board_date desc) where rownum between 1 and 3
+
+-- 일반게시글 모두 가져오기 (최신 날짜 순)
+select * from pl_board where board_category=1 order by board_date desc
+
+board_index_seq.nextval

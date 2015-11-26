@@ -160,27 +160,37 @@
 					</div>
 				</div>
 				<h2>게시판</h2>
-				<table width="500px" border="1">
-					<tr height="30" bgcolor="#C6DBDC">
-						<th align="center">글번호</th>
-						<th align="center">제목</th>
-						<th align="center">작성자</th>
-						<th align="center">작성일</th>
-						<th align="center">조회수</th>
+				<table width="500px" border="1" bordercolor="d8d8d8">
+					<tr height="30" bgcolor="#fe980f">
+						<th style="text-align: center">글번호</th>
+						<th style="text-align: center">분류</th>
+						<th style="text-align: center">제목</th>
+						<th style="text-align: center">작성자</th>
+						<th style="text-align: center">작성일</th>
+						<th style="text-align: center">조회수</th>
 					</tr>
+					<c:forEach items="${requestScope.notice }" var="board">
+						<tr height="30">
+							<td align="center"><font color="fe0000">${board.boardIndex }</font></td>
+							<td align="center"><font color="fe0000">${board.boardCategoryName }</font></td>
+							<td align="center"><a href="${initParam.rootPath }/owner/boardInfo.do?boardIndex=${board.boardIndex}" >${board.boardTitle} </a></td>
+							<td align="center"><font color="fe0000">${board.boardWriter }</font></td>
+							<td align="center"><font color="fe0000">${board.boardDate }</font></td>
+							<td align="center"><font color="fe0000">${board.boardReadCount}</font></td>
+						<tr>
+					</c:forEach>
 					<c:forEach items="${requestScope.list }" var="board">
 						<tr height="30">
 							<td align="center">${board.boardIndex }</td>
-							<td align="center"><a
-								href="${initParam.rootPath }/owner/boardInfo.do?boardIndex=${board.boardIndex}">
-									${board.boardTitle} </a></td>
+							<td align="center">${board.boardCategoryName }</td>
+							<td align="center"><a href="${initParam.rootPath }/owner/boardInfo.do?boardIndex=${board.boardIndex}">${board.boardTitle} </a></td>
 							<td align="center">${board.boardWriter }</td>
 							<td align="center">${board.boardDate }</td>
 							<td align="center">${board.boardReadCount}</td>
 						<tr>
 					</c:forEach>
 					<tr>
-						<td colspan="5" align="center">
+						<td colspan="6" align="center">
 							<c:choose>
 								<c:when test="${requestScope.pagingBean.previousPageGroup }">
 									<a href="${initParam.rootPath }/owner/boardList.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">

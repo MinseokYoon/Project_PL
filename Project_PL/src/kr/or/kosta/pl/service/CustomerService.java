@@ -46,4 +46,6 @@ public interface CustomerService {
 	List<Cart> findCartByCusotmerId(String customerId);
 	
 	void deleteCart(String customerId, int storeId, int itemId);
+
+	List<Board> getNotice();
 }
