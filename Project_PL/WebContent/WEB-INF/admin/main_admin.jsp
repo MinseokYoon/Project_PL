@@ -121,9 +121,31 @@
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath}/store/storeAndOwnerAdd.do">편의점등록</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemList.do">물품 관리</a></h4>
 								</div>
 							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/categoryAdd.do">카테고리 등록</a></h4>
+								</div>
+							</div>
+							
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/categoryList.do">카테고리 목록</a></h4>
+								</div>
+							</div>
+						 
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>

@@ -10,21 +10,22 @@ import org.springframework.stereotype.Repository;
 import common.util.PagingBean;
 import kr.or.kosta.pl.vo.Admin;
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Category;
 import kr.or.kosta.pl.vo.Product;
 
 //Admin테이블과 연동하는 DAO클래스
 
 @Repository
-public class AdminDAOImpl implements AdminDAO{
+public class AdminDAOImpl implements AdminDAO {
 
-	private SqlSessionTemplate session; //spring mybatis연동을 위한
-	
+	private SqlSessionTemplate session; // spring mybatis연동을 위한
+
 	@Autowired
-	public AdminDAOImpl(SqlSessionTemplate session){
+	public AdminDAOImpl(SqlSessionTemplate session) {
 		this.session = session;
 	}
-	
-	public AdminDAOImpl(){
+
+	public AdminDAOImpl() {
 	}
 
 	@Override
@@ -58,14 +59,14 @@ public class AdminDAOImpl implements AdminDAO{
 	}
 
 	@Override
-	public List<Admin> selectAdminsPaging(int pageNo){
+	public List<Admin> selectAdminsPaging(int pageNo) {
 		HashMap map = new HashMap();
 		map.put("contentsPerPage", PagingBean.CONTENTS_PER_PAGE);
 		map.put("pageNo", pageNo);
 		List<Admin> list = session.selectList("adminMapper.selectAdminsPaging", map);
 		return list;
 	}
-	
+
 	@Override
 	public List<Admin> selectAdminsByName(String adminName) {
 		// TODO Auto-generated method stub
@@ -78,10 +79,8 @@ public class AdminDAOImpl implements AdminDAO{
 		return session.selectOne("adminMapper.selectCountAdmins");
 	}
 
-	
-////////////////////////////물품관리///////////////////////////////////////////////////
+	//////////////////////////// 물품관리///////////////////////////////////////////////////
 
-	
 	@Override
 	public int insertProduct(Product product) {
 		// TODO Auto-generated method stub
@@ -113,7 +112,7 @@ public class AdminDAOImpl implements AdminDAO{
 	}
 
 	@Override
-	public List<Product> selectProductsPaging(int pageNo){
+	public List<Product> selectProductsPaging(int pageNo) {
 		HashMap map = new HashMap();
 		map.put("contentsPerPage", PagingBean.CONTENTS_PER_PAGE);
 		map.put("pageNo", pageNo);
@@ -122,10 +121,10 @@ public class AdminDAOImpl implements AdminDAO{
 	}
 
 	@Override
-	public Product selectProductsByItemName(String itemName) {
-		// TODO Auto-generated method stub
-		//return session.selectList("adminMapper.selectProductsByItemName", itemName);
-		return session.selectOne("adminMapper.selectProductsByItemName",itemName);
+	public List<Product> selectProductsByItemName(String itemName) {
+		HashMap map = new HashMap();
+		map.put("itemName", itemName);
+		return session.selectList("adminMapper.selectProductsByItemName", map);
 	}
 
 	@Override
@@ -133,12 +132,12 @@ public class AdminDAOImpl implements AdminDAO{
 		// TODO Auto-generated method stub
 		return session.selectOne("adminMapper.selectCountProducts");
 	}
-	
+
 	@Override
 	public List<Board> selectBoardsPaging(int pageNo) {
 		return session.selectList("adminMapper.selectBoardsPaging", pageNo);
 	}
-	
+
 	@Override
 	public int selectCountBoards() {
 		return session.selectOne("adminMapper.selectBoardCount");
@@ -148,6 +147,46 @@ public class AdminDAOImpl implements AdminDAO{
 	public Board selectBoardByIndex(int index) {
 		return session.selectOne("adminMapper.selectBoardInfo", index);
 	}
-	
-	
+
+	//////////////////////////// 카테고리관리///////////////////////////////////////////////////
+
+	@Override
+	public int insertCategory(Category category) {
+		// TODO Auto-generated method stub
+		return session.insert("adminMapper.insertCategory", category);
+	}
+
+	@Override
+	public int deleteCategoryById(int categoryId) {
+		// TODO Auto-generated method stub
+		return session.delete("adminMapper.deleteCategoryById", categoryId);
+	}
+
+	@Override
+	public Category selectCategoryById(int categoryId) {
+		// TODO Auto-generated method stub
+		return session.selectOne("adminMapper.selectCategoryById", categoryId);
+	}
+
+	@Override
+	public List<Category> selectCategorys() {
+		// TODO Auto-generated method stub
+		return session.selectList("adminMapper.selectCategorys");
+	}
+
+	@Override
+	public List<Category> selectCategorysPaging(int pageNo) {
+		HashMap map = new HashMap();
+		map.put("contentsPerPage", PagingBean.CONTENTS_PER_PAGE);
+		map.put("pageNo", pageNo);
+		List<Category> list = session.selectList("adminMapper.selectCategorysPaging", map);
+		return list;
+	}
+
+	@Override
+	public int selectCountCategorys() {
+		// TODO Auto-generated method stub
+		return session.selectOne("adminMapper.selectCountCategorys");
+	}
+
 }

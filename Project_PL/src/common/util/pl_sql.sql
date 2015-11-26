@@ -69,7 +69,7 @@ create table PL_SERVER_ITEM (
 	ITEM_EXPIRATION_DATE DATE NOT NULL,  
 	ITEM_COUNT NUMBER(3) NOT NULL,
 	constraint SERVER_ITEM_to_STORE_fk foreign key (STORE_ID) references PL_STORE (STORE_ID),
-	constraint SERVER_ITEM_to_ITEM_INFO_fk foreign key (ITEM_ID) references PL_ITEM_INFO (ITEM_ID)
+	constraint SERVER_ITEM_to_ITEM_INFO_fk foreign key (ITEM_ID) references PL_ITEM_INFO (ITEM_ID) on delete cascade
 )
 
 

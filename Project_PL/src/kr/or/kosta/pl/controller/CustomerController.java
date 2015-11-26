@@ -43,11 +43,9 @@ public class CustomerController {
 		List<Cart> cart = service.findCartByCusotmerId(customer.getCustomerId());
 		
 		model.addAttribute("cart", cart);
-		System.out.println(cart);
 		
 		return "/WEB-INF/customer/cart/cart_form.jsp";
 	}
-	
 	
 	
 	/*-----------------------------------회원 가입------------------------------------------------*/
@@ -194,6 +192,13 @@ public class CustomerController {
 		service.addCart(customerId, storeIdd, itemIdd, countItemm);
 		
 		return "/WEB-INF/customer/cart/cart_form.jsp";		//장바구니 페이지
+	}
+	@RequestMapping("/deleteCart")
+	public String deleteCart(@RequestParam String customerId, @RequestParam int storeId, @RequestParam int itemId){
+		
+		service.deleteCart(customerId, storeId, itemId);
+		
+		return "redirect:/customer/cartpage.do";
 	}
 	
 	

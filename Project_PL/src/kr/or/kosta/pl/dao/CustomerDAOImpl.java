@@ -150,7 +150,18 @@ public class CustomerDAOImpl implements CustomerDAO{
 		return session.selectList("customerMapper.selectCartByCustomerId", customerId);
 	}
 	
-	
+	//장바구니 내용 삭제
+		@Override
+		public int deleteCart(String customerId, int storeId, int itemId) {
+			
+			HashMap parameter = new HashMap();
+			
+			parameter.put("customerId", customerId);
+			parameter.put("storeId", storeId);
+			parameter.put("itemId", itemId);
+
+			return session.delete("customerMapper.deleteCart", parameter);
+		}
 
 
 

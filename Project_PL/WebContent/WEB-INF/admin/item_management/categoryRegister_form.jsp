@@ -1,3 +1,5 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -42,7 +44,7 @@
 				<div class="col-sm-14">
 					<div class="logo pull-left">
 						<a href="${initParam.rootPath }/basic/adminHome.do"><img
-							src="/Project_PL/images/home/pl_logo.png" alt="" /></a>
+							src="${initParam.rootPath }/images/pline.png" alt="" /></a>
 						&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.adminName }</b>님
 						환영합니다.
 					</div>
@@ -166,18 +168,22 @@
 								</h4>
 							</div>
 						</div>
-						<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a></h4>
-								</div>
-							</div>
 						
 						<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/categoryAdd.do">카테고리 등록</a></h4>
-								</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a>
+								</h4>
 							</div>
-							
+						</div>
+						
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a href="${initParam.rootPath }/admin/categoryAdd.do">카테고리등록</a>
+								</h4>
+							</div>
+						</div>
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h4 class="panel-title">
@@ -197,26 +203,31 @@
 					<!--/category-products-->
 				</div>
 			</div>
-			물품을 등록했습니다.<br> 등록한 정보는 다음과 같습니다.<br>
-			<table border="1" style="width: 300px">
-				<tr>
-					<th>물품 ID</th>
-					<td>${requestScope.product.itemId }</td>
-				</tr>
-				<tr>
-					<th>품명</th>
-					<td>${requestScope.product.itemName }</td>
-				</tr>
-				<tr>
-					<th>가격</th>
-					<td>${requestScope.product.itemPrice }</td>
-				</tr>
-				<tr>
-					<th>카테고리</th>
-					<td>${requestScope.product.categoryId }</td>
-				</tr>
-			</table>
-
+			<div id="layer"></div>
+			<h2>카테고리등록</h2>
+			<spring:hasBindErrors name="category" />
+			<form action="${initParam.rootPath}/admin/categoryAdd.do" method="post"
+				id="regForm">
+				<!-- 요청 처리할 Controller에 대한 구분값 -->
+				<table border="1" style="width: 500px">
+					<tr>
+						<th>카테고리 ID</th>
+						<td><input type="number" id="categoryId" name="categoryId" size="25">
+							<span class="errorMessage" id="idErrorMessage"><form:errors
+									path="category.categoryId" /></span></td>
+					</tr>
+					<tr>
+						<th>카테고리 명</th>
+						<td><input type="text" id="categoryName" name="categoryName"
+							size="25"> <span class="errorMessage"><form:errors
+									path="category.categoryName" /></span></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="submit" value="카테고리등록"> <input
+							type="reset" value="초기화"></td>
+					</tr>
+				</table>
+			</form>
 
 		</div>
 	</div>
@@ -337,6 +348,4 @@
 <script>
 	location.assign("/Project_PL/index.do");
 </script>
-<%
-	}
-%>
+<% } %>

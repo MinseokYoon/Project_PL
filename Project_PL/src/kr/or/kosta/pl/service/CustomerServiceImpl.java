@@ -178,6 +178,13 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 	
 	
+
+	@Override
+	public void deleteCart(String customerId, int storeId, int itemId) {
+
+		dao.deleteCart(customerId, storeId, itemId);
+	}
+	
 	
 	
 

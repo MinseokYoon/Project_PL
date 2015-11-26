@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -17,9 +18,11 @@ import kr.or.kosta.pl.exception.AdminNotFoundException;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.service.AdminService;
 import kr.or.kosta.pl.validate.AdminValidator;
+import kr.or.kosta.pl.validate.CategoryValidator;
 import kr.or.kosta.pl.validate.ProductValidator;
 import kr.or.kosta.pl.vo.Admin;
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Category;
 import kr.or.kosta.pl.vo.Product;
 
 @Controller
@@ -87,13 +90,13 @@ public class AdminController {
 
 	// 수정 처리
 	@RequestMapping("/modify")
-	public String modify(@ModelAttribute Admin admin, HttpSession session) throws AdminNotFoundException{
+	public String modify(@ModelAttribute Admin admin, HttpSession session) throws AdminNotFoundException {
 		service.updateAdmin(admin);
 		Admin newAdmin = service.findAdminById(admin.getAdminId());
 		session.setAttribute("sessionUser", newAdmin);
 		return "redirect:/admin/adminMypageForm.do";
 	}
-	
+
 	// 관리자 삭제 처리 HandlerattributeValue
 	@RequestMapping("remove.do")
 	public String remove(@RequestParam(defaultValue = "") String adminId,
@@ -127,16 +130,21 @@ public class AdminController {
 
 	// 품명으로 물품조회
 	@RequestMapping("/productsByItemName")
-	public String ProductsByItemName(@RequestParam String itemName, ModelMap model) {
-		Product product = service.findProductByItemName(itemName);
-		model.addAttribute("product", product);
-		return "test2/product_info.tiles";
-
+	public String ProductsByItemName(@RequestParam String searchValue, ModelMap model) {
 		/*
-		 * ArrayList<Product> list = new ArrayList<Product>();
-		 * list.addAll(service.findProductByItemName(itemName));
-		 * model.addAttribute(list); return "test2/product_info.tiles";
+		 * Product product = service.findProductByItemName(itemName);
+		 * model.addAttribute("product", product); return
+		 * "test2/product_info.tiles";
 		 */
+
+		String resultValue = "";
+		List<Product> product = null;
+
+		resultValue = searchValue;
+		product = service.findProductByItemName(resultValue);
+		model.addAttribute("product", product);
+		return "/WEB-INF/admin/item_management/itemSearch_result.jsp";
+
 	}
 
 	// 물품 List 조회
@@ -158,7 +166,7 @@ public class AdminController {
 	public String itemAdd(@ModelAttribute Product product, Errors errors, ModelMap model) throws DuplicatedIdException {
 		new ProductValidator().validate(product, errors);
 		if (errors.hasErrors()) {
-			return "test2/itemRegister_form.tiles";
+			return "/WEB-INF/admin/item_management/itemRegister_form.jsp";
 		}
 		service.addProduct(product);
 		model.addAttribute("itemId", product.getItemId());
@@ -170,7 +178,7 @@ public class AdminController {
 	public String itemRegisterSuccess(@RequestParam int itemId, ModelMap model) {
 
 		model.addAttribute("product", service.findProductByItemId(itemId));
-		return "test2/itemRegister_success.tiles";
+		return "/WEB-INF/admin/item_management/itemRegister_success.jsp";
 	}
 
 	// 물품 수정폼 조회
@@ -202,13 +210,13 @@ public class AdminController {
 		return "redirect:/admin/findByItemId.do";
 	}
 
-	// 관리자 삭제 처리 HandlerattributeValue
+	// 삭제 처리 HandlerattributeValue
 	@RequestMapping("/itemRemove.do")
 	public String itemRemove(@RequestParam(defaultValue = "") int itemId,
 			@RequestParam(defaultValue = "1") String pageNo, ModelMap model) throws Exception {
 		String item = Integer.toString(itemId);
 		if (item.trim().length() == 0) {
-			throw new Exception("삭제할 관리자의 아이디가 없습니다.");
+			throw new Exception("삭제할 물품의 아이디가 없습니다.");
 		}
 		// 비지니스 로직 - 삭제처리(removeCustomer())
 		service.removeProduct(itemId);
@@ -222,7 +230,6 @@ public class AdminController {
 		Product pro = service.findProductByItemId(itemId);
 		return String.valueOf(pro != null); // 중복인 경우 "true" 리턴
 	}
-	
 
 	@RequestMapping("/adminMypageForm")
 	public String ownerMypageForm() {
@@ -246,9 +253,77 @@ public class AdminController {
 		Board board = service.getBoardInfo(index);
 
 		System.out.println("--asdfasdf");
-		
+
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_admin.jsp";
 	}
-	//2차커밋
+	// 2차커밋
+
+	//////////////////////////// 카테고리//////////////////////////// 
+	// 카테고리 등록
+	@RequestMapping("/categoryAdd")
+	public String categoryAdd(@ModelAttribute Category category, Errors errors, ModelMap model)
+			throws DuplicatedIdException {
+
+		new CategoryValidator().validate(category, errors);
+		if (errors.hasErrors()) {
+			return "/WEB-INF/admin/item_management/categoryRegister_form.jsp";
+		}
+
+		service.addCategory(category);
+		model.addAttribute("categoryId", category.getCategoryId());
+		return "redirect:/admin/categoryRegisterSuccess.do";
+
+	}
+
+	// 카테고리 등록 후 성공페이지로 이동 처리.
+	@RequestMapping("/categoryRegisterSuccess")
+	public String categoryRegisterSuccess(@RequestParam int categoryId, ModelMap model) {
+
+		model.addAttribute("category", service.findCategoryById(categoryId));
+		return "/WEB-INF/admin/item_management/categoryRegister_success.jsp";
+	}
+
+	// ID로 카테고리 조회
+	@RequestMapping("/findByCategoryId")
+	public String findByCategoryId(@RequestParam int categoryId, ModelMap model) {
+		Category category = service.findCategoryById(categoryId);
+		model.addAttribute("category", category);
+		return "/WEB-INF/admin/item_management/category_info.jsp";
+	}
+
+	// 삭제 처리 HandlerattributeValue
+	@RequestMapping("/categoryRemove.do")
+	public String categoryRemove(@RequestParam(defaultValue = "") int categoryId,
+			@RequestParam(defaultValue = "1") String pageNo, ModelMap model) throws Exception {
+		String category = Integer.toString(categoryId);
+		if (category.trim().length() == 0) {
+			throw new Exception("삭제할 카테고리의 아이디가 없습니다.");
+		}
+		// 비지니스 로직 - 삭제처리()
+		service.removeCategory(categoryId);
+		model.addAttribute("pageNo", pageNo);
+		return "redirect:/admin/categoryList.do";
+	}
+
+	// 카테고리 List 조회
+	@RequestMapping("/categoryList")
+	public String categoryList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
+		int page = 1;
+		try {
+			page = Integer.parseInt(pageNo); // null일 경우 예외처리를 통해 page를 1로
+			// 처리한다..
+		} catch (NumberFormatException e) {
+		}
+		Map attributes = service.getAllCategorysPaging(page);
+		model.addAllAttributes(attributes);
+		return "/WEB-INF/admin/item_management/categoryList.jsp";
+	}
+
+	@RequestMapping("/idDuplicatedCheck3")
+	@ResponseBody
+	public String idDuplicatedCheck3(@RequestParam int categoryId) {
+		Category cate = service.findCategoryById(categoryId);
+		return String.valueOf(cate != null); // 중복인 경우 "true" 리턴
+	}
 }

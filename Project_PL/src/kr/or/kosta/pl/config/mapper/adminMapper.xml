@@ -17,6 +17,11 @@
 		<result property="categoryName" column="category_name"/>
 	</resultMap>
 
+	<resultMap type="category" id="category-resultmap">
+		<id property="categoryId" column="category_id" />
+		<result property="categoryName" column="category_name" />
+	</resultMap>
+	
 	<resultMap type="board" id="board-resultMap">
 		<id property="boardIndex" column="board_idx"/>
 		<result property="boardTitle" column="board_title"/>
@@ -140,7 +145,7 @@
 	<select id="selectProductsByItemName" parameterType="string"
 		resultMap="product-resultmap">
 		<include refid="itemSelect-sql" />
-		where item_name=#{itemName}
+		where item_name like '%'||#{itemName}||'%'
 	</select>
 
 	<select id="selectProducts" parameterType="string"
@@ -185,6 +190,66 @@
 	
 	<select id="selectBoardInfo" parameterType="_int" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board where board_idx=#{index}
+	</select>
+
+
+<!-- ///////////////////////////////////////////////카테고리/////////////////////////////////////////// -->
+	<sql id="categorySelect-column-sql">
+		category_id,category_name
+	</sql>
+
+	<sql id="categorySelect-sql">
+		select
+		<include refid="categorySelect-column-sql" />
+		from PL_CATEGORY
+	</sql>
+
+
+
+	<insert id="insertCategory" parameterType="category">
+		insert into PL_CATEGORY (
+		<include refid="categorySelect-column-sql" />
+		)
+		values (#{categoryId},#{categoryName,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="selectCategoryById" parameterType="int" resultMap="category-resultmap">
+		<include refid="categorySelect-sql"/>
+		where category_id=#{categoryId}
+	</select>
+	
+	<delete id="deleteCategoryById" parameterType="int">
+		delete from
+		PL_CATEGORY where category_id=#{categoryId}
+	</delete>
+	
+	
+	
+	
+	<select id="selectCategorys" parameterType="string"
+		resultMap="category-resultmap">
+		<include refid="categorySelect-sql" />
+		order by category_id asc
+	</select>
+
+	<select id="selectCountCategorys" resultType="_int">
+		select
+		count(category_id) from pl_category
+	</select>
+
+	<!-- paging -->
+	<select id="selectCategorysPaging" parameterType="hashmap"
+		resultMap="category-resultmap">
+		select
+		<include refid="categorySelect-column-sql" />
+		from (select
+		<include refid="categorySelect-column-sql" />
+		, ceil(rownum/#{contentsPerPage}) page
+		from(select
+		<include refid="categorySelect-column-sql" />
+		from pl_category
+		order by category_id))
+		where page = #{pageNo}
 	</select>
 </mapper>
 

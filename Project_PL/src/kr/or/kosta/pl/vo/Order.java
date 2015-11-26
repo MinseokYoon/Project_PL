@@ -16,7 +16,9 @@ public class Order implements Serializable{
 	private int itemPrice;
 	private int categoryId;
 	private String categoryName;
-	private int totalPrice;
+	private String storeName;
+	private String customerName;
+	private String customerPhone;
 	
 	public Order() {}
 
@@ -33,9 +35,10 @@ public class Order implements Serializable{
 		this.orderStatus = orderStatus;
 	}
 
-	//아이템 정보와 카테고리까지 모두 담은 생성자
+	//아이템 정보와 카테고리, 상점이름, 고객이름&전번까지 모두 담은 생성자
 	public Order(int orderNumber, String customerId, int storeId, int itemId, int orderCount, Date orderDate,
-			int orderStatus, String itemName, int itemPrice, int categoryId, String categoryName, int totalPrice) {
+			int orderStatus, String itemName, int itemPrice, int categoryId, String categoryName, String storeName,
+			String customerName, String customerPhone) {
 		super();
 		this.orderNumber = orderNumber;
 		this.customerId = customerId;
@@ -48,7 +51,9 @@ public class Order implements Serializable{
 		this.itemPrice = itemPrice;
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
-		this.totalPrice = totalPrice;
+		this.storeName = storeName;
+		this.customerName = customerName;
+		this.customerPhone = customerPhone;
 	}
 
 	public int getOrderNumber() {
@@ -139,12 +144,28 @@ public class Order implements Serializable{
 		this.categoryName = categoryName;
 	}
 
-	public int getTotalPrice() {
-		return totalPrice;
+	public String getStoreName() {
+		return storeName;
 	}
 
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getCustomerPhone() {
+		return customerPhone;
+	}
+
+	public void setCustomerPhone(String customerPhone) {
+		this.customerPhone = customerPhone;
 	}
 
 	@Override
@@ -154,6 +175,8 @@ public class Order implements Serializable{
 		result = prime * result + categoryId;
 		result = prime * result + ((categoryName == null) ? 0 : categoryName.hashCode());
 		result = prime * result + ((customerId == null) ? 0 : customerId.hashCode());
+		result = prime * result + ((customerName == null) ? 0 : customerName.hashCode());
+		result = prime * result + ((customerPhone == null) ? 0 : customerPhone.hashCode());
 		result = prime * result + itemId;
 		result = prime * result + ((itemName == null) ? 0 : itemName.hashCode());
 		result = prime * result + itemPrice;
@@ -162,7 +185,7 @@ public class Order implements Serializable{
 		result = prime * result + orderNumber;
 		result = prime * result + orderStatus;
 		result = prime * result + storeId;
-		result = prime * result + totalPrice;
+		result = prime * result + ((storeName == null) ? 0 : storeName.hashCode());
 		return result;
 	}
 
@@ -187,6 +210,16 @@ public class Order implements Serializable{
 				return false;
 		} else if (!customerId.equals(other.customerId))
 			return false;
+		if (customerName == null) {
+			if (other.customerName != null)
+				return false;
+		} else if (!customerName.equals(other.customerName))
+			return false;
+		if (customerPhone == null) {
+			if (other.customerPhone != null)
+				return false;
+		} else if (!customerPhone.equals(other.customerPhone))
+			return false;
 		if (itemId != other.itemId)
 			return false;
 		if (itemName == null) {
@@ -209,7 +242,10 @@ public class Order implements Serializable{
 			return false;
 		if (storeId != other.storeId)
 			return false;
-		if (totalPrice != other.totalPrice)
+		if (storeName == null) {
+			if (other.storeName != null)
+				return false;
+		} else if (!storeName.equals(other.storeName))
 			return false;
 		return true;
 	}
@@ -219,10 +255,10 @@ public class Order implements Serializable{
 		return "Order [orderNumber=" + orderNumber + ", customerId=" + customerId + ", storeId=" + storeId + ", itemId="
 				+ itemId + ", orderCount=" + orderCount + ", orderDate=" + orderDate + ", orderStatus=" + orderStatus
 				+ ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", categoryId=" + categoryId
-				+ ", categoryName=" + categoryName + ", totalPrice=" + totalPrice + "]";
+				+ ", categoryName=" + categoryName + ", storeName=" + storeName + ", customerName=" + customerName
+				+ ", customerPhone=" + customerPhone + "]";
 	}
-	
-	
+
 	
 	
 

@@ -13,6 +13,7 @@ import kr.or.kosta.pl.exception.AdminNotFoundException;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.vo.Admin;
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Category;
 import kr.or.kosta.pl.vo.Product;
 
 @Service("adminService")
@@ -86,7 +87,7 @@ public class AdminServiceImpl implements AdminService {
 		dao.updateAdmin(newAd);
 	}
 
-//////////////////////////// 물품관리///////////////////////////////////////////////////
+	//////////////////////////// 물품관리///////////////////////////////////////////////////
 	@Override
 	public void addProduct(Product product) throws DuplicatedIdException {
 		Product pro = dao.selectProductByItemId(product.getItemId());
@@ -120,7 +121,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Product findProductByItemName(String itemName) {
+	public List<Product> findProductByItemName(String itemName) {
 		// TODO Auto-generated method stub
 		return dao.selectProductsByItemName(itemName);
 	}
@@ -145,27 +146,67 @@ public class AdminServiceImpl implements AdminService {
 		dao.updateProduct(newPro);
 
 	}
-	
+
 	@Override
 	public Map getAllBoard(int pageNo) {
 		HashMap map = new HashMap();
 		List<Board> list = dao.selectBoardsPaging(pageNo);
 		PagingBean pagingBean = new PagingBean(dao.selectCountBoards(), pageNo);
-		
+
 		map.put("list", list);
 		map.put("pagingBean", pagingBean);
 
 		return map;
 	}
-	
+
 	@Override
 	public Board getBoardInfo(int index) {
 		Board board = dao.selectBoardByIndex(index);
 		return board;
 	}
-	
-	
-	
-	
-	
+
+	//////////////////////////// 케테고리관리///////////////////////////////////////////////////
+
+	@Override
+	public void addCategory(Category category) throws DuplicatedIdException {
+		Category cate = dao.selectCategoryById(category.getCategoryId());
+		if (cate != null) {
+			throw new DuplicatedIdException(category.getCategoryId() + "는 이미 등록된 ID입니다");
+		}
+		// insert
+		dao.insertCategory(category);
+
+	}
+
+	@Override
+	public void removeCategory(int categoryId) throws AdminNotFoundException {
+		Category cate = dao.selectCategoryById(categoryId);
+		if (cate == null) {
+			throw new AdminNotFoundException(categoryId + "는 없는 ID이므로 삭제할 수 없습니다.");
+		}
+		dao.deleteCategoryById(categoryId);
+
+	}
+
+	@Override
+	public Category findCategoryById(int categoryId) {
+		// TODO Auto-generated method stub
+		return dao.selectCategoryById(categoryId);
+	}
+
+	@Override
+	public List<Category> getAllCategorys() {
+		// TODO Auto-generated method stub
+		return dao.selectCategorys();
+	}
+
+	@Override
+	public Map getAllCategorysPaging(int pageNo) {
+		HashMap map = new HashMap();
+		map.put("list", dao.selectCategorysPaging(pageNo));
+		PagingBean pagingBean = new PagingBean(dao.selectCountCategorys(), pageNo);
+		map.put("pagingBean", pagingBean);
+		return map;
+	}
+
 }

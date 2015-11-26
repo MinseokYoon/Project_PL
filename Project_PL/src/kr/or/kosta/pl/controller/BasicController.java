@@ -52,7 +52,7 @@ public class BasicController {
 	}
 	
 	@RequestMapping("/login_ctr")
-	public String login_check(@RequestParam String id, @RequestParam String password, HttpSession session){
+	public String login_check(@RequestParam String id, @RequestParam String password, ModelMap model, HttpSession session){
 		
 		Customer customer = customerService.findCustomerById(id);
 		Owner owner = ownerService.findOwnerById(id);
@@ -74,6 +74,9 @@ public class BasicController {
 				return "/WEB-INF/admin/main_admin.jsp";
 			}
 		}
+		
+		//아이디,패스워드 일치하지 않았을 경우!
+	     model.addAttribute("errorMessage","Id와 Password가 일치하지 않습니다.");
 		return "/WEB-INF/login/login.jsp";
 	}
 	

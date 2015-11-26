@@ -22,6 +22,23 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
+<script type="text/javascript">
+	function loginCheck(){
+		var id = document.getElementById("id").value;
+		var password = document.getElementById("password").value;
+		
+		if(id == ""){
+			alert("id를 입력하세요.");
+			return false;
+		}
+		
+		if(password == ""){
+			alert("password를 입력하세요.");
+			return false;
+		}
+	}
+
+</script>
 <body>
  <header id="header"><!--header-->		
 		<div class="header-middle"><!--header-middle-->
@@ -107,11 +124,12 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-1">
-					<div class="login-form"><!--login form-->
+					<div class="login-form"><!--login form-->						
 						<h2>1분 1초가 아쉬운 당신 로그인하세요</h2>
-						<form action="${initParam.rootPath }/basic/login_ctr.do" method="post">
-							<input type="text" name="id" placeholder="ID" />
-							<input type="password" name="password" placeholder="PASSWORD" />
+						<h2 style="color: red" >${requestScope.errorMessage }</h2>
+						<form action="${initParam.rootPath }/basic/login_ctr.do" method="post" onsubmit="return loginCheck();">
+							<input type="text" name="id" placeholder="ID" id="id" />
+							<input type="password" name="password" placeholder="PASSWORD" id="password" />
 							<button type="submit" class="btn btn-default">로그인</button>
 						</form>
 					</div><!--/login form-->

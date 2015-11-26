@@ -37,4 +37,8 @@ public interface CustomerDAO {
 	Store selectStoreById(int storeId);
 	
 	List<Cart> selectCartByCustomerId(String customerId);
+	
+	int deleteCart(String customerId, int storeId, int itemId);
+	
+	
 }

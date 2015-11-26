@@ -1,9 +1,8 @@
 package kr.or.kosta.pl.vo;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Cart implements Serializable {
+public class Cart {
 	
 	private int cartNumber;
 	private String customerId;
@@ -15,7 +14,9 @@ public class Cart implements Serializable {
 	private int itemPrice;
 	private int categoryId;
 	private String categoryName;
-	private int totalPrice;
+	private String storeName;
+	
+	private int totalPrice;		//mapper에서는 못받는 자체 vo값
 	
 	
 	public Cart(){}
@@ -33,7 +34,7 @@ public class Cart implements Serializable {
 
 	//장바구니+아이템정보+카테고리 정보
 	public Cart(int cartNumber, String customerId, int storeId, int itemId, int cartCount, Date cartDate,
-			String itemName, int itemPrice, int categoryId, String categoryName) {
+			String itemName, int itemPrice, int categoryId, String categoryName, String storeName) {
 		super();
 		this.cartNumber = cartNumber;
 		this.customerId = customerId;
@@ -45,7 +46,8 @@ public class Cart implements Serializable {
 		this.itemPrice = itemPrice;
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
-		this.totalPrice= cartCount*itemPrice;
+		this.storeName = storeName;
+		this.totalPrice = cartCount*itemPrice;
 	}
 
 	public int getCartNumber() {
@@ -96,7 +98,6 @@ public class Cart implements Serializable {
 		this.cartDate = cartDate;
 	}
 
-	
 	public String getItemName() {
 		return itemName;
 	}
@@ -129,20 +130,20 @@ public class Cart implements Serializable {
 		this.categoryName = categoryName;
 	}
 
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
 	public int getTotalPrice() {
 		return totalPrice;
 	}
 
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-
-	@Override
-	public String toString() {
-		return "Cart [cartNumber=" + cartNumber + ", customerId=" + customerId + ", storeId=" + storeId + ", itemId="
-				+ itemId + ", cartCount=" + cartCount + ", cartDate=" + cartDate + ", itemName=" + itemName
-				+ ", itemPrice=" + itemPrice + ", categoryId=" + categoryId + ", categoryName=" + categoryName
-				+ ", totalPrice=" + totalPrice + "]";
 	}
 
 	@Override
@@ -159,6 +160,7 @@ public class Cart implements Serializable {
 		result = prime * result + ((itemName == null) ? 0 : itemName.hashCode());
 		result = prime * result + itemPrice;
 		result = prime * result + storeId;
+		result = prime * result + ((storeName == null) ? 0 : storeName.hashCode());
 		result = prime * result + totalPrice;
 		return result;
 	}
@@ -204,10 +206,25 @@ public class Cart implements Serializable {
 			return false;
 		if (storeId != other.storeId)
 			return false;
+		if (storeName == null) {
+			if (other.storeName != null)
+				return false;
+		} else if (!storeName.equals(other.storeName))
+			return false;
 		if (totalPrice != other.totalPrice)
 			return false;
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Cart [cartNumber=" + cartNumber + ", customerId=" + customerId + ", storeId=" + storeId + ", itemId="
+				+ itemId + ", cartCount=" + cartCount + ", cartDate=" + cartDate + ", itemName=" + itemName
+				+ ", itemPrice=" + itemPrice + ", categoryId=" + categoryId + ", categoryName=" + categoryName
+				+ ", storeName=" + storeName + ", totalPrice=" + totalPrice + "]";
+	}
+
+	
+	
 
 }

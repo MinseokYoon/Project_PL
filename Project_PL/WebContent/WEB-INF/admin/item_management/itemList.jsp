@@ -126,6 +126,16 @@
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/categoryAdd.do">카테고리 등록</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>
 								</div>
 							</div>
@@ -211,6 +221,14 @@
 							</table>
 						</c:otherwise>
 					</c:choose>	
+					<!-- 물품 검색하는 곳 -->
+				<div class="search_box pull-right">
+					<form name="productSearch" action="${initParam.rootPath }/admin/productsByItemName.do" method="post" onsubmit="return productSearchCheck();">
+						<input type="text" name="searchValue" placeholder="Search" /> 
+					 <!-- 	<input type="submit" value="검색"> -->
+					</form>
+				</div>
+					
 				</div>
 			</div>
 		</div>

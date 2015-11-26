@@ -134,6 +134,16 @@ $(document).ready(function(){
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/categoryAdd.do">카테고리 등록</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>
 								</div>
 							</div>

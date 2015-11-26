@@ -45,6 +45,26 @@
 			<arg column="item_price" javaType="_int"/>
 			<arg column="category_id" javaType="_int"/>
 			<arg column="category_name" javaType="string"/>
+			<arg column="store_name" javaType="string"/>
+		</constructor>
+	</resultMap>
+	
+	<resultMap type="Order" id="orderlist-resultmap">
+		<constructor>
+			<idArg column="order_number" javaType="_int"/>
+			<arg column="customer_id" javaType="string"/>
+			<arg column="store_id" javaType="_int"/>
+			<arg column="item_id" javaType="_int"/>
+			<arg column="order_count" javaType="_int"/>
+			<arg column="order_date" javaType="Date"/>
+			<arg column="order_status" javaType="int"/>
+			<arg column="item_name" javaType="string"/>
+			<arg column="item_price" javaType="_int"/>
+			<arg column="category_id" javaType="_int"/>
+			<arg column="category_name" javaType="string"/>
+			<arg column="store_name" javaType="string"/>
+			<arg column="custome_name" javaType="string"/>
+			<arg column="customer_phone" javaType="string"/>
 		</constructor>
 	</resultMap>
 	
@@ -138,14 +158,36 @@
 		values (cart_index_seq.nextval, #{customerId}, #{storeId}, #{itemId}, #{countItem}, sysdate)
 	</insert>
 	
+	<!-- 장바구니 삭제 -->
+	<delete id="deleteCart" parameterType="map">
+		delete from pl_cart 
+		where customer_id = #{customerId} and store_id = #{storeId} and item_id = #{itemId}
+	
+	</delete>
+	
 	<!-- 장바구니 조회 -->
 	<select id="selectCartByCustomerId" parameterType="string" resultMap="cartlist-resultmap">
 		select c.cart_number, c.customer_id, c.store_id, c.item_id, c.cart_count, c.cart_date, 
-				i.item_name, i.item_price, i.category_id, t.category_name 
-		from pl_cart c, pl_item_info i, pl_category t 
-		where c.item_id = i.item_id and i.category_id = t.category_id and c.customer_id=#{value}
+				i.item_name, i.item_price, i.category_id, t.category_name, 
+				s.store_name 
+		from pl_cart c, pl_item_info i, pl_category t, pl_store s   
+		where c.item_id = i.item_id and i.category_id = t.category_id and c.store_id = s.store_id 
+				and c.customer_id=#{value}
 	</select>
-
+	
+	<!-- ***************************주문 정보******************************************** -->
+	<select id="selectOrderByCustomerId" parameterType="string" resultMap="cartlist-resultmap">
+		select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status, 
+				i.item_name, i.item_price, i.category_id, t.category_name, 
+				s.store_name, r.customer_name, r.customer_phone 
+		from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
+		where o.item_id = i.item_id and i.category_id = t.category_id and o.store_id = s.store_id and o.customer_id = r.customer_id 
+				and o.customer_id=#{value}
+	</select>
+	
+	
+	<!-- ***************************계시판******************************************** -->
+	<!-- 계시판 페이지 -->
 	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer
 		from (
@@ -155,7 +197,7 @@
 			)
 		) where page = #{pageNo}
 	</select>
-	
+	<!-- 계시판 조회 -->
 	<select id="selectBoardCount" resultType="_int">
 		select count(board_idx) from pl_board
 	</select>

@@ -24,4 +24,7 @@ public class OwnerValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "ownerName", "requried", new Object[]{"점장 이름"}, "필수입력사항입니다.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "ownerPhone", "requried", new Object[]{"휴대폰 번호"}, "필수입력사항입니다.");
 	}
+	
+	
+
 }

@@ -44,4 +44,6 @@ public interface CustomerService {
 	Store findStoreById(int storeId);
 	
 	List<Cart> findCartByCusotmerId(String customerId);
+	
+	void deleteCart(String customerId, int storeId, int itemId);
 }

@@ -1,3 +1,4 @@
+<%@page import="kr.or.kosta.pl.vo.Cart"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -108,45 +109,57 @@
 				  <li class="active">Shopping Cart</li>
 				</ol>
 			</div>
+			<div class="heading">
+				<h3><b>주문 전 확인해 주세요.</b></h3>
+				<p>고객님께서 주문하신 편의점, 물품, 주문 금액 정보입니다. 다시한번 확인 해 주세요.</p>
+			</div>
+			<form action="${initParam.rootPath}/customer/order.do">
 			<div class="table-responsive cart_info">
 				<table class="table table-condensed">
 					<thead>
 						<tr class="cart_menu">
-							<td class="image">Item</td>
+							<td class="image">상품</td>
 							<td class="description"></td>
-							<td class="price">Price</td>
-							<td class="quantity">Quantity</td>
-							<td class="total">Total</td>
+							<td class="price">주문 편의점</td>
+							<td class="price">가격</td>
+							<td class="quantity">수량</td>
+							<td class="total">총 가격</td>
 							<td></td>
 						</tr>
 					</thead>
 					<tbody>
+					<%int sum=0; %>
 					<c:forEach items="${requestScope.cart }" var="cart">
 						<tr>
 							<td class="cart_product">
 								<a href=""><img src="${initParam.rootPath}/images/${cart.categoryId }/${cart.itemName }.png" alt=""></a>
 							</td>
 							<td class="cart_description">
-								<h4><a href="">${cart.itemName }</a></h4>
+								<h4>${cart.itemName }</h4>
 								<p>분류: ${cart.categoryName }</p>
 							</td>
 							<td class="cart_price">
-								<p>${cart.itemPrice }</p>
+								<p>${cart.storeName }</p>
+							</td>
+							<td class="cart_price">
+								<p>${cart.itemPrice }원</p>   
 							</td>
 							<td class="cart_quantity">
 								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
+		
 									<input class="cart_quantity_input" type="text" name="quantity" value="${cart.cartCount }" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
+									<div>&nbsp개</div>
+									
 								</div>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">${cart.totalPrice }</p>
+								<p class="cart_total_price">${cart.totalPrice }원</p>
 							</td>
 							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+								<a class="cart_quantity_delete" href="${initParam.rootPath}/customer/deleteCart.do?customerId=${cart.customerId}&storeId=${cart.storeId}&itemId=${cart.itemId}"><i class="fa fa-times"></i></a>
 							</td>
 						</tr>
+						<%sum = sum +(int)((Cart)pageContext.getAttribute("cart")).getTotalPrice(); %>
 					</c:forEach>
 						
 					</tbody>
@@ -154,84 +167,19 @@
 			</div>
 		</div>
 	</section> <!--/#cart_items-->
+	
+
 
 	<section id="do_action">
 		<div class="container">
 			<div class="heading">
-				<h3>What would you like to do next?</h3>
-				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
-			</div>
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="chose_area">
-						<ul class="user_option">
-							<li>
-								<input type="checkbox">
-								<label>Use Coupon Code</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Use Gift Voucher</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Estimate Shipping & Taxes</label>
-							</li>
-						</ul>
-						<ul class="user_info">
-							<li class="single_field">
-								<label>Country:</label>
-								<select>
-									<option>United States</option>
-									<option>Bangladesh</option>
-									<option>UK</option>
-									<option>India</option>
-									<option>Pakistan</option>
-									<option>Ucrane</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-								
-							</li>
-							<li class="single_field">
-								<label>Region / State:</label>
-								<select>
-									<option>Select</option>
-									<option>Dhaka</option>
-									<option>London</option>
-									<option>Dillih</option>
-									<option>Lahore</option>
-									<option>Alaska</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-							
-							</li>
-							<li class="single_field zip-field">
-								<label>Zip Code:</label>
-								<input type="text">
-							</li>
-						</ul>
-						<a class="btn btn-default update" href="">Get Quotes</a>
-						<a class="btn btn-default check_out" href="">Continue</a>
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<div class="total_area">
-						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
-							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
-						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
-					</div>
-				</div>
+				<h3><b>주문 총금액: <%=sum  %>원</b></h3>
+				주문하시겠습니까?&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<input type="submit" value="주문하기">
 			</div>
 		</div>
 	</section><!--/#do_action-->
-
+	</form>
 	<footer id="footer"><!--Footer-->
 		<div class="footer-top">
 			<div class="container">
