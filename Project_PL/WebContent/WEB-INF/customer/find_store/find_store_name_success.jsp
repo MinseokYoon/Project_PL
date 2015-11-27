@@ -46,8 +46,7 @@
 						<ul class="nav navbar-nav">
 							<li><a href="">${sessionScope.hello }님반갑습니다.<i
 									class="fa fa-user"></i>
-									<li><a href="login.html"><i class="fa fa-user"></i>
-											마이페이지</a></li>
+									<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
 									<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 									<li><a href="${initParam.rootPath }/basic/index.do"><i
 											class="fa fa-lock"></i> 로그아웃</a></li>

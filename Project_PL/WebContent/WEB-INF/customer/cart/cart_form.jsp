@@ -29,11 +29,18 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
-
+<script type="text/javascript">
+   function order() {
+      var cart = confirm("주문 하시겠습니까?");
+         if(cart){
+            return true;
+         }else{
+            return false;
+         }
+   }
+</script>
 <body>
 	<header id="header"><!--header-->
-		
-		
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
@@ -46,7 +53,7 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath}/login.html"><i class="fa fa-user"></i> 마이페이지</a></li>
+							<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
 								<li><a href="${initParam.rootPath}/customer/cartpage.do"><i class="fa fa-shopping-cart"></i> 장바구니</a></li>
 								<li><a href="${initParam.rootPath}/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
@@ -55,10 +62,7 @@
 				</div>
 			</div>
 		</div><!--/header-middle-->
-	
-		
 	</header><!--/header-->
-
 			<c:choose>
 				<c:when test="${empty requestScope.cart}">
 				
@@ -75,7 +79,6 @@
 								<p>이용해 주셔서 감사합니다. 즐거운 쇼핑 되시기 바랍니다.</p>
 								<h5><b>&nbsp</b></h5>
 							</div>
-							
 							<div class="table-responsive cart_info">
 								<table class="table table-condensed">
 									<thead>
@@ -141,7 +144,7 @@
 				</c:when>
 
 				<c:otherwise>
-				<form action="${initParam.rootPath}/customer/order.do">
+				<form action="${initParam.rootPath}/customer/order.do" onsubmit="return order();">
 					<section id="cart_items">
 						<div class="container">
 							<div class="breadcrumbs">

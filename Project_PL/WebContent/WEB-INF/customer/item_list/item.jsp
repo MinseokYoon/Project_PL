@@ -26,6 +26,16 @@
 	<link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <!--/head-->
+<script type="text/javascript">
+   function cart() {
+      var cart = confirm("장바구니에 담으시겠습니까?");
+         if(cart){
+            return true;
+         }else{
+            return false;
+         }
+   }
+</script>
 <body>
 	<header id="header">
 		<!--header-->
@@ -44,7 +54,7 @@
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="login.html"><i class="fa fa-user"></i>마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
@@ -184,7 +194,7 @@
 						</div>
 						<div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
-							<form action="${initParam.rootPath }/customer/cart.do">
+							<form action="${initParam.rootPath }/customer/cart.do" onsubmit="return cart();">
 								<input type="hidden" name=itemId value="${requestScope.item.itemId }">
 								<img src="/Project_PL/images/product-details/new.jpg" class="newarrival" alt="" />
 								<h2>${requestScope.item.itemName}</h2>

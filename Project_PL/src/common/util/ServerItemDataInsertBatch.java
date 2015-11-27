@@ -14,7 +14,7 @@ public class ServerItemDataInsertBatch {
 //		PreparedStatement pstmt = conn.prepareStatement("");
 //		pstmt.executeUpdate();
 //		pstmt.close();
-		PreparedStatement pstmt = conn.prepareStatement("insert into pl_server_item values(?,?,?,?,?)");
+		PreparedStatement pstmt = conn.prepareStatement("insert into pl_server_item values(server_item_index_seq.nextval,?,?,?,?)");
 		for (int i = 1; i <= 600; i++) {
 			/*String id = null;
 			
@@ -29,25 +29,25 @@ public class ServerItemDataInsertBatch {
 			pstmt.setInt(1, i);
 			
 			if(i<=120){
-				pstmt.setInt(2, 100);
+				pstmt.setInt(1, 100);
 				int itemId1=i;
-				pstmt.setInt(3, itemId1);
+				pstmt.setInt(2, itemId1);
 			}else if(i<=240){
-				pstmt.setInt(2, 101);
+				pstmt.setInt(1, 101);
 				int itemId2=i;
-				pstmt.setInt(3, itemId2-120);
+				pstmt.setInt(2, itemId2-120);
 			}else if(i<=360){
-				pstmt.setInt(2, 102);
+				pstmt.setInt(1, 102);
 				int itemId3=i;
-				pstmt.setInt(3, itemId3-240);
+				pstmt.setInt(2, itemId3-240);
 			}else if(i<=480){
-				pstmt.setInt(2, 103);
+				pstmt.setInt(1, 103);
 				int itemId4=i;
-				pstmt.setInt(3, itemId4-360);
+				pstmt.setInt(2, itemId4-360);
 			}else if(i<=600){
-				pstmt.setInt(2, 104);
+				pstmt.setInt(1, 104);
 				int itemId5=i;
-				pstmt.setInt(3, itemId5-480);
+				pstmt.setInt(2, itemId5-480);
 			}
 			
 			
@@ -56,11 +56,11 @@ public class ServerItemDataInsertBatch {
 			int ranDay = (int)(Math.random()*30);
 			
 			Date d = new Date(2015-1900+ranYear+1,12-1+ranMonth,25+ranDay);
-			pstmt.setDate(4,d);
+			pstmt.setDate(3,d);
 			
 			
 			int ranItemCount = (int) (Math.random() * 50);
-			pstmt.setInt(5, ranItemCount);
+			pstmt.setInt(4, ranItemCount);
 			
 			pstmt.addBatch();
 			// pstmt.clearParameters();//생략해도 될 듯.

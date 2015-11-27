@@ -53,11 +53,11 @@ create table PL_CATEGORY (
 
 -- 물품 정보 PL_ITEM_INFO 테이블 --
 create table PL_ITEM_INFO (
-	ITEM_ID NUMBER(4) primary key,
+	ITEM_ID NUMBER(8) primary key,
 	ITEM_NAME VARCHAR2(90)  NOT NULL,
 	ITEM_PRICE NUMBER(5) NOT NULL,
 	CATEGORY_ID NUMBER(2),
-	constraint ITEM_to_CATEGORY_fk foreign key (CATEGORY_ID) references PL_CATEGORY (CATEGORY_ID)
+	constraint ITEM_to_CATEGORY_fk foreign key (CATEGORY_ID) references PL_CATEGORY (CATEGORY_ID) on delete cascade
 )
 
 
@@ -75,7 +75,7 @@ create table PL_SERVER_ITEM (
 
 -- 주문 PL_ORDER 테이블 --
 create table PL_ORDER (
-	ORDER_NUMBER NUMBER(4) primary key, 
+	ORDER_NUMBER NUMBER(8) primary key, 
 	CUSTOMER_ID VARCHAR2(24),
 	STORE_ID NUMBER(3),
 	ITEM_ID NUMBER(4),
@@ -90,7 +90,7 @@ create table PL_ORDER (
 
 -- 장바구니 PL_CART 테이블 --
 create table PL_CART (
-	CART_NUMBER NUMBER(4) primary key, 
+	CART_NUMBER NUMBER(8) primary key, 
 	CUSTOMER_ID VARCHAR2(24),
 	STORE_ID NUMBER(3),
 	ITEM_ID NUMBER(4),
@@ -106,47 +106,60 @@ create table PL_BOARD (
 	BOARD_IDX NUMBER(8) primary key,
 	BOARD_TITLE VARCHAR2(60) NOT NULL,
 	BOARD_DATE DATE NOT NULL,
-	BOARD_READ_COUNT NUMBER(3) NOT NULL,
-	BOARD_CONTENT VARCHAR2(300) NOT NULL,
+	BOARD_READ_COUNT NUMBER(4) NOT NULL,
+	BOARD_CONTENT VARCHAR2(3000) NOT NULL,
 	BOARD_WRITER VARCHAR2(15) NOT NULL,
 	BOARD_CATEGORY NUMBER(1) NOT NULL,
 	BOARD_CATEGORY_NAME VARCHAR2(6) NOT NULL
 )
+
+
 --
 --create table PL_SERVICE_CENTER (
 --	SERVICE_NUMBER
 --)
 
 
--- 서버 물품 인덱스 시퀀스 --
+-- 물품 인덱스 시퀀스 --
 create sequence item_index_seq
 	start with 1
 	increment by 1
 	maxvalue 99999999
-	nocycle
+	cycle
 	nocache;
 
 
+-- 서버 물품 인덱스 시퀀스 --
+create sequence server_item_index_seq
+	start with 1
+	increment by 1
+	maxvalue 99999999
+	cycle
+	nocache;
+	
+	
 -- 게시판 인덱스 시퀀스 --
 create sequence board_index_seq
 	start with 1
 	increment by 1
 	maxvalue 99999999
-	nocycle
+	cycle
 	nocache;
 	
+-- 장바구니 인덱스 시퀀스 --
 create sequence cart_index_seq
    start with 1
    increment by 1
    maxvalue 99999999
-   nocycle
+   cycle
    nocache;
    
+-- 주문 인덱스 시퀀스 --
 create sequence order_index_seq
 	start with 1
 	increment by 1
 	maxvalue 99999999
-	nocycle
+	cycle
 	nocache;
 
 	
@@ -173,7 +186,7 @@ drop table PL_OWNER
 drop table PL_BOARD
 
 
--- 서버 물품 인덱스 시퀀스 드랍 --
+-- 물품 인덱스 시퀀스 드랍 --
 drop sequence item_index_seq
 
 
@@ -181,7 +194,16 @@ drop sequence item_index_seq
 drop sequence board_index_seq
 
 
+-- 장바구니 인덱스 시퀀스 드랍 --
+drop sequence cart_index_seq
 
+
+-- 주문 인덱스 시퀀스 드랍 --
+drop sequence order_index_seq
+
+
+-- 서버 물품 인덱스 시쿠너스 드랍 --
+drop sequnce server_item_index_seq
 
 --select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id from PL_ITEM_INFO e, PL_SERVER_ITEM d where d.store_id=(select store_id from PL_STORE where owner_id='owner1') and e.item_id = d.item_id 
 --

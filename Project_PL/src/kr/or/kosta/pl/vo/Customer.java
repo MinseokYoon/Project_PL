@@ -6,7 +6,7 @@ public class Customer {
 	private String customerPassword;
 	private String customerName;
 	private String customerAddress;
-	private int customerBirth;
+	private String customerBirth;
 	private int customerGender;
 	private String customerPhone;
 	private String customerEmail;
@@ -18,7 +18,7 @@ public class Customer {
 	
 
 	public Customer(String customerId, String customerPassword, String customerName, String customerAddress,
-			int customerBirth, int customerGender, String customerPhone, String customerEmail) {
+			String customerBirth, int customerGender, String customerPhone, String customerEmail) {
 		super();
 		this.customerId = customerId;
 		this.customerPassword = customerPassword;
@@ -35,7 +35,7 @@ public class Customer {
 
 
 	public Customer(String customerId, String customerPassword, String customerName, String customerAddress,
-			int customerBirth, int customerGender, String customerPhone, String customerEmail, int customerPoint) {
+			String customerBirth, int customerGender, String customerPhone, String customerEmail, int customerPoint) {
 		this.customerId = customerId;
 		this.customerPassword = customerPassword;
 		this.customerName = customerName;
@@ -49,7 +49,7 @@ public class Customer {
 	}
 
 	public Customer(String customerId, String customerPassword, String customerName, String customerAddress,
-			int customerBirth, int customerGender, String customerPhone, String customerEmail, int customerPoint,
+			String customerBirth, int customerGender, String customerPhone, String customerEmail, int customerPoint,
 			int storeId) {
 		super();
 		this.customerId = customerId;
@@ -62,73 +62,6 @@ public class Customer {
 		this.customerEmail = customerEmail;
 		this.customerPoint = customerPoint;
 		this.storeId = storeId;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((customerAddress == null) ? 0 : customerAddress.hashCode());
-		result = prime * result + customerBirth;
-		result = prime * result + ((customerEmail == null) ? 0 : customerEmail.hashCode());
-		result = prime * result + customerGender;
-		result = prime * result + ((customerId == null) ? 0 : customerId.hashCode());
-		result = prime * result + ((customerName == null) ? 0 : customerName.hashCode());
-		result = prime * result + ((customerPassword == null) ? 0 : customerPassword.hashCode());
-		result = prime * result + ((customerPhone == null) ? 0 : customerPhone.hashCode());
-		result = prime * result + customerPoint;
-		result = prime * result + storeId;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Customer other = (Customer) obj;
-		if (customerAddress == null) {
-			if (other.customerAddress != null)
-				return false;
-		} else if (!customerAddress.equals(other.customerAddress))
-			return false;
-		if (customerBirth != other.customerBirth)
-			return false;
-		if (customerEmail == null) {
-			if (other.customerEmail != null)
-				return false;
-		} else if (!customerEmail.equals(other.customerEmail))
-			return false;
-		if (customerGender != other.customerGender)
-			return false;
-		if (customerId == null) {
-			if (other.customerId != null)
-				return false;
-		} else if (!customerId.equals(other.customerId))
-			return false;
-		if (customerName == null) {
-			if (other.customerName != null)
-				return false;
-		} else if (!customerName.equals(other.customerName))
-			return false;
-		if (customerPassword == null) {
-			if (other.customerPassword != null)
-				return false;
-		} else if (!customerPassword.equals(other.customerPassword))
-			return false;
-		if (customerPhone == null) {
-			if (other.customerPhone != null)
-				return false;
-		} else if (!customerPhone.equals(other.customerPhone))
-			return false;
-		if (customerPoint != other.customerPoint)
-			return false;
-		if (storeId != other.storeId)
-			return false;
-		return true;
 	}
 
 	public String getCustomerId() {
@@ -163,11 +96,11 @@ public class Customer {
 		this.customerAddress = customerAddress;
 	}
 
-	public int getCustomerBirth() {
+	public String getCustomerBirth() {
 		return customerBirth;
 	}
 
-	public void setCustomerBirth(int customerBirth) {
+	public void setCustomerBirth(String customerBirth) {
 		this.customerBirth = customerBirth;
 	}
 
@@ -210,6 +143,82 @@ public class Customer {
 	public void setStoreId(int storeId) {
 		this.storeId = storeId;
 	}
+
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((customerAddress == null) ? 0 : customerAddress.hashCode());
+		result = prime * result + ((customerBirth == null) ? 0 : customerBirth.hashCode());
+		result = prime * result + ((customerEmail == null) ? 0 : customerEmail.hashCode());
+		result = prime * result + customerGender;
+		result = prime * result + ((customerId == null) ? 0 : customerId.hashCode());
+		result = prime * result + ((customerName == null) ? 0 : customerName.hashCode());
+		result = prime * result + ((customerPassword == null) ? 0 : customerPassword.hashCode());
+		result = prime * result + ((customerPhone == null) ? 0 : customerPhone.hashCode());
+		result = prime * result + customerPoint;
+		result = prime * result + storeId;
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Customer other = (Customer) obj;
+		if (customerAddress == null) {
+			if (other.customerAddress != null)
+				return false;
+		} else if (!customerAddress.equals(other.customerAddress))
+			return false;
+		if (customerBirth == null) {
+			if (other.customerBirth != null)
+				return false;
+		} else if (!customerBirth.equals(other.customerBirth))
+			return false;
+		if (customerEmail == null) {
+			if (other.customerEmail != null)
+				return false;
+		} else if (!customerEmail.equals(other.customerEmail))
+			return false;
+		if (customerGender != other.customerGender)
+			return false;
+		if (customerId == null) {
+			if (other.customerId != null)
+				return false;
+		} else if (!customerId.equals(other.customerId))
+			return false;
+		if (customerName == null) {
+			if (other.customerName != null)
+				return false;
+		} else if (!customerName.equals(other.customerName))
+			return false;
+		if (customerPassword == null) {
+			if (other.customerPassword != null)
+				return false;
+		} else if (!customerPassword.equals(other.customerPassword))
+			return false;
+		if (customerPhone == null) {
+			if (other.customerPhone != null)
+				return false;
+		} else if (!customerPhone.equals(other.customerPhone))
+			return false;
+		if (customerPoint != other.customerPoint)
+			return false;
+		if (storeId != other.storeId)
+			return false;
+		return true;
+	}
+
+
 
 	@Override
 	public String toString() {

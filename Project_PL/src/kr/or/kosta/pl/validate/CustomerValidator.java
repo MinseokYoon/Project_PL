@@ -31,8 +31,8 @@ public class CustomerValidator implements Validator {
 			error.rejectValue("name", "required", "예쁜 이름을 적어주세요.");
 		} else if (customer.getCustomerAddress() == null) {
 			error.rejectValue("address", "required", "주소를 적어주세요.");
-		} else if(customer.getCustomerBirth()<9999999 && customer.getCustomerBirth()>=100000000){		//date가 아닌 숫자 상태. 8자리를 맞추기 위함
-			error.rejectValue("birth", "notCorrectBirth", "생일 형식을 정확히 입렵해 주세요.");
+//		} else if(customer.getCustomerBirth()<9999999 && customer.getCustomerBirth()>=100000000){		//date가 아닌 숫자 상태. 8자리를 맞추기 위함
+//			error.rejectValue("birth", "notCorrectBirth", "생일 형식을 정확히 입렵해 주세요.");
 		} else if(customer.getCustomerGender()==0){
 			error.rejectValue("gender", "nosex", "성별을 입력하세요.");
 		} /*else if(!(customer.getCustomerPhone().length() ==11)){
