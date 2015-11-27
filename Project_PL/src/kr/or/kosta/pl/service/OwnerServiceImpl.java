@@ -168,4 +168,31 @@ public class OwnerServiceImpl implements OwnerService {
 	public int updateCountProduct(String ownerId, int resultCount ,int itemId) {
 		return dao.updateInputProduct(ownerId,resultCount,itemId);
 	}
+	
+	//주문현황 list 조회 메소드 
+	@Override
+	public Map getAllOrderListPaging(int pageNo, String ownerId) {
+		HashMap map = new HashMap();
+		map.put("list",dao.selectOrdersPaging(pageNo,ownerId));
+		PagingBean pagingBean = new PagingBean(dao.selectCountOrders(ownerId), pageNo);
+		System.out.println("총 주문 개수 : " + dao.selectCountOrders(ownerId));
+		map.put("pagingBean", pagingBean);
+		map.put("ownerId", ownerId);
+		return map;
+	}
+	
+	//고객이름으로 검색한 주문현황 list 조회 메소드 
+	@Override
+	public Map getOrderListByNamePaging(int pageNo, String ownerId,String cusName) {
+		HashMap map = new HashMap();
+		map.put("list", dao.selectOrdersByNamePaging(pageNo,ownerId,cusName));
+		PagingBean pagingBean = new PagingBean(dao.selectCountOrdersByName(ownerId,cusName), pageNo);
+		map.put("pagingBean", pagingBean);
+		map.put("ownerId", ownerId);
+		map.put("customerName",cusName);
+		return map;
+		
+		//System.out.println("안동신이 주문한 물품 종류 개수 : "+dao.selectCountOrdersByName(ownerId,cusName) );
+		
+	}
 }

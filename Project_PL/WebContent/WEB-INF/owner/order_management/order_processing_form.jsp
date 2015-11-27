@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -26,15 +27,11 @@
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <script type="text/javascript">
-function productSearchCheck(){ 
-	var form1 = document.productSearch;
-	var searchValue = form1.searchValue;
-	var howToSearch = form1.howToSearch;
-	
-	if(searchValue.value.length == 0){
-		alert("내용을 입력하세요.");
-		searchValue.focus();
-		return false; //전송 못하게 하는 것 
+function customerNameCheck(){
+	var name = document.getElementById("customerName").value;
+	if(name == ""){
+		alert("고객 이름을 입력하세요.");
+		return false;
 	}
 }
 </script>
@@ -61,6 +58,7 @@ function productSearchCheck(){
 			</div>
 		</div><!--/header-middle-->
 	</header><!--/header-->
+	
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -96,6 +94,7 @@ function productSearchCheck(){
 									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
+							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -108,14 +107,15 @@ function productSearchCheck(){
 									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
-						</div>	
+							
+						</div>
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
 						</a>
 						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
 							<i class="fa fa-angle-right"></i>
 						</a>
-					</div>
+					</div>			
 				</div>
 			</div>
 		</div>
@@ -126,8 +126,7 @@ function productSearchCheck(){
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>카테고리</h2>
-						<div class="panel-group category-products" id="accordian">
-							<!--category-productsr-->
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -160,59 +159,21 @@ function productSearchCheck(){
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a href="#">고객센터</a>
-									</h4>
+									<h4 class="panel-title"><a href="#">고객센터</a></h4>
 								</div>
 							</div>
-						</div>
-						<!--/category-products-->
+						</div><!--/category-products-->					
 					</div>
-				</div>
-				<!-- 여기 부분이 이 페이지 부분임! -->
-				<c:choose>
-					<c:when test="${empty requestScope.productList}">
-							조회된 물품이 없습니다.
-					</c:when>
-					<c:otherwise>
-						<table style="width: 800px" border="1">
-							<tr>
-								<th style="text-align: center; background-color: #fe980f;">물품 이름</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 가격</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 개수</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 유통기한</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 ID</th>
-								<th style="text-align: center; background-color: #fe980f;">카테고리 ID</th>
-								<th style="text-align: center; background-color: #fe980f;">편의점 ID</th>
-							</tr>
-							<c:forEach items="${requestScope.productList }" var="productList">
-								<tr>
-									<td style="text-align: center;">
-										<a href="${initParam.rootPath }/owner/productInfo.do?productName=${productList.itemName}">
-											${productList.itemName }
-										</a>
-									</td> 
-									<td style="text-align: center;">${productList.itemPrice }</td>
-									<td style="text-align: center;">${productList.itemCount }</td>
-									<td style="text-align: center;">${productList.itemExpirationDate }</td>
-									<td style="text-align: center;">${productList.itemId }</td>
-									<td style="text-align: center;">${productList.categoryId }</td>
-									<td style="text-align: center;">${productList.storeId }</td>
-								</tr>
-							</c:forEach>
-						</table>
-					</c:otherwise>
-				</c:choose>
-				<!-- 물품 검색하는 곳 -->
-				<div class="search_box pull-right">
-					<form name="productSearch" action="${initParam.rootPath }/owner/product_search.do" method="post" onsubmit="return productSearchCheck();">
-						<input type="text" name="searchValue" placeholder="Search" /> 
-					</form>
-				</div>			
+				</div><!-- 여기 -->
+				<h3 style="color: #fe980f">고객 이름을 입력하세요.</h3> <!-- font-size: 20px -->
+				<form action="${initParam.rootPath }/owner/order_list_by_cutomerName.do" onsubmit="return customerNameCheck();">
+					<input type="text" name="customerName" placeholder="고객이름" id="customerName">
+					<input type="hidden" name="pageNo" value="${param.pageNo }">
+					<input type="submit" value="검색" >
+				</form>
 			</div>
 		</div>
 	</section>
-
 	<footer id="footer"><!--Footer-->
 		<div class="footer-top">
 			<div class="container">
@@ -238,6 +199,7 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -252,6 +214,7 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -266,6 +229,7 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">

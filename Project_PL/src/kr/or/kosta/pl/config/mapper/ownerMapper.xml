@@ -35,6 +35,25 @@
 		<result property="boardCategoryName" column="board_category_name"/>
 	</resultMap>
 	
+	<resultMap type="order" id="orderlist-resultmap">
+      <constructor>
+         <idArg column="order_number" javaType="_int"/>
+         <arg column="customer_id" javaType="string"/>
+         <arg column="store_id" javaType="_int"/>
+         <arg column="item_id" javaType="_int"/>
+         <arg column="order_count" javaType="_int"/>
+         <arg column="order_date" javaType="Date"/>
+         <arg column="order_status" javaType="_int"/>
+         <arg column="item_name" javaType="string"/>
+         <arg column="item_price" javaType="_int"/>
+         <arg column="category_id" javaType="_int"/>
+         <arg column="category_name" javaType="string"/>
+         <arg column="store_name" javaType="string"/>
+         <arg column="customer_name" javaType="string"/>
+         <arg column="customer_phone" javaType="string"/>
+      </constructor>
+   </resultMap>
+	
 	<!-- 공통 sql문  -->
 	<sql id="select-column-sql">owner_id, owner_password, owner_name, owner_phone</sql>
 	<sql id="selectOwner-sql">
@@ -149,6 +168,59 @@
 	<select id="selectNotice" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name 
 		from (select * from pl_board where board_category=2 order by board_date desc) where rownum between 1 and 3
+	</select>
+	
+	<select id="selectCountOrders" resultType="_int" parameterType="string">
+		select count(order_number) from pl_order
+		where store_id = (select store_id from pl_store where owner_id=#{value})
+	</select>
+	
+	
+	<!-- 이거 수정해야함 -->
+	<select id="selectOrdersPaging" parameterType="hashmap" resultMap="orderlist-resultmap">
+		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+		from(
+				select ceil(rownum/#{contentPerPage}) page,order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+				from(	
+					select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status,i.item_name, i.item_price, i.category_id, t.category_name,s.store_name, r.customer_name, r.customer_phone  
+      				from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
+     				where o.item_id = i.item_id 
+     				and i.category_id = t.category_id 
+     				and o.store_id = s.store_id 
+     				and o.customer_id = r.customer_id 
+     				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
+     				and o.order_status = 1
+				)
+		)
+		where page = #{pageNo}
+	</select>
+	<!-- 위에서 customerId받는거 웹에서 owner가 입력받아서 하는거 , hashmap에 cutomerId추가해야함(id로 입력말고 이름으로 입력받는지 물어보기) -->
+	
+	
+	<select id="selectCountOrdersByName" resultType="_int" parameterType="hashmap">
+		select count(order_number)
+		from pl_order
+		where store_id = (select store_id from pl_store where owner_id=#{ownerId})
+		and customer_id = (select customer_id from pl_customer where customer_name=#{customerName})
+	</select>
+	
+	<select id="selectOrdersByNamePaging" parameterType="hashmap" resultMap="orderlist-resultmap">
+		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+		from(
+				select ceil(rownum/#{contentPerPage}) page,order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+				from(	
+					select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status,i.item_name, i.item_price, i.category_id, t.category_name,s.store_name, r.customer_name, r.customer_phone  
+      				from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
+     				where o.item_id = i.item_id 
+     				and i.category_id = t.category_id 
+     				and o.store_id = s.store_id 
+     				and o.customer_id = r.customer_id 
+     				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
+     				and o.order_status = 1
+     				and r.customer_name = #{customerName}
+				)
+		)
+		where page = #{pageNo}
 	</select>
 </mapper>
 

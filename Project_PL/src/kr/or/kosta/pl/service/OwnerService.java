@@ -94,4 +94,10 @@ public interface OwnerService{
 
 
 	List<Board> getNotice();
+
+
+	Map getAllOrderListPaging(int pageNo, String ownerId);
+
+
+	Map getOrderListByNamePaging(int pageNo, String ownerId, String cusName);
 }

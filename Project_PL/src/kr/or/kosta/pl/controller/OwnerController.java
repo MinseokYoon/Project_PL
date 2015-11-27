@@ -137,74 +137,74 @@ public class OwnerController {
 	}
 	
 	//편의점 물품 정보
-			@RequestMapping("/productInfo")
-			public String productStoredAndReleased(@RequestParam String productName,ModelMap model,HttpSession session){
-				Owner owner = (Owner)session.getAttribute("sessionUser");
-				String ownerId = owner.getOwnerId();
-				//String pName = productName;
-				
-				Product product = null;
-				product = service.findOneProductByName(productName, ownerId); 
-				model.addAttribute("product",product);
-				
-				//여기 고쳐야 함 
-				System.out.println(product.getItemId());
-				System.out.println(product.getItemName());
-				
-				return "/WEB-INF/owner/item_management/product_info.jsp";
-				
-			}
-			
-			
-			//물품 - 입고 처리 Handler
-			@RequestMapping("/input")
-			public String inputProduct(@RequestParam String itemCount,@RequestParam String inputCount,@RequestParam String productId,@RequestParam String productName,HttpSession session,ModelMap model){
-				//System.out.println(itemCount); 물품 개수 따온거
-				Owner owner = (Owner)session.getAttribute("sessionUser");
-				String ownerId = owner.getOwnerId();
-				String pCount = itemCount;// 원래 물품개수
-				String inCount = inputCount;//입고 물품개수
-				String pId = productId; //물품 Id
-				
-				//System.out.println(productId);
-				//System.out.println(itemCount + " - " + inputCount);
-				int resultCount = Integer.parseInt(pCount) + Integer.parseInt(inCount);
-				//System.out.println(resultCount); //원래 물품 개수 + 입고된 물품 개수 
-				int itemId = Integer.parseInt(pId);
-				//System.out.println("테스트 : "+resultCount+itemId);
-				
-				service.updateCountProduct(ownerId,resultCount,itemId);
-				
-				Product product = null;
-				product = service.findOneProductByName(productName, ownerId); 
-				model.addAttribute("product",product);
-				
-				return "/WEB-INF/owner/item_management/product_info.jsp";
-				
-			}
-			
-			//물품 - 출고 처리 Handler
-			@RequestMapping("/output")
-			public String outputProduct(@RequestParam String itemCount,@RequestParam String outputCount,@RequestParam String productId,@RequestParam String productName,HttpSession session,ModelMap model){
-				//System.out.println(itemCount); 물품 개수 따온거
-				Owner owner = (Owner)session.getAttribute("sessionUser");
-				String ownerId = owner.getOwnerId();
-				String pCount = itemCount;// 원래 물품개수
-				String outCount = outputCount;//입고 물품개수
-				String pId = productId; //물품 Id
-				
-				int resultCount = Integer.parseInt(pCount) - Integer.parseInt(outCount);
-				int itemId = Integer.parseInt(pId);
-				
-				service.updateCountProduct(ownerId,resultCount,itemId);
-				
-				Product product = null;
-				product = service.findOneProductByName(productName, ownerId); 
-				model.addAttribute("product",product);
-				
-				return "/WEB-INF/owner/item_management/product_info.jsp";
-				
-			}
+	@RequestMapping("/productInfo")
+	public String productStoredAndReleased(@RequestParam String productName,ModelMap model,HttpSession session){
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId();
+		//String pName = productName;
+		
+		Product product = null;
+		product = service.findOneProductByName(productName, ownerId); 
+		model.addAttribute("product",product);
+		
+		//여기 고쳐야 함 
+		System.out.println(product.getItemId());
+		System.out.println(product.getItemName());
+		
+		return "/WEB-INF/owner/item_management/product_info.jsp";
+		
+	}
+	
+	
+	//물품 - 입고 처리 Handler
+	@RequestMapping("/input")
+	public String inputProduct(@RequestParam String itemCount,@RequestParam String inputCount,@RequestParam String productId,@RequestParam String productName,HttpSession session,ModelMap model){
+		//System.out.println(itemCount); 물품 개수 따온거
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId();
+		String pCount = itemCount;// 원래 물품개수
+		String inCount = inputCount;//입고 물품개수
+		String pId = productId; //물품 Id
+		
+		//System.out.println(productId);
+		//System.out.println(itemCount + " - " + inputCount);
+		int resultCount = Integer.parseInt(pCount) + Integer.parseInt(inCount);
+		//System.out.println(resultCount); //원래 물품 개수 + 입고된 물품 개수 
+		int itemId = Integer.parseInt(pId);
+		//System.out.println("테스트 : "+resultCount+itemId);
+		
+		service.updateCountProduct(ownerId,resultCount,itemId);
+		
+		Product product = null;
+		product = service.findOneProductByName(productName, ownerId); 
+		model.addAttribute("product",product);
+		
+		return "/WEB-INF/owner/item_management/product_info.jsp";
+		
+	}
+	
+	//물품 - 출고 처리 Handler
+	@RequestMapping("/output")
+	public String outputProduct(@RequestParam String itemCount,@RequestParam String outputCount,@RequestParam String productId,@RequestParam String productName,HttpSession session,ModelMap model){
+		//System.out.println(itemCount); 물품 개수 따온거
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId();
+		String pCount = itemCount;// 원래 물품개수
+		String outCount = outputCount;//입고 물품개수
+		String pId = productId; //물품 Id
+		
+		int resultCount = Integer.parseInt(pCount) - Integer.parseInt(outCount);
+		int itemId = Integer.parseInt(pId);
+		
+		service.updateCountProduct(ownerId,resultCount,itemId);
+		
+		Product product = null;
+		product = service.findOneProductByName(productName, ownerId); 
+		model.addAttribute("product",product);
+		
+		return "/WEB-INF/owner/item_management/product_info.jsp";
+		
+	}
 	
 	@RequestMapping("/boardList")
 	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
@@ -228,6 +228,49 @@ public class OwnerController {
 		
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_owner.jsp";
+	}
+	
+	//주문현황  handler
+	@RequestMapping("/order_list")
+	public String orderList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model,HttpSession session){
+		int page=1;
+		try{
+			page = Integer.parseInt(pageNo);
+		}catch(NumberFormatException e){}
+		
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
+		
+		Map attributes = service.getAllOrderListPaging(page,ownerId);
+		model.addAllAttributes(attributes);
+		
+		return "/WEB-INF/owner/order_management/order_list.jsp";
+	}
+	
+	//주문처리 handler - 단순 페이지 이동기능 
+	@RequestMapping("/order_processing")
+	public String orderProcessing(){
+		return "/WEB-INF/owner/order_management/order_processing_form.jsp";
+		
+	}
+	
+	//고객이름으로 검색한 주문처리 결과 list handler
+	@RequestMapping("/order_list_by_cutomerName")
+	public String orderProcessingResult(@RequestParam String customerName,@RequestParam(defaultValue = "1") String pageNo,ModelMap model,HttpSession session){
+		int page=1;
+		try{
+			page = Integer.parseInt(pageNo);
+		}catch(NumberFormatException e){}
+		
+		
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
+		String cusName = customerName;
+		
+		Map attributes = service.getOrderListByNamePaging(page,ownerId,cusName);
+		model.addAllAttributes(attributes);
+		
+		return "/WEB-INF/owner/order_management/order_list_by_customerName.jsp";
 	}
 	
 }

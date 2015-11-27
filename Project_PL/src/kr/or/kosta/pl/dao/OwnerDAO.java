@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Order;
 import kr.or.kosta.pl.vo.Owner;
 import kr.or.kosta.pl.vo.Product;
 
@@ -40,5 +41,13 @@ public interface OwnerDAO {
 
 	int updateInputProduct(String ownerId, int resultCount,int itemId);
 
-	List<Board> selectNotice(); 
+	List<Board> selectNotice();
+
+	int selectCountOrders(String ownerId);
+
+	List<Order> selectOrdersPaging(int pageNo, String ownerId);
+
+	int selectCountOrdersByName(String ownerId, String cusName);
+
+	List<Order> selectOrdersByNamePaging(int pageNo, String ownerId, String cusName); 
 }

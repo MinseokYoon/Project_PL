@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import common.util.PagingBean;
 import kr.or.kosta.pl.vo.Board;
+import kr.or.kosta.pl.vo.Order;
 import kr.or.kosta.pl.vo.Owner;
 import kr.or.kosta.pl.vo.Product;
 
@@ -130,6 +131,42 @@ public class OwnerDAOImpl implements OwnerDAO {
 	@Override
 	public Board selectBoardByIndex(int index) {
 		return session.selectOne("ownerMapper.selectBoardInfo", index);
+	}
+	
+	@Override
+	public int selectCountOrders(String ownerId) {
+		return session.selectOne("ownerMapper.selectCountOrders",ownerId);
+	}
+
+	@Override
+	public List<Order> selectOrdersPaging(int pageNo, String ownerId) {
+		HashMap map = new HashMap();
+		map.put("contentPerPage", PagingBean.CONTENTS_PER_PAGE);
+		map.put("pageNo",pageNo);
+		map.put("ownerId", ownerId); //편의점 id값 넣기 
+		
+		List<Order> list = session.selectList("ownerMapper.selectOrdersPaging",map);
+		return list;
+	}
+
+	@Override
+	public int selectCountOrdersByName(String ownerId,String cusName) {
+		HashMap map = new HashMap();
+		map.put("ownerId", ownerId);
+		map.put("customerName", cusName);
+		return session.selectOne("ownerMapper.selectCountOrdersByName",map);
+	}
+
+	@Override
+	public List<Order> selectOrdersByNamePaging(int pageNo, String ownerId,String cusName) {
+		HashMap map = new HashMap();
+		map.put("contentPerPage", PagingBean.CONTENTS_PER_PAGE);
+		map.put("pageNo",pageNo);
+		map.put("ownerId", ownerId); //편의점 id값 넣기 
+		map.put("customerName", cusName);
+		
+		List<Order> list = session.selectList("ownerMapper.selectOrdersByNamePaging",map);
+		return list;
 	}
 	
 }
