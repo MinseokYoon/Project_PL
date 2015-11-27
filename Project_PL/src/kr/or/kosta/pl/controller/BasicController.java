@@ -30,7 +30,7 @@ public class BasicController {
 	
 	@Autowired
 	private AdminService adminService;
-	
+	/*--------------------------------로그 아웃---------------------------------*/
 	@RequestMapping("/index")
 	public String index(ModelMap model){
 
@@ -40,17 +40,21 @@ public class BasicController {
 		
 		return "/WEB-INF/index.jsp";
 	}
-
+	
+	/*--------------------------------위쪽 페이지 이동---------------------------------*/
+	//로그인 페이지 이동
 	@RequestMapping("/login_form")
 	public String loginForm() {
 		return "/WEB-INF/login/login.jsp";
 	}
-	
+	//회원가입 페이지 이동
 	@RequestMapping("/register_form")
 	public String registerForm() {
 		return "/WEB-INF/register/register_form_customer.jsp";
 	}
 	
+	/*--------------------------------로그인 controller---------------------------------*/
+	//로그인 처리 
 	@RequestMapping("/login_ctr")
 	public String login_check(@RequestParam String id, @RequestParam String password, ModelMap model, HttpSession session){
 		
@@ -79,7 +83,8 @@ public class BasicController {
 	     model.addAttribute("errorMessage","Id와 Password가 일치하지 않습니다.");
 		return "/WEB-INF/login/login.jsp";
 	}
-	
+	/*--------------------------------계시판 페이지 이동---------------------------------*/
+	//고객 메인 페이지 이동
 	@RequestMapping("/item_list")
 	public String itemList(ModelMap model, HttpSession session){
 		
@@ -94,27 +99,29 @@ public class BasicController {
 			return "/WEB-INF/index.jsp";
 		}
 	}
-	
+	//점주 메인 페이지 이동
 	@RequestMapping("/ownerHome")
 	public String ownerHome() {
 		return "/WEB-INF/owner/main_owner.jsp";
 	}
-	
+	//관리자 메인 페이지 이동
 	@RequestMapping("/adminHome")
 	public String adminHome() {
 		return "/WEB-INF/admin/main_admin.jsp";
 	}
 	
+	/*--------------------------------계시판 페이지 이동---------------------------------*/
+	//고객페이지 게시판 이동
 	@RequestMapping("/ownerBoard")
 	public String ownerBoard() {
 		return "/owner/boardList.do";
 	}
-	
+	//점주페이지 게시판 이동
 	@RequestMapping("/customerBoard")
 	public String customerBoard() {
 		return "/customer/boardList.do";
 	}
-	
+	//관리자페이지 게시판 이동
 	@RequestMapping("/adminBoard")
 	public String adminBoard() {
 		return "/admin/boardList.do";

@@ -5,6 +5,7 @@ import java.util.List;
 import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Cart;
 import kr.or.kosta.pl.vo.Customer;
+import kr.or.kosta.pl.vo.Order;
 import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
 
@@ -41,5 +42,9 @@ public interface CustomerDAO {
 	int deleteCart(String customerId, int storeId, int itemId);
 
 	List<Board> selectNotice();
+
+	int insertOrder(String customerId, int storeId, int itemId, int orderCount, int orderStatus);
+
+	List<Order> selectOrderByCustomerId(String customerId);
 
 }
