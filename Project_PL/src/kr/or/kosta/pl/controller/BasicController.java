@@ -70,11 +70,13 @@ public class BasicController {
 		} else if(owner != null) {
 			if(owner.getOwnerPassword().equals(password)) {
 				session.setAttribute("sessionUser", owner);
+				session.setMaxInactiveInterval(180*60);
 				return "/WEB-INF/owner/main_owner.jsp";
 			}
 		} else if(admin != null) {
 			if(admin.getAdminPassword().equals(password)) {
 				session.setAttribute("sessionUser", admin);
+				session.setMaxInactiveInterval(180*60);
 				return "/WEB-INF/admin/main_admin.jsp";
 			}
 		}

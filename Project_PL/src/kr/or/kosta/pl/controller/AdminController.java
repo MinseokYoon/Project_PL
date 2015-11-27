@@ -259,6 +259,11 @@ public class AdminController {
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_admin.jsp";
 	}
+	
+	@RequestMapping("/boardWrite")
+	public String boardWrite() {
+		return "/WEB-INF/board/board_write_admin.jsp";
+	}
 	// 2차커밋
 
 	//////////////////////////// 카테고리//////////////////////////// 

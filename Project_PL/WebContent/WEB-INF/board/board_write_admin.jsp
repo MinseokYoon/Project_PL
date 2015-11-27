@@ -19,6 +19,7 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->       
+    <script type="text/javascript" src="/Project_PL/js/HuskyEZCreator.js" charset="utf-8"></script>
     <link rel="shortcut icon" href="${initParam.rootPath}/images/ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${initParam.rootPath}/images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${initParam.rootPath}/images/ico/apple-touch-icon-114-precomposed.png">
@@ -137,75 +138,67 @@
 						</div><!--/category-products-->					
 					</div>
 				</div>
-				<h2>게시판</h2>
-				<table width="500px" border="1" bordercolor="d8d8d8">
-					<tr height="30" bgcolor="#fe980f">
-						<th style="text-align: center">글번호</th>
-						<th style="text-align: center">분류</th>
-						<th style="text-align: center">제목</th>
-						<th style="text-align: center">작성자</th>
-						<th style="text-align: center">작성일</th>
-						<th style="text-align: center">조회수</th>
-					</tr>
-					<c:forEach items="${requestScope.notice }" var="board">
-						<tr height="30">
-							<td align="center"><font color="fe0000">${board.boardIndex }</font></td>
-							<td align="center"><font color="fe0000">${board.boardCategoryName }</font></td>
-							<td align="center"><a href="${initParam.rootPath }/admin/boardInfo.do?boardIndex=${board.boardIndex}" >${board.boardTitle} </a></td>
-							<td align="center"><font color="fe0000">${board.boardWriter }</font></td>
-							<td align="center"><font color="fe0000">${board.boardDate }</font></td>
-							<td align="center"><font color="fe0000">${board.boardReadCount}</font></td>
-						<tr>
-					</c:forEach>
-					<c:forEach items="${requestScope.list }" var="board">
-						<tr height="30">
-							<td align="center">${board.boardIndex }</td>
-							<td align="center">${board.boardCategoryName }</td>
-							<td align="center"><a href="${initParam.rootPath }/admin/boardInfo.do?boardIndex=${board.boardIndex}">${board.boardTitle} </a></td>
-							<td align="center">${board.boardWriter }</td>
-							<td align="center">${board.boardDate }</td>
-							<td align="center">${board.boardReadCount}</td>
-						<tr>
-					</c:forEach>
-					<tr>
-						<td colspan="6" align="center">
-							<c:choose>
-								<c:when test="${requestScope.pagingBean.previousPageGroup }">
-									<a href="${initParam.rootPath }/admin/boardList.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
-										◀
-									</a>
-								</c:when>
-								<c:otherwise>
- 										◀
- 								</c:otherwise>
-							</c:choose> 
-							<!-- 
-								 Page Group 내의 page들 링크 처리
-								 	- PageGroup의 시작/끌 페이지 번호 - 반복문 처리
-							--> 
-							<c:forEach begin="${requestScope.pagingBean.startPageOfPageGroup }" end="${requestScope.pagingBean.endPageOfPageGroup }" var="page">
-								<a href="${initParam.rootPath }/admin/boardList.do?pageNo=${page }">${page }</a>&nbsp&nbsp
-							</c:forEach> 
-							<!-- 
-								1. 다음 페이지 그룹으로 이동 처리
-								  다음페이지 그룹이 있으면 링크처리 없으면 -> 모양만 나오도록 처리.
-							--> 
-							<c:choose>
-								<c:when test="${requestScope.pagingBean.nextPageGroup }">
-									<a href="${initParam.rootPath }/admin/boardList.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
-										▶
-									</a>
-								</c:when>
-								<c:otherwise>
- 										▶
- 								</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-				</table>
-				<form action="${initParam.rootPath }/admin/boardWrite.do" method="post">
-					<input type="submit" value="글쓰기"/>
-				</form>
+				<div class="col-sm-9 padding-right">
+					<h2>게시판</h2>
+					<form action="#" method="post">
+						<textarea name="ir1" id="ir1" rows="10" cols="100" style="width:766px; height:412px;">
+							에디터에 기본으로 삽입할 글
+						</textarea>
+					</form>
+
+<script type="text/javascript">
+var oEditors = [];
+
+// 추가 글꼴 목록
+//var aAdditionalFontSet = [["MS UI Gothic", "MS UI Gothic"], ["Comic Sans MS", "Comic Sans MS"],["TEST","TEST"]];
+
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: "ir1",
+	sSkinURI: "/Project_PL/SmartEditor2Skin.html",	
+	htParams : {
+		bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+		//aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+		fOnBeforeUnload : function(){
+			//alert("완료!");
+		}
+	}, //boolean
+	fOnAppLoad : function(){
+		//예제 코드
+		//oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+	},
+	fCreator: "createSEditor2"
+});
+
+function pasteHTML() {
+	var sHTML = "<span style='color:#FF0000;'>이미지도 같은 방식으로 삽입합니다.<\/span>";
+	oEditors.getById["ir1"].exec("PASTE_HTML", [sHTML]);
+}
+
+function showHTML() {
+	var sHTML = oEditors.getById["ir1"].getIR();
+	alert(sHTML);
+}
+	
+function submitContents(elClickedObj) {
+	oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
+	
+	// 에디터의 내용에 대한 값 검증은 이곳에서 document.getElementById("ir1").value를 이용해서 처리하면 됩니다.
+	
+	try {
+		elClickedObj.form.submit();
+	} catch(e) {}
+}
+
+function setDefaultFont() {
+	var sDefaultFont = '궁서';
+	var nFontSize = 24;
+	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
+}
+</script>
+				</div>
 			</div>
 		</div>
 	</section>
