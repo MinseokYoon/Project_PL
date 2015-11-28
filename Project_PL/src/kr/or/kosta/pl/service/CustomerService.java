@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,4 +55,10 @@ public interface CustomerService {
 	Board getBoardInfo(int index);	//게시판 정보
 
 	List<Board> getNotice();
+
+	List<Order> findOrderByCusotmerIdLast(String customerId);
+
+	void modifyCustomer(Customer customer);
+
+	void insertBoard(HashMap map);
 }

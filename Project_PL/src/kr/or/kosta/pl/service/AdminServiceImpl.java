@@ -170,6 +170,11 @@ public class AdminServiceImpl implements AdminService {
 		Board board = dao.selectBoardByIndex(index);
 		return board;
 	}
+	
+	@Override
+	public void insertBoard(HashMap map) {
+		dao.insertBoard(map);
+	}
 
 	//////////////////////////// 케테고리관리///////////////////////////////////////////////////
 

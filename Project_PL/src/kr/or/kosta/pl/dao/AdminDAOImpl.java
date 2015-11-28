@@ -150,7 +150,13 @@ public class AdminDAOImpl implements AdminDAO {
 
 	@Override
 	public Board selectBoardByIndex(int index) {
+		session.update("adminMapper.updateBoardReadCount", index);
 		return session.selectOne("adminMapper.selectBoardInfo", index);
+	}
+	
+	@Override
+	public int insertBoard(HashMap map) {
+		return session.insert("adminMapper.insertBoard", map);
 	}
 
 	//////////////////////////// 카테고리관리///////////////////////////////////////////////////

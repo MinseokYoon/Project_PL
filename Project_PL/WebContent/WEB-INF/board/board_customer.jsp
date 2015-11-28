@@ -180,6 +180,7 @@
 						<!--/category-products-->
 					</div>
 				</div>
+				<div class="col-sm-9 padding-right">
 				<h2>게시판</h2>
 				<table width="500px" border="1" bordercolor="d8d8d8">
 					<tr height="30" bgcolor="#fe980f">
@@ -246,6 +247,10 @@
 						</td>
 					</tr>
 				</table>
+				<form action="${initParam.rootPath }/customer/boardWrite.do" method="post">
+					<input type="submit" value="글쓰기"/>
+				</form>
+				</div>
 			</div>
 		</div>
 	</section>

@@ -39,8 +39,11 @@
          }
    }
 </script>
+
 <body>
 	<header id="header"><!--header-->
+		
+		
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
@@ -53,16 +56,19 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-							<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
-								<li><a href="${initParam.rootPath}/customer/cartpage.do"><i class="fa fa-shopping-cart"></i> 장바구니</a></li>
-								<li><a href="${initParam.rootPath}/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
+								<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
+								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div><!--/header-middle-->
+	
+		
 	</header><!--/header-->
+
 			<c:choose>
 				<c:when test="${empty requestScope.cart}">
 				
@@ -79,6 +85,7 @@
 								<p>이용해 주셔서 감사합니다. 즐거운 쇼핑 되시기 바랍니다.</p>
 								<h5><b>&nbsp</b></h5>
 							</div>
+							
 							<div class="table-responsive cart_info">
 								<table class="table table-condensed">
 									<thead>
@@ -215,16 +222,30 @@
 							</div>
 						</div>
 					</section> <!--/#cart_items-->
-							
+					
 					<section id="do_action">
 						<div class="container">
+						
 							<div class="heading">
 								<h3><b>주문 총금액: <%=sum  %>원</b></h3>
 								주문하시겠습니까?&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 								<input type="submit" value="주문하기">
+								<p></p>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="total_area">
+								<ul>
+									<li>쇼핑 비용 <span>Free</span></li>
+									<li>장바구니 총 금액 <span><%=sum  %>원</span></li>	<% int point = (int)(sum*5)/100;  %>
+									<li>포인트 적립(구매 금액 5%) <span><%=point %> point</span></li>
+								</ul>
+									</div>
+								</div>
 							</div>
 						</div>
 					</section><!--/#do_action-->
+							
 					</form>
 				</c:otherwise>
 			</c:choose>

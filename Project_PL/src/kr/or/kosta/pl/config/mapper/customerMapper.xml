@@ -67,7 +67,7 @@
 			<arg column="customer_phone" javaType="string"/>
 		</constructor>
 	</resultMap>
-	
+
 	<resultMap type="board" id="board-resultMap">
 		<id property="boardIndex" column="board_idx"/>
 		<result property="boardTitle" column="board_title"/>
@@ -106,10 +106,18 @@
 		insert into pl_customer(<include refid="select-column-sql"/>) 
 		values (<include refid="select-value-sql"/>)
 	</insert>
+	
+	<select id="updateCustomer" parameterType="customer">
+	update pl_customer set customer_password=#{customerPassword}, customer_name=#{customerName}, 
+							  customer_address=#{customerAddress}, customer_birth=#{customerBirth}, 
+							   customer_phone=#{customerPhone}, customer_email=#{customerEmail}  
+	where customer_id=#{customerId}
+	</select>
+	
 			
 	<!-- ***************************고객 조회******************************************** -->
 	<select id="selectCustomerById" parameterType="string" resultMap="customer-resultmap">
-		select <include refid="select-column-sql"/> store_id from pl_customer
+		select <include refid="select-column-sql"/> from pl_customer
 		where customer_id= #{value}
 	
 	</select>
@@ -182,14 +190,23 @@
 	</select>
 	
 	<!-- ***************************주문 정보******************************************** -->
-	<!-- 주문 정보 전체 조회 -->
-	<select id="selectOrderByCustomerId" parameterType="string" resultMap="orderlist-resultmap">
+	<!-- 현재 주문 정보 전체 조회 -->
+	<select id="selectOrderByCustomerIdnow" parameterType="string" resultMap="orderlist-resultmap">
 		select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status, 
 				i.item_name, i.item_price, i.category_id, t.category_name, 
 				s.store_name, r.customer_name, r.customer_phone 
 		from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
 		where o.item_id = i.item_id and i.category_id = t.category_id and o.store_id = s.store_id and o.customer_id = r.customer_id 
 				and o.customer_id=#{value} and o.order_status =1
+	</select>
+	<!-- 이전 주문 정보 전체 조회 -->
+	<select id="selectOrderByCustomerIdLast" parameterType="string" resultMap="orderlist-resultmap">
+		select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status, 
+				i.item_name, i.item_price, i.category_id, t.category_name, 
+				s.store_name, r.customer_name, r.customer_phone 
+		from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
+		where o.item_id = i.item_id and i.category_id = t.category_id and o.store_id = s.store_id and o.customer_id = r.customer_id 
+				and o.customer_id=#{value} and o.order_status =2
 	</select>
 	
 	<!-- 주문 추가 -->
@@ -224,4 +241,12 @@
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name 
 		from (select * from pl_board where board_category=2 order by board_date desc) where rownum between 1 and 3
 	</select>
+	
+	<insert id="insertBoard" parameterType="hashmap">
+		insert into pl_board values(board_index_seq.nextval, #{boardTitle}, sysdate, 0, #{boardContent}, #{boardWriter}, 1, '일반')
+	</insert>
+	
+	<update id="updateBoardReadCount" parameterType="_int">
+		update pl_board set board_read_count=(select board_read_count from pl_board where board_idx=#{value})+1 where board_idx=#{value}
+	</update>
 </mapper>

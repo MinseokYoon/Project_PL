@@ -1,6 +1,7 @@
 package kr.or.kosta.pl.vo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order implements Serializable{
@@ -19,6 +20,10 @@ public class Order implements Serializable{
 	private String storeName;
 	private String customerName;
 	private String customerPhone;
+	private String customerDate;	//주문일자 문자 변환
+	
+	SimpleDateFormat date = new SimpleDateFormat("MM월 dd일 (E) hh시");
+	
 	
 	public Order() {}
 
@@ -54,6 +59,8 @@ public class Order implements Serializable{
 		this.storeName = storeName;
 		this.customerName = customerName;
 		this.customerPhone = customerPhone;
+		String customerDate = date.format(orderDate);
+		this.customerDate = customerDate;
 	}
 
 	public int getOrderNumber() {
@@ -168,15 +175,25 @@ public class Order implements Serializable{
 		this.customerPhone = customerPhone;
 	}
 
+	public String getCustomerDate() {
+		return customerDate;
+	}
+
+	public void setCustomerDate(String customerDate) {
+		this.customerDate = customerDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + categoryId;
 		result = prime * result + ((categoryName == null) ? 0 : categoryName.hashCode());
+		result = prime * result + ((customerDate == null) ? 0 : customerDate.hashCode());
 		result = prime * result + ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result + ((customerName == null) ? 0 : customerName.hashCode());
 		result = prime * result + ((customerPhone == null) ? 0 : customerPhone.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + itemId;
 		result = prime * result + ((itemName == null) ? 0 : itemName.hashCode());
 		result = prime * result + itemPrice;
@@ -205,6 +222,11 @@ public class Order implements Serializable{
 				return false;
 		} else if (!categoryName.equals(other.categoryName))
 			return false;
+		if (customerDate == null) {
+			if (other.customerDate != null)
+				return false;
+		} else if (!customerDate.equals(other.customerDate))
+			return false;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
@@ -219,6 +241,11 @@ public class Order implements Serializable{
 			if (other.customerPhone != null)
 				return false;
 		} else if (!customerPhone.equals(other.customerPhone))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
 			return false;
 		if (itemId != other.itemId)
 			return false;
@@ -256,8 +283,10 @@ public class Order implements Serializable{
 				+ itemId + ", orderCount=" + orderCount + ", orderDate=" + orderDate + ", orderStatus=" + orderStatus
 				+ ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", categoryId=" + categoryId
 				+ ", categoryName=" + categoryName + ", storeName=" + storeName + ", customerName=" + customerName
-				+ ", customerPhone=" + customerPhone + "]";
+				+ ", customerPhone=" + customerPhone + ", customerDate=" + customerDate + ", date=" + date + "]";
 	}
+
+	
 
 	
 	

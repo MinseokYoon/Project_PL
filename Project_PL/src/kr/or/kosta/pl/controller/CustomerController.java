@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.or.kosta.pl.exception.CustomerNotFoundException;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.service.CustomerService;
 import kr.or.kosta.pl.validate.CustomerValidator;
@@ -41,6 +43,7 @@ public class CustomerController {
 		
 		return "/WEB-INF/mypage/customer/mypage_customer.jsp";
 	}
+	
 	//장바구니
 	@RequestMapping("/cartpage")
 	public String cartPage(HttpSession session, ModelMap model){
@@ -56,7 +59,8 @@ public class CustomerController {
 		return "/WEB-INF/customer/cart/cart_form.jsp";
 	}
 	
-	/*-----------------------------------회원 가입------------------------------------------------*/
+	/*-----------------------------------회원 정보------------------------------------------------*/
+	//회원 가입
 	@RequestMapping("/add.do")
 	public String add(@ModelAttribute Customer customer, Errors errors, ModelMap model) throws DuplicatedIdException {
 
@@ -78,6 +82,13 @@ public class CustomerController {
 		model.addAttribute("customer", service.findCustomerById(customerId));
 		return "/WEB-INF/register/register_success_customer.jsp";
 
+	}
+	//회원 정보 수정
+	@RequestMapping("/modify.do")
+	public String modify(@ModelAttribute Customer customer, Errors errors, ModelMap model, HttpSession session) throws CustomerNotFoundException {   
+	   service.modifyCustomer(customer);
+	   session.setAttribute("sessionUser",customer);
+	   return "redirect:/customer/mypage.do";
 	}
 	
 	/*----------------------물품 검색 페이지 이동 (좌측 메뉴)-----------------------------------*/
@@ -124,6 +135,27 @@ public class CustomerController {
 		return "/WEB-INF/customer/find_store/find_store_nearby.jsp";
 	}
 	
+	/*------------------------------------마이 페이지 메뉴------------------------------------------*/
+	//포인트 조회
+	 @RequestMapping("/form_point.do")
+	   public String formPoint(){
+	      return "/WEB-INF/mypage/customer/mypage_point.jsp";
+	   }
+	//회원 정보 수정
+	 @RequestMapping("/form_myPage.do")
+	   public String formMoify(){
+	      return "/WEB-INF/mypage/customer/mypage_modify.jsp";
+	   }
+	 //이전 주문 목록
+	 @RequestMapping("/last_order")
+		public String lastOrder(HttpSession session, ModelMap model){
+			Customer customer = (Customer)session.getAttribute("sessionUser");
+			List<Order> order = service.findOrderByCusotmerIdLast(customer.getCustomerId());
+			
+			model.addAttribute("order", order);
+			return "/WEB-INF/mypage/customer/mypage_last_order.jsp";
+		}
+	 
 	/*------------------------------------물품 다중 조회------------------------------------------*/
 	@RequestMapping("/search_item")
 	public String searchItem(@RequestParam String itemName, ModelMap model){
@@ -242,5 +274,23 @@ public class CustomerController {
 		
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_customer.jsp";
+	}
+	
+	@RequestMapping("/boardWrite")
+	public String boardWrite() {
+		return "/WEB-INF/board/board_write_customer.jsp";
+	}
+	
+	@RequestMapping("/insertBoard")
+	public String insertBoard(@RequestParam String boardTitle, String boardContent, String boardWriter) {
+//			System.out.println("제목 : " + boardTitle);
+//			System.out.println("작성자 : " + boardWriter);
+//			System.out.println("내용 : " + boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+		HashMap map = new HashMap();
+		map.put("boardTitle", boardTitle);
+		map.put("boardWriter", boardWriter);
+		map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+		service.insertBoard(map);
+		return "redirect:/customer/boardList.do";
 	}
 }

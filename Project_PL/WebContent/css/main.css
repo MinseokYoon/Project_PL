@@ -1463,6 +1463,21 @@ h2.title {
   width: 100%;
 }
 
+.modify-form form input {
+  background: #F0F0E9;
+  border: medium none;
+  color: #696763;
+  display: block;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  height: 40px;
+  margin-bottom: 10px;
+  outline: medium none;
+  padding-left: 10px;
+  width: 100%;
+}
+
 .signup-form form input[type="radio"]{
   background: #FFFFFF;
   border: medium none;
@@ -1500,6 +1515,17 @@ h2.title {
   display: block;
   font-family: 'Roboto', sans-serif;
   padding: 6px 25px;
+}
+
+.modify-form form button {
+  background: #FE980F;
+  border: medium none;
+  border-radius: 0;
+  color: #FFFFFF;
+  display: block;
+  font-family: 'Roboto', sans-serif;
+  padding: 6px 25px;
+  margin-bottom: 120px;
 }
 
 .login-form label{

@@ -159,6 +159,11 @@ public class OwnerServiceImpl implements OwnerService {
 		return board;
 	}
 	
+	@Override
+	public void insertBoard(HashMap map) {
+		dao.insertBoard(map);
+	}
+	
 	public Product findOneProductByName(String pName, String ownerId) {
 		
 		return dao.selectOneProduct(pName,ownerId);

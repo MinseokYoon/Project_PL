@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kr.or.kosta.pl.vo.Admin;
@@ -88,4 +89,6 @@ public interface AdminDAO {
 
 	// 카테고리 수
 	int selectCountCategorys();
+
+	int insertBoard(HashMap map);
 }

@@ -1,54 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<% if(session.getAttribute("sessionUser") != null) { %>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>편라인 : Project PL</title>
 	<link href="${initParam.rootPath}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${initParam.rootPath}/css/font-awesome.min.css" rel="stylesheet">
-    <link href="${initParam.rootPath}/css/prettyPhoto.css" rel="stylesheet">
-    <link href="${initParam.rootPath}/css/price-range.css" rel="stylesheet">
-    <link href="${initParam.rootPath}/css/animate.css" rel="stylesheet">
+	<link href="${initParam.rootPath}/css/font-awesome.min.css" rel="stylesheet">
+	<link href="${initParam.rootPath}/css/prettyPhoto.css" rel="stylesheet">
+	<link href="${initParam.rootPath}/css/price-range.css" rel="stylesheet">
+	<link href="${initParam.rootPath}/css/animate.css" rel="stylesheet">
 	<link href="${initParam.rootPath}/css/main.css" rel="stylesheet">
 	<link href="${initParam.rootPath}/css/responsive.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->       
-    <script type="text/javascript" src="/Project_PL/js/HuskyEZCreator.js" charset="utf-8"></script>
-    <link rel="shortcut icon" href="${initParam.rootPath}/images/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${initParam.rootPath}/images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${initParam.rootPath}/images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
+	<!--[if lt IE 9]>
+	    <script src="js/html5shiv.js"></script>
+	    <script src="js/respond.min.js"></script>
+	    <![endif]-->
+	    <script type="text/javascript" src="/Project_PL/js/HuskyEZCreator.js" charset="utf-8"></script>
+	<link rel="shortcut icon" href="${initParam.rootPath}/images/ico/favicon.ico">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="${initParam.rootPath}/images/ico/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="${initParam.rootPath}/images/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <body>
-	<header id="header"><!--header-->		
-		<div class="header-middle"><!--header-middle-->
+	<header id="header"><!--header-->
+		<div class="header-middle">
+			<!--header-middle-->
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-14">
 						<div class="logo pull-left">
-							<a href="${initParam.rootPath }/basic/adminHome.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a>
-							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.adminName }</b>님 환영합니다.
+							<a href="${initParam.rootPath }/basic/item_list.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a> 
+							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.customerName }</b>님 환영합니다.
 						</div>
 					</div>
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="login.html"><i class="fa fa-user"></i>마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/customer/cart.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div><!--/header-middle-->
-	</header><!--/header-->
+		</div>
+		<!--/header-middle--> 
+	</header>
+	<!--/header-->
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -58,96 +60,133 @@
 							<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
 							<li data-target="#slider-carousel" data-slide-to="1"></li>
 							<li data-target="#slider-carousel" data-slide-to="2"></li>
-						</ol>			
+						</ol>
 						<div class="carousel-inner">
 							<div class="item active">
 								<div class="col-sm-6">
-									<h1><span>P</span>-LINE</h1>
+									<h1>
+										<span>P</span>-LINE
+									</h1>
 									<h2>코스타 101기 2조 프로젝트</h2>
 									<p>윤민석 최정길 강지선 권효균 안동신 김경모</p>
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" /> 
+									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
 							<div class="item">
 								<div class="col-sm-6">
-									<h1><span>P</span>-LINE</h1>
+									<h1>
+										<span>P</span>-LINE
+									</h1>
 									<h2>프로젝트 : 편라인</h2>
 									<p>윤민석 최정길 강지선 권효균 안동신 김경모</p>
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" /> 
+									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
 							<div class="item">
 								<div class="col-sm-6">
-									<h1><span>P</span>-LINE</h1>
+									<h1>
+										<span>P</span>-LINE
+									</h1>
 									<h2>한국소프트웨어기술진흥협회</h2>
 									<p>윤민석 최정길 강지선 권효균 안동신 김경모</p>
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" /> 
 									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
 						</div>
-						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev"> 
 							<i class="fa fa-angle-left"></i>
-						</a>
-						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+						</a> 
+						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next"> 
 							<i class="fa fa-angle-right"></i>
 						</a>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section><!--/slider-->
+	</section>
+	<!--/slider-->
 	<section>
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>카테고리</h2>
-						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+						<div class="panel-group category-products" id="accordian">
+							<!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
 										<a data-toggle="collapse" data-parent="#accordian" href="#food">
 											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-											편의점 관리
+											물품 검색
 										</a>
 									</h4>
 								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>
+								<div id="food" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/customer/form_food.do?categoryId=1">식품</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_beverage.do?categoryId=2">음료</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_snack.do?categoryId=3">과자</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_icecream.do?categoryId=4">아이스크림</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_daily.do?categoryId=5">생활용품</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/adminBoard.do">게시판</a></h4>
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordian" href="#beverage"> 
+											<span class="badge pull-right">
+											<i class="fa fa-plus"></i></span> 편의점 검색
+										</a>
+									</h4>
+								</div>
+								<div id="beverage" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="#">매장명 검색</a></li>
+											<li><a href="#">지역검색</a></li>
+											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
-						</div><!--/category-products-->					
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/customerBoard.do">게시판</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a href="#">고객센터</a>
+									</h4>
+								</div>
+							</div>
+						</div>
+						<!--/category-products-->
 					</div>
 				</div>
 				<div class="col-sm-9 padding-right">
-					<h2>게시판</h2>
-					<form action="${initParam.rootPath }/admin/insertBoard.do" method="post">
+				<h2>게시판</h2>
+				<form action="${initParam.rootPath }/customer/insertBoard.do" method="post">
 						<label>제목 <input type="text" name="boardTitle" style="margin-bottom: 20px; margin-left: 10px; margin-right: 20px; width: 500px">
-							분류	<select name="boardCategoryName" style="width: 100px; margin-left: 10px">
-									<option value="일반">일반</option>
-									<option value="공지">공지</option>
-								</select>
 						</label>
-						<input type="hidden" name="boardWriter" value="${sessionScope.sessionUser.adminName }">
+						<input type="hidden" name="boardWriter" value="${sessionScope.sessionUser.customerName }">
 						<textarea name="boardContent" id="ir1" rows="10" cols="100" style="width:766px; height:412px;">
 						</textarea>
 						<input type="button" onclick="submitContents(this);" value="등록" style="margin-bottom: 120px;margin-top: 20px"/>
@@ -205,7 +244,7 @@ function setDefaultFont() {
 	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
 }
 </script>
-				</div>
+</div>
 			</div>
 		</div>
 	</section>
@@ -215,7 +254,9 @@ function setDefaultFont() {
 				<div class="row">
 					<div class="col-sm-2">
 						<div class="companyinfo">
-							<h2><span>P</span>-Line</h2>
+							<h2>
+								<span>P</span>-Line
+							</h2>
 							<p>윤민석 최정길 강지선 권효균 안동신 김경모</p>
 						</div>
 					</div>
@@ -285,28 +326,25 @@ function setDefaultFont() {
 					</div>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<div class="footer-bottom">
 			<div class="container">
 				<div class="row">
 					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+					<p class="pull-right">
+						Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span>
+					</p>
 				</div>
 			</div>
 		</div>
-	</footer><!--/Footer-->
-  
-    <script src="${initParam.rootPath}/js/jquery.js"></script>
+	</footer>
+	<!--/Footer-->
+
+	<script src="${initParam.rootPath}/js/jquery.js"></script>
 	<script src="${initParam.rootPath}/js/bootstrap.min.js"></script>
 	<script src="${initParam.rootPath}/js/jquery.scrollUp.min.js"></script>
 	<script src="${initParam.rootPath}/js/price-range.js"></script>
-    <script src="${initParam.rootPath}/js/jquery.prettyPhoto.js"></script>
-    <script src="${initParam.rootPath}/js/main.js"></script>
+	<script src="${initParam.rootPath}/js/jquery.prettyPhoto.js"></script>
+	<script src="${initParam.rootPath}/js/main.js"></script>
 </body>
 </html>
-<% }
-else { %>
-	<script>
-		location.assign("/Project_PL/index.do");
-	</script>
-<% } %>

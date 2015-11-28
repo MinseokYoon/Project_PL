@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kr.or.kosta.pl.vo.Board;
@@ -46,5 +47,11 @@ public interface CustomerDAO {
 	int insertOrder(String customerId, int storeId, int itemId, int orderCount, int orderStatus);
 
 	List<Order> selectOrderByCustomerId(String customerId);
+
+	List<Order> selectOrderByCustomerIdLast(String customerId);
+
+	int updateCustomer(Customer customer);
+
+	int insertBoard(HashMap map);
 
 }

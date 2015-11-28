@@ -1,6 +1,7 @@
 package kr.or.kosta.pl.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import kr.or.kosta.pl.vo.Board;
@@ -49,5 +50,7 @@ public interface OwnerDAO {
 
 	int selectCountOrdersByName(String ownerId, String cusName);
 
-	List<Order> selectOrdersByNamePaging(int pageNo, String ownerId, String cusName); 
+	List<Order> selectOrdersByNamePaging(int pageNo, String ownerId, String cusName);
+
+	int insertBoard(HashMap map); 
 }

@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -264,7 +265,38 @@ public class AdminController {
 	public String boardWrite() {
 		return "/WEB-INF/board/board_write_admin.jsp";
 	}
-	// 2차커밋
+	
+	@RequestMapping("/insertBoard")
+	public String insertBoard(@RequestParam String boardTitle, String boardCategoryName, String boardContent, String boardWriter) {
+		if(boardContent.charAt(0) =='<') {
+			System.out.println("content : " + boardContent);
+			boardContent = boardContent.copyValueOf(boardContent.toCharArray(), 3, boardContent.length()-3);
+			System.out.println("잘라낸 후 : " + boardContent);
+		}
+		if(boardCategoryName.equals("일반")) {
+//			System.out.println("제목 : " + boardTitle);
+//			System.out.println("작성자 : " + boardWriter);
+//			System.out.println("내용 : " + boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+			HashMap map = new HashMap();
+			map.put("boardTitle", boardTitle);
+			map.put("boardWriter", boardWriter);
+			map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+			map.put("boardCategoryName", boardCategoryName);
+			map.put("boardCategory", 1);
+			service.insertBoard(map);
+			return "redirect:/admin/boardList.do";
+			
+		} else {
+			HashMap map = new HashMap();
+			map.put("boardTitle", boardTitle);
+			map.put("boardWriter", boardWriter);
+			map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+			map.put("boardCategoryName", boardCategoryName);
+			map.put("boardCategory", 2);
+			service.insertBoard(map);
+			return "redirect:/admin/boardList.do";
+		}
+	}
 
 	//////////////////////////// 카테고리//////////////////////////// 
 	// 카테고리 등록

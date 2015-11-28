@@ -141,7 +141,7 @@
 								<div id="food" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="${initParam.rootPath }/customer/form_myPage.do">정보 수정</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_food.do?categoryId=1">정보 수정</a></li>
 											<li><a href="${initParam.rootPath }/customer/form_point.do">포인트 조회</a></li>
 										</ul>
 									</div>
@@ -165,6 +165,7 @@
 									</div>
 								</div>
 							</div>
+							
 						</div>
 						<!--/category-products-->
 					</div>
@@ -175,21 +176,21 @@
 
 				  <div class="container">
 					  <div class="row">
-					     <div class="col-sm-15">
-					        <div class="modify-form">
+					     <div class="col-sm-4 col-sm-offset-4">
+					        <div class="signup-form">
 					           <!--login form-->
-					               <div style="Text-align:center; padding:20px; border:1px;"></div>
-					              <h2>회원 정보 수정</h2>
+					               <div style="Text-align:center; padding:20px; border:1px;">
+					                        </div>
+					              <h2><b>${sessionScope.sessionUser.customerId}</b>님의 포인트</h2>
+					              <div>해당 포인트는 매장에서 결제시 사용해 주세요.</div>
+					              <div>(500점 이상부터 사용 가능합니다.)</div>
 					              <spring:hasBindErrors name="customer"/>
-					              <form action="/Project_PL/customer/modify.do">
-					                 <input type="text" name="customerId" value="${sessionScope.sessionUser.customerId}" /> <form:errors path="requestScope.customer.customerId" />
-					                 <input type="password" name="customerPassword" value="${sessionScope.sessionUser.customerPassword }" /> <form:errors path="customer.customerPassword" />
-					                 <input type="text" name="customerName" value="${sessionScope.sessionUser.customerName}" />    <form:errors path="customer.customerName" />
-					                 <input type="text" name="customerAddress" value="${sessionScope.sessionUser.customerAddress}" height="100px" />  <form:errors path="customer.customerAddress" />
-					                 <input type="text" name="customerBirth" value="${sessionScope.sessionUser.customerBirth}" /> <form:errors path="customer.customerBirth" />
-					                 <input type="text" name="customerPhone" value="${sessionScope.sessionUser.customerPhone}" /> 
-					                 <input type="text" name="customerEmail" value="${sessionScope.sessionUser.customerEmail}" /> 
-					                 <button type="submit" class="btn btn-default" Text-align:center>수정</button>     
+					              <form action="/Project_PL/basic/item_list.do">
+					                 <input readonly="readonly" name="customerPoint" value="${sessionScope.sessionUser.customerPoint}원 " />
+								<div>이용해 주셔서 감사합니다.</div>
+					                      <button type="submit" class="btn btn-default" Text-align:center>메인으로 돌아가기</button>     
+					                        <div style="Text-align:center; padding:50px; border:1px;">
+					                        </div>             
 					              </form>
 					           </div>
 					           <!--/login form-->

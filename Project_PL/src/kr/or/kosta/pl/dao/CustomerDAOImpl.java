@@ -38,6 +38,12 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public Customer selectCustomerById(String customerId) {
 		return session.selectOne("customerMapper.selectCustomerById", customerId);
 	}
+	//회원 정보 수정
+	@Override
+	public int updateCustomer(Customer customer) {
+		return session.update("customerMapper.updateCustomer", customer);
+	}
+	
 	/*-------------------------------물품 조회--------------------------------------------*/
 	//메인 페이지 12개 랜덤 조회(젠체 물품 중)
 	@Override
@@ -162,9 +168,17 @@ public class CustomerDAOImpl implements CustomerDAO{
 	@Override
 	public List<Order> selectOrderByCustomerId(String customerId) {
 		
-		return session.selectList("customerMapper.selectOrderByCustomerId", customerId);
+		return session.selectList("customerMapper.selectOrderByCustomerIdnow", customerId);
 	
 	}
+	//이전 주문 조회
+	@Override
+	public List<Order> selectOrderByCustomerIdLast(String customerId) {
+		
+		return session.selectList("customerMapper.selectOrderByCustomerIdLast", customerId);
+	
+	}
+	
 	/*-------------------------------게시판 처리--------------------------------------------*/
 	//게시판 페이지
 	@Override
@@ -179,12 +193,18 @@ public class CustomerDAOImpl implements CustomerDAO{
 	//게시판 선택
 	@Override
 	public Board selectBoardByIndex(int index) {
+		session.update("customerMapper.updateBoardReadCount", index);
 		return session.selectOne("customerMapper.selectBoardInfo", index);
 	}
 
 	@Override
 	public List<Board> selectNotice() {
 		return session.selectList("customerMapper.selectNotice");
+	}
+	
+	@Override
+	public int insertBoard(HashMap map) {
+		return session.insert("customerMapper.insertBoard", map);
 	}
 	
 }

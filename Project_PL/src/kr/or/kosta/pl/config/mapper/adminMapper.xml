@@ -198,6 +198,13 @@
 		from (select * from pl_board where board_category=2 order by board_date desc) where rownum between 1 and 3
 	</select>
 
+	<insert id="insertBoard" parameterType="hashmap">
+		insert into pl_board values(board_index_seq.nextval, #{boardTitle}, sysdate, 0, #{boardContent}, #{boardWriter}, #{boardCategory}, #{boardCategoryName})
+	</insert>
+	
+	<update id="updateBoardReadCount" parameterType="_int">
+		update pl_board set board_read_count=(select board_read_count from pl_board where board_idx=#{value})+1 where board_idx=#{value}
+	</update>
 
 <!-- ///////////////////////////////////////////////카테고리/////////////////////////////////////////// -->
 	<sql id="categorySelect-column-sql">

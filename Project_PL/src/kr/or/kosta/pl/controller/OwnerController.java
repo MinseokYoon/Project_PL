@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -228,6 +229,24 @@ public class OwnerController {
 		
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_owner.jsp";
+	}
+	
+	@RequestMapping("/boardWrite")
+	public String boardWrite() {
+		return "/WEB-INF/board/board_write_owner.jsp";
+	}
+	
+	@RequestMapping("/insertBoard")
+	public String insertBoard(@RequestParam String boardTitle, String boardContent, String boardWriter) {
+//			System.out.println("제목 : " + boardTitle);
+//			System.out.println("작성자 : " + boardWriter);
+//			System.out.println("내용 : " + boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+		HashMap map = new HashMap();
+		map.put("boardTitle", boardTitle);
+		map.put("boardWriter", boardWriter);
+		map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+		service.insertBoard(map);
+		return "redirect:/owner/boardList.do";
 	}
 	
 	//주문현황  handler

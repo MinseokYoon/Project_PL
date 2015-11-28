@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,4 +62,6 @@ public interface AdminService {
 	List<Category> getAllCategorys();
 
 	Map getAllCategorysPaging(int pageNo);
+
+	void insertBoard(HashMap map);
 }

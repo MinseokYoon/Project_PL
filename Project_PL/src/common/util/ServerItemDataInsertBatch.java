@@ -24,10 +24,7 @@ public class ServerItemDataInsertBatch {
 				id = "0" + i;
 			}else{
 				id = i + "";
-			}*/
-				
-			pstmt.setInt(1, i);
-			
+			}*/		
 			if(i<=120){
 				pstmt.setInt(1, 100);
 				int itemId1=i;

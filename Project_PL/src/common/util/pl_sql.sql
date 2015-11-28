@@ -203,7 +203,7 @@ drop sequence order_index_seq
 
 
 -- 서버 물품 인덱스 시쿠너스 드랍 --
-drop sequnce server_item_index_seq
+drop sequence server_item_index_seq
 
 --select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id from PL_ITEM_INFO e, PL_SERVER_ITEM d where d.store_id=(select store_id from PL_STORE where owner_id='owner1') and e.item_id = d.item_id 
 --
@@ -223,6 +223,11 @@ drop sequnce server_item_index_seq
 
 
 insert into pl_board values(board_index_seq.nextval, '안녕', sysdate, 1, '퍼킹', '아낙수나문')
+
+
+insert into pl_board values(board_index_seq.nextval, #{boardTitle}, sysdate, 0, #{boardContent}, #{boardWriter}, #{boardContent}, #{boardContentName})
+
+update pl_board set board_read_count=(select board_read_count from pl_board where board_idx=1)+1 where board_idx=1
 
 insert into pl_board values(board_index_seq.nextval, '그래', sysdate, 1, '퍼킹1234', '이모텝')
 

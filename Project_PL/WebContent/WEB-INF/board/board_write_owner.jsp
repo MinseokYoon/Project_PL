@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <% if(session.getAttribute("sessionUser") != null) { %>
 
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>편라인 : Project PL</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>편라인 : Project PL</title>
 	<link href="${initParam.rootPath}/css/bootstrap.min.css" rel="stylesheet">
     <link href="${initParam.rootPath}/css/font-awesome.min.css" rel="stylesheet">
     <link href="${initParam.rootPath}/css/prettyPhoto.css" rel="stylesheet">
@@ -19,8 +19,8 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->       
-    <script type="text/javascript" src="/Project_PL/js/HuskyEZCreator.js" charset="utf-8"></script>
     <link rel="shortcut icon" href="${initParam.rootPath}/images/ico/favicon.ico">
+    <script type="text/javascript" src="/Project_PL/js/HuskyEZCreator.js" charset="utf-8"></script>
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="${initParam.rootPath}/images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${initParam.rootPath}/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
@@ -33,14 +33,14 @@
 				<div class="row">
 					<div class="col-sm-14">
 						<div class="logo pull-left">
-							<a href="${initParam.rootPath }/basic/adminHome.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a>
-							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.adminName }</b>님 환영합니다.
+							<a href="${initParam.rootPath }/basic/ownerHome.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a>
+							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.ownerName }</b>님 환영합니다.
 						</div>
 					</div>
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
@@ -49,6 +49,7 @@
 			</div>
 		</div><!--/header-middle-->
 	</header><!--/header-->
+	
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -84,6 +85,7 @@
 									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
+							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -96,6 +98,7 @@
 									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
+							
 						</div>
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
@@ -103,7 +106,7 @@
 						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
 							<i class="fa fa-angle-right"></i>
 						</a>
-					</div>
+					</div>			
 				</div>
 			</div>
 		</div>
@@ -120,34 +123,45 @@
 									<h4 class="panel-title">
 										<a data-toggle="collapse" data-parent="#accordian" href="#food">
 											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-											편의점 관리
+											주문관리
 										</a>
+									</h4>
+								</div>
+								<div id="food" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/owner/order_list.do?pageNo=${param.pageNo}">주문현황</a></li>
+											<li><a href="${initParam.rootPath }/owner/order_processing.do?pageNo=${param.pageNo}">주문처리</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">재고관리</a>
 									</h4>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>
+									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/adminBoard.do">게시판</a></h4>
+									<h4 class="panel-title"><a href="#">고객센터</a></h4>
 								</div>
 							</div>
 						</div><!--/category-products-->					
 					</div>
 				</div>
 				<div class="col-sm-9 padding-right">
-					<h2>게시판</h2>
-					<form action="${initParam.rootPath }/admin/insertBoard.do" method="post">
+				<h2>게시판</h2>
+				<form action="${initParam.rootPath }/owner/insertBoard.do" method="post">
 						<label>제목 <input type="text" name="boardTitle" style="margin-bottom: 20px; margin-left: 10px; margin-right: 20px; width: 500px">
-							분류	<select name="boardCategoryName" style="width: 100px; margin-left: 10px">
-									<option value="일반">일반</option>
-									<option value="공지">공지</option>
-								</select>
 						</label>
-						<input type="hidden" name="boardWriter" value="${sessionScope.sessionUser.adminName }">
+						<input type="hidden" name="boardWriter" value="${sessionScope.sessionUser.ownerName }">
 						<textarea name="boardContent" id="ir1" rows="10" cols="100" style="width:766px; height:412px;">
 						</textarea>
 						<input type="button" onclick="submitContents(this);" value="등록" style="margin-bottom: 120px;margin-top: 20px"/>
@@ -205,7 +219,7 @@ function setDefaultFont() {
 	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
 }
 </script>
-				</div>
+</div>
 			</div>
 		</div>
 	</section>
@@ -234,6 +248,7 @@ function setDefaultFont() {
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -248,6 +263,7 @@ function setDefaultFont() {
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -262,6 +278,7 @@ function setDefaultFont() {
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -295,7 +312,7 @@ function setDefaultFont() {
 			</div>
 		</div>
 	</footer><!--/Footer-->
-  
+	
     <script src="${initParam.rootPath}/js/jquery.js"></script>
 	<script src="${initParam.rootPath}/js/bootstrap.min.js"></script>
 	<script src="${initParam.rootPath}/js/jquery.scrollUp.min.js"></script>

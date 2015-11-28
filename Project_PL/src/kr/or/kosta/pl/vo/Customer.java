@@ -15,25 +15,6 @@ public class Customer {
 	
 	public Customer(){}
 	
-	
-
-	public Customer(String customerId, String customerPassword, String customerName, String customerAddress,
-			String customerBirth, int customerGender, String customerPhone, String customerEmail) {
-		super();
-		this.customerId = customerId;
-		this.customerPassword = customerPassword;
-		this.customerName = customerName;
-		this.customerAddress = customerAddress;
-		this.customerBirth = customerBirth;
-		this.customerGender = customerGender;
-		this.customerPhone = customerPhone;
-		this.customerEmail = customerEmail;
-		this.customerPoint = 0;
-		this.storeId = 0;
-	}
-
-
-
 	public Customer(String customerId, String customerPassword, String customerName, String customerAddress,
 			String customerBirth, int customerGender, String customerPhone, String customerEmail, int customerPoint) {
 		this.customerId = customerId;

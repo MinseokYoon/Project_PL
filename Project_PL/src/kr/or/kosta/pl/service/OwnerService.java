@@ -2,6 +2,7 @@ package kr.or.kosta.pl.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,4 +101,7 @@ public interface OwnerService{
 
 
 	Map getOrderListByNamePaging(int pageNo, String ownerId, String cusName);
+
+
+	void insertBoard(HashMap map);
 }

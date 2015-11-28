@@ -2,10 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -173,31 +169,84 @@
 				<!--  -->
 				<div class="col-sm-9 padding-right">
 
-				  <div class="container">
-					  <div class="row">
-					     <div class="col-sm-15">
-					        <div class="modify-form">
-					           <!--login form-->
-					               <div style="Text-align:center; padding:20px; border:1px;"></div>
-					              <h2>회원 정보 수정</h2>
-					              <spring:hasBindErrors name="customer"/>
-					              <form action="/Project_PL/customer/modify.do">
-					                 <input type="text" name="customerId" value="${sessionScope.sessionUser.customerId}" /> <form:errors path="requestScope.customer.customerId" />
-					                 <input type="password" name="customerPassword" value="${sessionScope.sessionUser.customerPassword }" /> <form:errors path="customer.customerPassword" />
-					                 <input type="text" name="customerName" value="${sessionScope.sessionUser.customerName}" />    <form:errors path="customer.customerName" />
-					                 <input type="text" name="customerAddress" value="${sessionScope.sessionUser.customerAddress}" height="100px" />  <form:errors path="customer.customerAddress" />
-					                 <input type="text" name="customerBirth" value="${sessionScope.sessionUser.customerBirth}" /> <form:errors path="customer.customerBirth" />
-					                 <input type="text" name="customerPhone" value="${sessionScope.sessionUser.customerPhone}" /> 
-					                 <input type="text" name="customerEmail" value="${sessionScope.sessionUser.customerEmail}" /> 
-					                 <button type="submit" class="btn btn-default" Text-align:center>수정</button>     
-					              </form>
-					           </div>
-					           <!--/login form-->
-					        </div>
-					    </div>
+				<section id="cart_items">
+				<div class="container">
+
+
+					<div class="heading">
+						<h3>
+							<b>이전 주문 내역 입니다.</b>
+						</h3>
+						<p>이용해 주셔서 감사합니다.</p>
 					</div>
 
+					<div class="table-responsive cart_info">
+						<table class="table table-condensed">
+							<thead>
+								<tr class="cart_menu">
+									<td class="image">상품</td>
+									<td class="description"></td>
+									<td class="price">주문 편의점</td>
+									<td class="price">가격</td>
+									<td class="quantity">수량</td>
+									<td class="total">총 가격</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+								 
+								<%int sum = 0;%>
+								<c:forEach items="${requestScope.order }" var="order">
+								<% int eachSum = 0;%>
+									<tr>
+										<td class="cart_product"><a href=""><img
+												src="${initParam.rootPath}/images/${order.categoryId }/${order.itemName }.png"
+												alt=""></a></td>
+										<td class="cart_description">
+											<h4>${order.itemName }</h4>
+											<p>분류: ${order.categoryName }</p>
+										</td>
+										<td class="cart_price">
+											<p>${order.storeName }</p>
+										</td>
+										<td class="cart_price">
+											<p>${order.itemPrice }원</p>
+										</td>
+										<td class="cart_quantity">
+											<div class="cart_quantity_button">
+												<input class="cart_quantity_input" readonly="readonly"
+													name="quantity" value="${order.orderCount }"
+													autocomplete="off" size="2">
+												<div>&nbsp개</div>
+											</div>
+										</td>
+										<%eachSum = (int)((Order)pageContext.getAttribute("order")).getItemPrice() * 
+													(int)((Order)pageContext.getAttribute("order")).getOrderCount();%>
+										<td class="cart_total">
+											<p class="cart_total_price"><%=eachSum %>원</p>
+										</td>
+										<td class="cart_delete"><a class="cart_quantity_delete"
+											href="#"><i
+												class="fa fa-times"></i></a></td>
+									</tr>
+								<%sum = sum + eachSum; %>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
 				</div>
+				</section>
+				<!--/#cart_items-->
+				<section id="do_action">
+					<div class="container">
+						<div class="heading">
+							<h4><b>즐거운 하루 되세요.</b></h4>
+							
+						</div>
+					</div>
+				</section><!--/#do_action-->
+
+			</div>
 				
 							
 			</div>

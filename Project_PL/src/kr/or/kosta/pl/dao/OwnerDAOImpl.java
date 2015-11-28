@@ -130,8 +130,15 @@ public class OwnerDAOImpl implements OwnerDAO {
 
 	@Override
 	public Board selectBoardByIndex(int index) {
+		session.update("ownerMapper.updateBoardReadCount", index);
 		return session.selectOne("ownerMapper.selectBoardInfo", index);
 	}
+	
+	@Override
+	public int insertBoard(HashMap map) {
+		return session.insert("ownerMapper.insertBoard", map);
+	}
+	
 	
 	@Override
 	public int selectCountOrders(String ownerId) {

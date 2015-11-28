@@ -39,7 +39,7 @@
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="login.html"><i class="fa fa-user"></i>마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
@@ -137,8 +137,8 @@
 								<div id="food" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="${initParam.rootPath }/customer/modify.do">정보 수정</a></li>
-											<li><a href="${initParam.rootPath }/customer/form_beverage.do?categoryId=2">비밀번호 변경</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_myPage.do">정보 수정</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_point.do">포인트 조회</a></li>
 										</ul>
 									</div>
 								</div>
@@ -155,18 +155,12 @@
 								<div id="beverage" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">현재 주문 내역</a></li>
-											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">이전 주문 내역</a></li>
+											<li><a href="${initParam.rootPath }/customer/mypage.do">현재 주문 내역</a></li>
+											<li><a href="${initParam.rootPath }/customer/last_order.do">이전 주문 내역</a></li>
 										</ul>
 									</div>
 								</div>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/customerBoard.do">포인트</a></h4>
-								</div>
-							</div>
-							
 						</div>
 						<!--/category-products-->
 					</div>
@@ -193,6 +187,7 @@
 									<td class="image">상품</td>
 									<td class="description"></td>
 									<td class="price">주문 편의점</td>
+									<td class="price">주문 일자</td>
 									<td class="price">가격</td>
 									<td class="quantity">수량</td>
 									<td class="total">총 가격</td>
@@ -214,6 +209,9 @@
 										</td>
 										<td class="cart_price">
 											<p>${order.storeName }</p>
+										</td>
+										<td class="cart_price">
+											<p>${order.customerDate }</p>
 										</td>
 										<td class="cart_price">
 											<p>${order.itemPrice }원</p>
@@ -247,6 +245,8 @@
 					<div class="container">
 						<div class="heading">
 							<h3><b>주문 총금액: <%=sum  %>원</b></h3>
+							<%int point = (int)sum*5/100; %>
+							<h5>예상 포인트 적립금: <%=point %> point</h5>
 							즐거운 하루 되세요.
 						</div>
 					</div>

@@ -52,6 +52,11 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return customer;
 	}
+	//회원 정보 수정
+	@Override
+	public void modifyCustomer(Customer customer) {
+		dao.updateCustomer(customer);
+	}
 
 	/*-------------------------------물품 조회--------------------------------------------*/
 	//메인 페이지 12개 랜덤 조회(젠체 물품 중)
@@ -59,6 +64,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public List<Product> findItemList() {
 		return dao.selectItemList();
 	}
+
 	//물품 이름(아이디 대체)으로 물건 1개 조회
 	@Override
 	public Product findItemById(String itemName) {
@@ -165,6 +171,12 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return dao.selectOrderByCustomerId(customerId);
 	}
+	//주문 조회
+	@Override
+	public List<Order> findOrderByCusotmerIdLast(String customerId) {
+		
+		return dao.selectOrderByCustomerIdLast(customerId);
+	}
 	
 	/*-------------------------------게시판 처리--------------------------------------------*/
 	//게시판 전체
@@ -190,6 +202,11 @@ public class CustomerServiceImpl implements CustomerService{
 	public List<Board> getNotice() {
 		List<Board> list = dao.selectNotice();
 		return list;
+	}
+	
+	@Override
+	public void insertBoard(HashMap map) {
+		dao.insertBoard(map);
 	}
 
 }
