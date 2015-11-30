@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -113,6 +114,98 @@ public class OwnerDAOImpl implements OwnerDAO {
 		return session.update("ownerMapper.updateInputProduct",map);
 	}
 
+	
+	
+	
+	@Override
+	public int selectCountOrders(String ownerId) {
+		return session.selectOne("ownerMapper.selectCountOrders",ownerId);
+	}
+
+	@Override
+	public List<Order> selectOrdersPaging(int pageNo, String ownerId) {
+		HashMap map = new HashMap();
+		map.put("contentPerPage", PagingBean.CONTENTS_PER_PAGE);
+		map.put("pageNo",pageNo);
+		map.put("ownerId", ownerId); //편의점 id값 넣기 
+		
+		List<Order> list = session.selectList("ownerMapper.selectOrdersPaging",map);
+		return list;
+	}
+
+
+	@Override
+	public List<Order> selectOrdersByPhonePaging(int pageNo, String ownerId,String cusPhone) {
+		HashMap map = new HashMap();
+		map.put("contentPerPage", PagingBean.CONTENTS_PER_PAGE);
+		map.put("pageNo",pageNo);
+		map.put("ownerId", ownerId); //편의점 id값 넣기 
+		map.put("customerPhone", cusPhone);
+		
+		List<Order> list = session.selectList("ownerMapper.selectOrdersByPhonePaging",map);
+		return list;
+	}
+
+	@Override
+	public int selectCountOrdersByPhone(String ownerId,String cusPhone) {
+		HashMap map = new HashMap();
+		map.put("ownerId", ownerId);
+		map.put("customerPhone", cusPhone);
+		return session.selectOne("ownerMapper.selectCountOrdersByPhone",map);
+	}
+
+	//선택한 주문 상태 바꾸기
+	@Override
+	public int updateOrderStatus(String orderNumber) {
+		
+		return session.update("ownerMapper.updateOrderStatus",orderNumber);
+	}
+
+	//모든 주문 상태 바꾸기 
+	@Override
+	public int updateAllOrdersStatus(String customerId, String storeId) {
+		HashMap map = new HashMap();
+		map.put("customerId", customerId);
+		map.put("storeId",storeId);
+		return session.update("ownerMapper.updateAllOrdersStatus",map);
+	}
+
+	//본사물품 개수 조회하는거 
+	@Override
+	public int selectHeadOfficeProductCount(String ownerId) {
+		return session.selectOne("ownerMapper.selectHeadOfficeProductCount",ownerId);
+	}
+
+	//본사물품 페이징처리 
+	@Override
+	public List<Product> selectHeadOfficeProductsPaging(int pageNo, String ownerId) {
+		HashMap map = new HashMap();
+		map.put("contentPerPage", PagingBean.CONTENTS_PER_PAGE);
+		map.put("pageNo",pageNo);
+		map.put("ownerId", ownerId); //편의점 id값 넣기 
+		
+		List<Product> list = session.selectList("ownerMapper.selectHeadOfficeProductsPaging",map);
+		return list;
+	}
+
+	//본사 물품 조회하는 거
+	@Override
+	public Product selectHeadOfficeProductByName(String productName) {
+		return session.selectOne("ownerMapper.selectHeadOfficeProductByName",productName);
+	}
+
+	//본사 물품 인서트 하는거 
+	@Override
+	public int insertServerItem(String ownerId, String itemId, String inputCount,Date date) {
+		HashMap map = new HashMap();
+		map.put("ownerId", ownerId);
+		map.put("itemId",itemId);
+		map.put("inputCount", inputCount); 
+		map.put("date",date);
+		
+		return session.insert("ownerMapper.insertServerItem",map);
+	}
+
 	@Override
 	public List<Board> selectNotice() {
 		return session.selectList("ownerMapper.selectNotice");
@@ -137,43 +230,6 @@ public class OwnerDAOImpl implements OwnerDAO {
 	@Override
 	public int insertBoard(HashMap map) {
 		return session.insert("ownerMapper.insertBoard", map);
-	}
-	
-	
-	@Override
-	public int selectCountOrders(String ownerId) {
-		return session.selectOne("ownerMapper.selectCountOrders",ownerId);
-	}
-
-	@Override
-	public List<Order> selectOrdersPaging(int pageNo, String ownerId) {
-		HashMap map = new HashMap();
-		map.put("contentPerPage", PagingBean.CONTENTS_PER_PAGE);
-		map.put("pageNo",pageNo);
-		map.put("ownerId", ownerId); //편의점 id값 넣기 
-		
-		List<Order> list = session.selectList("ownerMapper.selectOrdersPaging",map);
-		return list;
-	}
-
-	@Override
-	public int selectCountOrdersByName(String ownerId,String cusName) {
-		HashMap map = new HashMap();
-		map.put("ownerId", ownerId);
-		map.put("customerName", cusName);
-		return session.selectOne("ownerMapper.selectCountOrdersByName",map);
-	}
-
-	@Override
-	public List<Order> selectOrdersByNamePaging(int pageNo, String ownerId,String cusName) {
-		HashMap map = new HashMap();
-		map.put("contentPerPage", PagingBean.CONTENTS_PER_PAGE);
-		map.put("pageNo",pageNo);
-		map.put("ownerId", ownerId); //편의점 id값 넣기 
-		map.put("customerName", cusName);
-		
-		List<Order> list = session.selectList("ownerMapper.selectOrdersByNamePaging",map);
-		return list;
 	}
 	
 }

@@ -28,6 +28,7 @@
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/Project_PL/images/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="/Project_PL/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
+<script type="text/javascript" src="/${initParam.rootPath }/jquery.js"></script>
 <script type="text/javascript">
 	function productSearchCheck() {
 		var form1 = document.productSearch;
@@ -41,17 +42,6 @@
 		}
 	}
 
-	function resultInputMessage() {
-		var inputCount = document.getElementsByName("inputCount")[0].value;
-
-		if (inputCount == "") {
-			alert("입고개수를 입력하세요");
-			return false;
-		}
-
-		alert("입고되었습니다.");
-	}
-
 	function resultOuputMessage() {
 
 		var outCount = document.getElementsByName("outputCount")[0].value;
@@ -63,7 +53,39 @@
 
 		alert("출고되었습니다.")
 	}
+	
+	function resultInputMessage() {
+		var inputCount = $('#inputCount').val();
+		var year = $('#year').val();
+		var month = $('#month').val();
+		var day = $('#day').val();
+	
+		
+		if (inputCount == "") {
+			alert("입고개수를 입력하세요");
+			return false;
+		} 
+		
+		if(year == "default"){
+			alert("년도를 입력하세요");
+			return false;
+		}
+		
+		if(month == "default"){
+			alert("월을 입력하세요");
+			return false;
+		}
+		
+		if(day == "default"){
+			alert("일을 입력하세요");
+			return false;
+		} 
+		
+		return confirm("정말 입고하시겠습니까?");
+	}
 </script>
+
+
 <body>
 	<header id="header"><!--header-->
 		<div class="header-middle">
@@ -196,6 +218,11 @@
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${param.pageNo}">본사물품</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title">
 										<a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a>
 									</h4>
@@ -225,24 +252,34 @@
 							<div class="product-information">
 								<!--/product-information-->
 								<h2>${requestScope.product.itemName }</h2>
-								<span> <span>${requestScope.product.itemPrice }원</span> <label>Quantity:</label>
-									<input type="text" value="${requestScope.product.itemCount }" />
+								<span> <span>${requestScope.product.itemPrice }원</span> 
+									
 								</span>
 								<p>분류 : ${requestScope.product.categoryName }</p>
-								<form action="${initParam.rootPath }/owner/input.do"
-									onsubmit="return resultInputMessage();">
-									<input type="hidden" name="itemCount" value="${requestScope.product.itemCount }"> 
-									<input type="hidden" name="productId" value="${requestScope.product.itemId }"> 
-									<input type="text" placeholder="입고개수" name="inputCount"> 
+								<p>유통기한 </p>
+								<form action="${initParam.rootPath }/owner/inputServerItem.do" onsubmit="return resultInputMessage();">
+									<select name="year" style="width: 70px" id="year">
+										<option value="default"></option>
+										<c:forEach begin="2015" end="2025" var="y">
+											<option>${y }</option>
+										</c:forEach>
+									</select>년
+									<select name="month" style="width: 60px" id="month">
+										<option value="default"></option>
+										<c:forEach begin="1" end="12" var="y">
+											<option>${y }</option>
+										</c:forEach>
+									</select>월
+									<select name="day" style="width: 60px" id="day">
+										<option value="default"></option>
+										<c:forEach begin="1" end="31" var="y">
+											<option>${y }</option>
+										</c:forEach>
+									</select>일
+									<input type="hidden" name="itemId" value="${requestScope.product.itemId }">
+									<input type="hidden" name="itemName" value="${requestScope.product.itemName }"><p>
+									<input type="number" name="inputCount" placeholder="입고개수" id="inputCount" > 
 									<input type="submit" value="입고"> 
-									<input type="hidden" name="productName" value="${requestScope.product.itemName }">
-								</form>
-								<form action="${initParam.rootPath }/owner/output.do" onsubmit="return resultOuputMessage();">
-									<input type="hidden" name="itemCount" value="${requestScope.product.itemCount }"> 
-									<input type="hidden" name="productId" value="${requestScope.product.itemId }"> 
-									<input type="text" placeholder="출고개수" name="outputCount"> 
-									<input type="submit" value="출고"> 
-									<input type="hidden" name="productName" value="${requestScope.product.itemName }">
 								</form>
 							</div>
 							<!--/product-information-->

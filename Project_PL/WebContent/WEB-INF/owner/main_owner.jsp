@@ -141,6 +141,11 @@
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
 								</div>
 							</div>

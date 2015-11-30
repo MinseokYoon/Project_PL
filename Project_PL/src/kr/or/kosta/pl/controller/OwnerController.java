@@ -1,5 +1,6 @@
 package kr.or.kosta.pl.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,19 +54,6 @@ public class OwnerController {
 		return "owner/register_success.tiles";
 	}
 	
-	
-	//물품관리 처리 Handler
-/*	@RequestMapping("/product_list")
-	public String list(@RequestParam(defaultValue="1") String pageNo,ModelMap model){
-		int page=1;
-		try{
-			page = Integer.parseInt(pageNo); //null일 경우 예외처리를 통해 page를 1로 처리
-		}catch(NumberFormatException e){}
-		
-		Map attributes = service.getAllProductsPaging(page);
-		model.addAllAttributes(attributes);
-		return "owner/product_list.tiles";
-	}*/
 	
 	//점장 Id로 점장 조회 처리 Handler
 	@RequestMapping("/fingById")
@@ -148,9 +136,8 @@ public class OwnerController {
 		product = service.findOneProductByName(productName, ownerId); 
 		model.addAttribute("product",product);
 		
-		//여기 고쳐야 함 
-		System.out.println(product.getItemId());
-		System.out.println(product.getItemName());
+		//System.out.println(product.getItemId());
+		//System.out.println(product.getItemName());
 		
 		return "/WEB-INF/owner/item_management/product_info.jsp";
 		
@@ -168,7 +155,7 @@ public class OwnerController {
 		String pId = productId; //물품 Id
 		
 		//System.out.println(productId);
-		//System.out.println(itemCount + " - " + inputCount);
+		//System.out.println(itemCount + " - " + inputC ount);
 		int resultCount = Integer.parseInt(pCount) + Integer.parseInt(inCount);
 		//System.out.println(resultCount); //원래 물품 개수 + 입고된 물품 개수 
 		int itemId = Integer.parseInt(pId);
@@ -207,6 +194,130 @@ public class OwnerController {
 		
 	}
 	
+	//주문현황  handler
+	@RequestMapping("/order_list")
+	public String orderList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model,HttpSession session){
+		int page=1;
+		try{
+			page = Integer.parseInt(pageNo);
+		}catch(NumberFormatException e){}
+		
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
+		
+		Map attributes = service.getAllOrderListPaging(page,ownerId);
+		model.addAllAttributes(attributes);
+		
+		return "/WEB-INF/owner/order_management/order_list.jsp";
+	}
+	
+	//주문처리 handler - 단순 페이지 이동기능 
+	@RequestMapping("/order_processing")
+	public String orderProcessing(){
+		return "/WEB-INF/owner/order_management/order_processing_form.jsp";
+		
+	}
+	
+	//고객이름으로 검색한 주문처리 결과 list handler
+	@RequestMapping("/order_list_by_cutomerPhone")
+	public String orderProcessingResult(@RequestParam String customerPhone,@RequestParam(defaultValue = "1") String pageNo,ModelMap model,HttpSession session){
+		int page=1;
+		try{
+			page = Integer.parseInt(pageNo);
+		}catch(NumberFormatException e){}
+		
+		
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
+		
+		Map attributes = service.getOrderListByPhonePaging(page,ownerId,customerPhone);
+		model.addAllAttributes(attributes);
+		
+		return "/WEB-INF/owner/order_management/order_list_by_customerPhone.jsp";
+	}
+	
+	//휴대폰 번호로 검색한 고객의 주문리스트중에서 선택한 것을 삭제하는 handler
+	@RequestMapping("/updateOrderStatus")
+	public String deleteOrderBySelect(@RequestParam String orderNumber,@RequestParam String customerPhone,@RequestParam(defaultValue = "1") String pageNo,ModelMap model,HttpSession session){
+		int page=1;
+		try{
+			page = Integer.parseInt(pageNo);
+		}catch(NumberFormatException e){}
+		
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
+		
+		Map attributes = service.updateOrderBySelect(page,ownerId,customerPhone,orderNumber);
+		model.addAllAttributes(attributes);
+		
+		return "/WEB-INF/owner/order_management/order_list_by_customerPhone.jsp";
+	}
+	
+	//주문완료버튼 클릭해서 처리하는 handler
+	@RequestMapping("/orderSuccess")
+	public String orderSuccess(@RequestParam String customerId,@RequestParam String storeId){
+		
+		service.updateAllOrders(customerId,storeId);
+		
+		return "/WEB-INF/owner/order_management/order_success.jsp";
+	}
+	
+	//본사물품 list 조회하는 handler
+	@RequestMapping("/headOfficeProducts_list")
+	public String getHeadOfficeProductsList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model,HttpSession session){
+		int page=1;
+		try{
+			page = Integer.parseInt(pageNo);
+		}catch(NumberFormatException e){}
+		
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
+		
+		Map attributes = service.getAllHeadOfficeProductsListPaging(page,ownerId);
+		model.addAllAttributes(attributes);
+		
+		return "/WEB-INF/owner/headOfficeItem_management/headOfficeProducts_list.jsp";
+	}
+	
+	//본사물품 정보 조회하는 handler
+	@RequestMapping("/headOfficeProductInfo")
+	public String getHeadOfficeProduct(@RequestParam String productName,ModelMap model){
+		
+		Product product = service.findHeadOfficeProductByName(productName);
+		//System.out.println(product);
+		
+		
+		model.addAttribute("product",product);
+		
+		return "/WEB-INF/owner/headOfficeItem_management/headOfficeProduct_info.jsp";
+	}
+	
+	//서버물품 테이블에 물품 입고하는 handler
+	@RequestMapping("/inputServerItem")
+	public String inputHeadOfficeProduct(@RequestParam String itemId,@RequestParam String inputCount,HttpSession session,@RequestParam String year,
+										 @RequestParam String month,@RequestParam String day,@RequestParam String itemName){
+		Owner owner = (Owner)session.getAttribute("sessionUser");
+		String ownerId = owner.getOwnerId();
+		
+		int y = Integer.parseInt(year);// 여기서 문제, 선택이 안되면 넘어가면 안됨 , 넘겨서 문제임
+		int m = Integer.parseInt(month);
+		int d = Integer.parseInt(day);
+		
+		//유통기한 
+		Date date = new Date(y,m,d);
+		
+		
+		//본사물품 입고하기전에 체크해야할것, 내 매장에 이미 있는 물품이면 못하게 하기! , itemId로 비교해야 할거 같음 
+		Product product = null;
+		product = service.findOneProductByName(itemName, ownerId);
+		if(product != null){
+			return "/WEB-INF/owner/headOfficeItem_management/inputHeadOfficeProduct_fail.jsp";
+		}
+		
+		service.inputHeadOfficeProduct(ownerId,itemId,inputCount,date);
+		return "/WEB-INF/owner/headOfficeItem_management/inputHeadOfficeProduct_success.jsp";
+	}
+
 	@RequestMapping("/boardList")
 	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
 		int page = Integer.parseInt(pageNo);
@@ -249,48 +360,10 @@ public class OwnerController {
 		service.insertBoard(map);
 		return "redirect:/owner/boardList.do";
 	}
-	
-	//주문현황  handler
-	@RequestMapping("/order_list")
-	public String orderList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model,HttpSession session){
-		int page=1;
-		try{
-			page = Integer.parseInt(pageNo);
-		}catch(NumberFormatException e){}
-		
-		Owner owner = (Owner)session.getAttribute("sessionUser");
-		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
-		
-		Map attributes = service.getAllOrderListPaging(page,ownerId);
-		model.addAllAttributes(attributes);
-		
-		return "/WEB-INF/owner/order_management/order_list.jsp";
-	}
-	
-	//주문처리 handler - 단순 페이지 이동기능 
-	@RequestMapping("/order_processing")
-	public String orderProcessing(){
-		return "/WEB-INF/owner/order_management/order_processing_form.jsp";
-		
-	}
-	
-	//고객이름으로 검색한 주문처리 결과 list handler
-	@RequestMapping("/order_list_by_cutomerName")
-	public String orderProcessingResult(@RequestParam String customerName,@RequestParam(defaultValue = "1") String pageNo,ModelMap model,HttpSession session){
-		int page=1;
-		try{
-			page = Integer.parseInt(pageNo);
-		}catch(NumberFormatException e){}
-		
-		
-		Owner owner = (Owner)session.getAttribute("sessionUser");
-		String ownerId = owner.getOwnerId(); //편의점 주인 Id를 세션에서 가져오는 과정 
-		String cusName = customerName;
-		
-		Map attributes = service.getOrderListByNamePaging(page,ownerId,cusName);
-		model.addAllAttributes(attributes);
-		
-		return "/WEB-INF/owner/order_management/order_list_by_customerName.jsp";
-	}
-	
 }
+
+
+
+
+
+

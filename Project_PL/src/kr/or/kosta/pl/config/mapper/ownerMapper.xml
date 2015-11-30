@@ -145,8 +145,106 @@
 		where store_id = (select store_id from PL_STORE where owner_id=#{ownerId}) 
 		and item_id = #{itemId}
 	</update>
+
+	
+	<select id="selectCountOrders" resultType="_int" parameterType="string">
+		select count(order_number) from pl_order
+		where store_id = (select store_id from pl_store where owner_id=#{value})
+	</select>
 	
 	
+	<!-- 이거 수정해야함 -->
+	<select id="selectOrdersPaging" parameterType="hashmap" resultMap="orderlist-resultmap">
+		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+		from(
+				select ceil(rownum/#{contentPerPage}) page,order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+				from(	
+					select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status,i.item_name, i.item_price, i.category_id, t.category_name,s.store_name, r.customer_name, r.customer_phone  
+      				from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
+     				where o.item_id = i.item_id 
+     				and i.category_id = t.category_id 
+     				and o.store_id = s.store_id 
+     				and o.customer_id = r.customer_id 
+     				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
+				)
+		)
+		where page = #{pageNo}
+	</select>
+	<!-- 위에서 customerId받는거 웹에서 owner가 입력받아서 하는거 , hashmap에 cutomerId추가해야함(id로 입력말고 이름으로 입력받는지 물어보기) -->
+	
+	
+	<select id="selectCountOrdersByPhone" resultType="_int" parameterType="hashmap">
+		select count(order_number)
+		from pl_order
+		where store_id = (select store_id from pl_store where owner_id=#{ownerId})
+		and customer_id = (select customer_id from pl_customer where customer_phone=#{customerPhone})
+	</select>
+	
+	<select id="selectOrdersByPhonePaging" parameterType="hashmap" resultMap="orderlist-resultmap">
+		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+		from(
+				select ceil(rownum/#{contentPerPage}) page,order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
+				from(	
+					select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status,i.item_name, i.item_price, i.category_id, t.category_name,s.store_name, r.customer_name, r.customer_phone  
+      				from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
+     				where o.item_id = i.item_id 
+     				and i.category_id = t.category_id 
+     				and o.store_id = s.store_id 
+     				and o.customer_id = r.customer_id 
+     				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
+     				and o.order_status = 1
+     				and r.customer_phone = #{customerPhone}
+				)
+		)
+		where page = #{pageNo}
+	</select>
+	
+	<!-- 선택한 주문 상태 바꾸는 거  -->
+	<update id="updateOrderStatus" parameterType="string">
+		update pl_order
+		set order_status = 3
+		where order_number = #{value}
+	</update>
+	
+	<!-- 모든 주문완료하는 거 -->
+	<update id="updateAllOrdersStatus" parameterType="hashmap">
+		update pl_order
+		set order_status = 2
+		where customer_id=#{customerId} and store_id = #{storeId} and order_status = 1
+	</update>
+	
+	<!-- 본사물품 전체 개수  -->
+	<select id="selectHeadOfficeProductCount" resultType="_int" parameterType="string">
+		select count(item_id) from pl_item_info
+	</select>
+	
+	<!-- 본사 전체 물품 조회 페이지 -->
+	<select id="selectHeadOfficeProductsPaging"  parameterType="hashmap" resultMap="product-resultmap">
+		select item_id,item_name,item_price
+		from(
+				select ceil(rownum/#{contentPerPage}) page,item_id,item_name,item_price
+				from(	
+					select item_id,item_name,item_price
+					from pl_item_info
+				)
+		)
+		where page = #{pageNo}
+	</select>
+	
+	<!-- 본사물품 조회하는거  -->
+	<select id="selectHeadOfficeProductByName" parameterType="string" resultMap="product-resultmap">
+		select i.item_id, i.item_name, i.item_price, i.category_id, c.category_name 
+		from pl_item_info i, pl_category c
+		where i.category_id = c.category_id and item_name = #{value}
+	</select>
+	
+	<!-- 본사물품 인서트 하는거  -->
+	<insert id="insertServerItem" parameterType="hashmap">
+		insert into pl_server_item (server_index , store_id , item_id , item_expiration_date , item_count)
+		values (server_item_index_seq.nextval , (select store_id from PL_STORE where owner_id=#{ownerId}) , #{itemId} , #{date} , #{inputCount})
+	</insert>
+
+
 	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name
 		from (
@@ -178,87 +276,5 @@
 		update pl_board set board_read_count=(select board_read_count from pl_board where board_idx=#{value})+1 where board_idx=#{value}
 	</update>
 	
-	<select id="selectCountOrders" resultType="_int" parameterType="string">
-		select count(order_number) from pl_order
-		where store_id = (select store_id from pl_store where owner_id=#{value})
-	</select>
-	
-	
-	<!-- 이거 수정해야함 -->
-	<select id="selectOrdersPaging" parameterType="hashmap" resultMap="orderlist-resultmap">
-		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
-		from(
-				select ceil(rownum/#{contentPerPage}) page,order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
-				from(	
-					select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status,i.item_name, i.item_price, i.category_id, t.category_name,s.store_name, r.customer_name, r.customer_phone  
-      				from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
-     				where o.item_id = i.item_id 
-     				and i.category_id = t.category_id 
-     				and o.store_id = s.store_id 
-     				and o.customer_id = r.customer_id 
-     				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
-     				and o.order_status = 1
-				)
-		)
-		where page = #{pageNo}
-	</select>
-	<!-- 위에서 customerId받는거 웹에서 owner가 입력받아서 하는거 , hashmap에 cutomerId추가해야함(id로 입력말고 이름으로 입력받는지 물어보기) -->
-	
-	
-	<select id="selectCountOrdersByName" resultType="_int" parameterType="hashmap">
-		select count(order_number)
-		from pl_order
-		where store_id = (select store_id from pl_store where owner_id=#{ownerId})
-		and customer_id = (select customer_id from pl_customer where customer_name=#{customerName})
-	</select>
-	
-	<select id="selectOrdersByNamePaging" parameterType="hashmap" resultMap="orderlist-resultmap">
-		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
-		from(
-				select ceil(rownum/#{contentPerPage}) page,order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
-				from(	
-					select o.order_number, o.customer_id, o.store_id, o.item_id, o.order_count, o.order_date, o.order_status,i.item_name, i.item_price, i.category_id, t.category_name,s.store_name, r.customer_name, r.customer_phone  
-      				from pl_order o, pl_item_info i, pl_category t, pl_store s, pl_customer r 
-     				where o.item_id = i.item_id 
-     				and i.category_id = t.category_id 
-     				and o.store_id = s.store_id 
-     				and o.customer_id = r.customer_id 
-     				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
-     				and o.order_status = 1
-     				and r.customer_name = #{customerName}
-				)
-		)
-		where page = #{pageNo}
-	</select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

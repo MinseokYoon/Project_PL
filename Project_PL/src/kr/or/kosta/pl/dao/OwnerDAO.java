@@ -1,6 +1,7 @@
 package kr.or.kosta.pl.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,9 +49,21 @@ public interface OwnerDAO {
 
 	List<Order> selectOrdersPaging(int pageNo, String ownerId);
 
-	int selectCountOrdersByName(String ownerId, String cusName);
+	int insertBoard(HashMap map);
 
-	List<Order> selectOrdersByNamePaging(int pageNo, String ownerId, String cusName);
+	List<Order> selectOrdersByPhonePaging(int pageNo, String ownerId, String cusPhone);
 
-	int insertBoard(HashMap map); 
+	int selectCountOrdersByPhone(String ownerId, String cusPhone);
+
+	int updateOrderStatus(String orderNumber);
+
+	int updateAllOrdersStatus(String customerId, String storeId);
+
+	int selectHeadOfficeProductCount(String ownerId);
+
+	Product selectHeadOfficeProductByName(String productName);
+
+	int insertServerItem(String ownerId, String itemId, String inputCount, Date date);
+
+	List<Product> selectHeadOfficeProductsPaging(int pageNo, String ownerId); 
 }

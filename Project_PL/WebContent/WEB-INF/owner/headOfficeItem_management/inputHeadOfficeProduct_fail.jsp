@@ -28,6 +28,7 @@
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/Project_PL/images/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="/Project_PL/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
+<script type="text/javascript" src="/${initParam.rootPath }/jquery.js"></script>
 <script type="text/javascript">
 	function productSearchCheck() {
 		var form1 = document.productSearch;
@@ -41,17 +42,6 @@
 		}
 	}
 
-	function resultInputMessage() {
-		var inputCount = document.getElementsByName("inputCount")[0].value;
-
-		if (inputCount == "") {
-			alert("입고개수를 입력하세요");
-			return false;
-		}
-
-		alert("입고되었습니다.");
-	}
-
 	function resultOuputMessage() {
 
 		var outCount = document.getElementsByName("outputCount")[0].value;
@@ -63,7 +53,39 @@
 
 		alert("출고되었습니다.")
 	}
+	
+	function resultInputMessage() {
+		var inputCount = $('#inputCount').val();
+		var year = $('#year').val();
+		var month = $('#month').val();
+		var day = $('#day').val();
+	
+		
+		if (inputCount == "") {
+			alert("입고개수를 입력하세요");
+			return false;
+		} 
+		
+		if(year == "default"){
+			alert("년도를 입력하세요");
+			return false;
+		}
+		
+		if(month == "default"){
+			alert("월을 입력하세요");
+			return false;
+		}
+		
+		if(day == "default"){
+			alert("일을 입력하세요");
+			return false;
+		} 
+		
+		return confirm("정말 입고하시겠습니까?");
+	}
 </script>
+
+
 <body>
 	<header id="header"><!--header-->
 		<div class="header-middle">
@@ -196,6 +218,11 @@
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${param.pageNo}">본사물품</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title">
 										<a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a>
 									</h4>
@@ -213,42 +240,7 @@
 					</div>
 				</div>
 				<!-- 여기 부분이 이 페이지 부분임! -->
-				<div class="col-sm-9 padding-right">
-					<div class="product-details">
-						<!--product-details-->
-						<div class="col-sm-5">
-							<div class="view-product">
-								<img src="${initParam.rootPath}/images/${requestScope.product.categoryId}/${requestScope.product.itemName}.png" alt="" />
-							</div>
-						</div>
-						<div class="col-sm-7">
-							<div class="product-information">
-								<!--/product-information-->
-								<h2>${requestScope.product.itemName }</h2>
-								<span> <span>${requestScope.product.itemPrice }원</span> <label>Quantity:</label>
-									<input type="text" value="${requestScope.product.itemCount }" />
-								</span>
-								<p>분류 : ${requestScope.product.categoryName }</p>
-								<form action="${initParam.rootPath }/owner/input.do"
-									onsubmit="return resultInputMessage();">
-									<input type="hidden" name="itemCount" value="${requestScope.product.itemCount }"> 
-									<input type="hidden" name="productId" value="${requestScope.product.itemId }"> 
-									<input type="text" placeholder="입고개수" name="inputCount"> 
-									<input type="submit" value="입고"> 
-									<input type="hidden" name="productName" value="${requestScope.product.itemName }">
-								</form>
-								<form action="${initParam.rootPath }/owner/output.do" onsubmit="return resultOuputMessage();">
-									<input type="hidden" name="itemCount" value="${requestScope.product.itemCount }"> 
-									<input type="hidden" name="productId" value="${requestScope.product.itemId }"> 
-									<input type="text" placeholder="출고개수" name="outputCount"> 
-									<input type="submit" value="출고"> 
-									<input type="hidden" name="productName" value="${requestScope.product.itemName }">
-								</form>
-							</div>
-							<!--/product-information-->
-						</div>
-					</div>
-				</div>
+				<h3 style="color: #fe980f">이미 존재하는 제품입니다.</h3>
 				<!-- 여기가 끝 -->
 			</div>
 		</div>

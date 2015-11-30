@@ -197,31 +197,23 @@
 							등록된 물품이 없습니다.
 						</c:when>
 						<c:otherwise>
-							<table style="width: 800px" border="1">
+							<table style="width: 700px" border="1">
 								<tr>
+									<th style="text-align: center; background-color: #fe980f;">물품 ID</th>
 									<th style="text-align: center; background-color: #fe980f;">물품 이름</th>
 									<th style="text-align: center; background-color: #fe980f;">물품 가격</th>
-									<th style="text-align: center; background-color: #fe980f;">물품 개수</th>
-									<th style="text-align: center; background-color: #fe980f;">물품 유통기한</th>
-									<th style="text-align: center; background-color: #fe980f;">물품 ID</th>
-									<th style="text-align: center; background-color: #fe980f;">카테고리 ID</th>
-									<th style="text-align: center; background-color: #fe980f;">편의점 ID</th>
 								</tr>
 								<c:forEach items="${requestScope.list }" var="product">
 									<tr>
-										<td style="text-align: center;"><a href="${initParam.rootPath }/owner/productInfo.do?productName=${product.itemName}"> ${product.itemName }</a></td>
-										<td style="text-align: center;">${product.itemPrice }</td>
-										<td style="text-align: center;">${product.itemCount }</td>
-										<td style="text-align: center;">${product.itemExpirationDate }</td>
 										<td style="text-align: center;">${product.itemId }</td>
-										<td style="text-align: center;">${product.categoryId }</td>
-										<td style="text-align: center;">${product.storeId }</td>
+										<td style="text-align: center;"><a href="${initParam.rootPath }/owner/headOfficeProductInfo.do?productName=${product.itemName}">${product.itemName }</a></td>
+										<td style="text-align: center;">${product.itemPrice }</td>
 									</tr>
 								</c:forEach>
 								<tr>
-									<td colspan="7" align="center"><c:choose>
+									<td colspan="3" align="center"><c:choose>
 											<c:when test="${requestScope.pagingBean.previousPageGroup }">
-												<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
+												<a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
 													◀ 
 												</a>
 											</c:when>
@@ -238,7 +230,7 @@
 													[${page}]
 												</c:when>
 												<c:otherwise>
-													<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${page }"> ${page } </a>
+													<a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${page }"> ${page } </a>
 												</c:otherwise>
 											</c:choose>
 											&nbsp;&nbsp;
@@ -248,7 +240,7 @@
 										--> 
 										<c:choose>
 											<c:when test="${requestScope.pagingBean.nextPageGroup }">
-												<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
+												<a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
 													▶
 												</a>
 											</c:when>
@@ -259,13 +251,6 @@
 							</table>
 						</c:otherwise>
 					</c:choose>
-					<!-- 물품 검색하는 곳 -->
-					<div class="search_box pull-right">
-						<form name="productSearch" action="${initParam.rootPath }/owner/product_search.do" method="post" onsubmit="return productSearchCheck();">
-							<input type="text" name="searchValue" placeholder="Search" />
-							<!-- 	<input type="submit" value="검색">  -->
-						</form>
-					</div>
 				</div>
 			</div>
 		</div>

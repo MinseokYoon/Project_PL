@@ -27,10 +27,10 @@
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <script type="text/javascript">
-function customerNameCheck(){
-	var name = document.getElementById("customerName").value;
+function customerPhoneCheck(){
+	var name = document.getElementById("customerPhone").value;
 	if(name == ""){
-		alert("고객 이름을 입력하세요.");
+		alert("고객 전화번호를 입력하세요.");
 		return false;
 	}
 }
@@ -154,6 +154,11 @@ function customerNameCheck(){
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
 								</div>
 							</div>
@@ -165,9 +170,9 @@ function customerNameCheck(){
 						</div><!--/category-products-->					
 					</div>
 				</div><!-- 여기 -->
-				<h3 style="color: #fe980f">고객 이름을 입력하세요.</h3> <!-- font-size: 20px -->
-				<form action="${initParam.rootPath }/owner/order_list_by_cutomerName.do" onsubmit="return customerNameCheck();">
-					<input type="text" name="customerName" placeholder="고객이름" id="customerName">
+				<h3 style="color: #fe980f">고객 전화번호를 입력하세요.</h3> <!-- font-size: 20px -->
+				<form action="${initParam.rootPath }/owner/order_list_by_cutomerPhone.do" onsubmit="return customerPhoneCheck();">
+					<input type="text" name="customerPhone" placeholder="고객 전화번호" id="customerPhone">
 					<input type="hidden" name="pageNo" value="${param.pageNo }">
 					<input type="submit" value="검색" >
 				</form>

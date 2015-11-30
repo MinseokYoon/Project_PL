@@ -2,6 +2,7 @@ package kr.or.kosta.pl.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,8 +101,23 @@ public interface OwnerService{
 	Map getAllOrderListPaging(int pageNo, String ownerId);
 
 
-	Map getOrderListByNamePaging(int pageNo, String ownerId, String cusName);
-
-
 	void insertBoard(HashMap map);
+
+
+	Map getOrderListByPhonePaging(int pageNo, String ownerId, String cusPhone);
+
+
+	Map updateOrderBySelect(int pageNo, String ownerId, String customerPhone, String orderNumber);
+
+
+	int updateAllOrders(String customerId, String storeId);
+
+
+	Map getAllHeadOfficeProductsListPaging(int pageNo, String ownerId);
+
+
+	Product findHeadOfficeProductByName(String productName);
+
+
+	int inputHeadOfficeProduct(String ownerId, String itemId, String inputCount, Date date);
 }

@@ -1,6 +1,7 @@
 package kr.or.kosta.pl.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,6 +136,91 @@ public class OwnerServiceImpl implements OwnerService {
 		return dao.selectProductByName(productName,ownerId);
 	}
 	
+	
+	
+	public Product findOneProductByName(String pName, String ownerId) {
+		
+		return dao.selectOneProduct(pName,ownerId);
+	}
+
+	@Override
+	public int updateCountProduct(String ownerId, int resultCount ,int itemId) {
+		return dao.updateInputProduct(ownerId,resultCount,itemId);
+	}
+	
+	//주문현황 list 조회 메소드 
+	@Override
+	public Map getAllOrderListPaging(int pageNo, String ownerId) {
+		HashMap map = new HashMap();
+		map.put("list",dao.selectOrdersPaging(pageNo,ownerId));
+		PagingBean pagingBean = new PagingBean(dao.selectCountOrders(ownerId), pageNo);
+		System.out.println("총 주문 개수 : " + dao.selectCountOrders(ownerId));
+		map.put("pagingBean", pagingBean);
+		map.put("ownerId", ownerId);
+		return map;
+	}
+	
+	//고객이름으로 검색한 주문현황 list 조회 메소드 
+	@Override
+	public Map getOrderListByPhonePaging(int pageNo, String ownerId,String cusPhone) {
+		HashMap map = new HashMap();
+		map.put("list", dao.selectOrdersByPhonePaging(pageNo,ownerId,cusPhone));
+		
+		//System.out.println(dao.selectCountOrdersByPhone(ownerId,cusPhone)+"는 토탈컨텐트 수입니다.");
+		PagingBean pagingBean = new PagingBean(dao.selectCountOrdersByPhone(ownerId,cusPhone), pageNo);
+		map.put("pagingBean", pagingBean);
+		//밑에 2개 없어도 될거 같음
+		//map.put("ownerId", ownerId);
+		//map.put("customerPhone",cusPhone);
+		return map;
+		
+		//System.out.println("안동신이 주문한 물품 종류 개수 : "+dao.selectCountOrdersByName(ownerId,cusName) );
+		
+	}
+
+	//선택한 주문 주문상태 업데이트하는 메소드
+	@Override
+	public Map updateOrderBySelect(int pageNo,String ownerId,String customerPhone,String orderNumber) {
+		
+		//주문 취소한거 업데이트하는 과정 
+		dao.updateOrderStatus(orderNumber); // orderNumber를 기준으로 잡아서 주문 취소하게끔 만들어야 함 
+		
+		return getOrderListByPhonePaging(pageNo, ownerId, customerPhone);
+	}
+
+	//주문완료 버튼 눌러서 모든 주문 주문완료상태로 바꾸는 메소드 
+	@Override
+	public int updateAllOrders(String customerId, String storeId) {
+		return dao.updateAllOrdersStatus(customerId,storeId);
+	}
+
+	//본사 전체 물품 조회하는 메소드
+	@Override
+	public Map getAllHeadOfficeProductsListPaging(int pageNo, String ownerId) {
+		HashMap map = new HashMap();
+		map.put("list",dao.selectHeadOfficeProductsPaging(pageNo,ownerId));
+		PagingBean pagingBean = new PagingBean(dao.selectHeadOfficeProductCount(ownerId), pageNo);
+		
+		//System.out.println("총 주문 개수 : " + dao.selectHeadOfficeProductCount(ownerId));
+		
+		map.put("pagingBean", pagingBean);
+		map.put("ownerId", ownerId);
+		return map;
+	}
+
+	//본사 물품 조회하는 메소드 
+	@Override
+	public Product findHeadOfficeProductByName(String productName) {
+		
+		return dao.selectHeadOfficeProductByName(productName);
+	}
+
+	//본사 물품 인서트 하는 메소드 
+	@Override
+	public int inputHeadOfficeProduct(String ownerId, String itemId, String inputCount,Date date) {
+		return dao.insertServerItem(ownerId,itemId,inputCount,date);
+	}
+
 	@Override
 	public List<Board> getNotice() {
 		List<Board> list = dao.selectNotice();
@@ -162,42 +248,5 @@ public class OwnerServiceImpl implements OwnerService {
 	@Override
 	public void insertBoard(HashMap map) {
 		dao.insertBoard(map);
-	}
-	
-	public Product findOneProductByName(String pName, String ownerId) {
-		
-		return dao.selectOneProduct(pName,ownerId);
-	}
-
-	@Override
-	public int updateCountProduct(String ownerId, int resultCount ,int itemId) {
-		return dao.updateInputProduct(ownerId,resultCount,itemId);
-	}
-	
-	//주문현황 list 조회 메소드 
-	@Override
-	public Map getAllOrderListPaging(int pageNo, String ownerId) {
-		HashMap map = new HashMap();
-		map.put("list",dao.selectOrdersPaging(pageNo,ownerId));
-		PagingBean pagingBean = new PagingBean(dao.selectCountOrders(ownerId), pageNo);
-		System.out.println("총 주문 개수 : " + dao.selectCountOrders(ownerId));
-		map.put("pagingBean", pagingBean);
-		map.put("ownerId", ownerId);
-		return map;
-	}
-	
-	//고객이름으로 검색한 주문현황 list 조회 메소드 
-	@Override
-	public Map getOrderListByNamePaging(int pageNo, String ownerId,String cusName) {
-		HashMap map = new HashMap();
-		map.put("list", dao.selectOrdersByNamePaging(pageNo,ownerId,cusName));
-		PagingBean pagingBean = new PagingBean(dao.selectCountOrdersByName(ownerId,cusName), pageNo);
-		map.put("pagingBean", pagingBean);
-		map.put("ownerId", ownerId);
-		map.put("customerName",cusName);
-		return map;
-		
-		//System.out.println("안동신이 주문한 물품 종류 개수 : "+dao.selectCountOrdersByName(ownerId,cusName) );
-		
 	}
 }

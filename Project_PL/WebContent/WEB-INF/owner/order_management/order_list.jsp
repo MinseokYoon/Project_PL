@@ -145,6 +145,11 @@
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
+									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품</a></h4>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
 								</div>
 							</div>
@@ -159,7 +164,7 @@
 				<div class="order list">
 					<c:choose>
 						<c:when test="${fn:length(requestScope.list)==0 }">
-							등록된 물품이 없습니다.
+							<h3 style="color: #fe980f">등록된 물품이 없습니다.</h3>
 						</c:when>
 						<c:otherwise>
 							<table style="width: 800px" border="1">
@@ -187,7 +192,14 @@
 										<td style="text-align: center;">${order.itemId }</td>
 										<td style="text-align: center;">${order.orderCount }</td>
 										<td style="text-align: center;">${order.orderDate }</td>
-										<td style="text-align: center;">${order.orderStatus }</td>
+										<td style="text-align: center;">
+											<c:choose>
+												<c:when test="${order.orderStatus==1}">주문대기</c:when>
+												<c:when test="${order.orderStatus==2}">주문완료</c:when>
+												<c:when test="${order.orderStatus==3}">주문취소</c:when>
+												<c:otherwise>오류!</c:otherwise>
+											</c:choose>
+										</td>
 										<td style="text-align: center;">${order.itemName }</td>
 										<td style="text-align: center;">${order.itemPrice }</td>
 										<td style="text-align: center;">${order.categoryId }</td>
@@ -202,7 +214,7 @@
 									<c:choose>
 										<c:when test="${requestScope.pagingBean.previousPageGroup }">
 											<a
-												href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
+												href="${initParam.rootPath }/owner/order_list.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}">
 												◀ </a>
 										</c:when>
 										<c:otherwise>
@@ -220,7 +232,7 @@
 												[${page}]
 											</c:when>
 											<c:otherwise>
-												<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${page }">${page } </a>
+												<a href="${initParam.rootPath }/owner/order_list.do?pageNo=${page }">${page } </a>
 											</c:otherwise>
 										</c:choose>
 										&nbsp;&nbsp;
@@ -228,7 +240,7 @@
 									<c:choose>
 										<c:when test="${requestScope.pagingBean.nextPageGroup }">
 											<a
-												href="${initParam.rootPath }/owner/product_list.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
+												href="${initParam.rootPath }/owner/order_list.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}">
 												▶ </a>
 										</c:when>
 										<c:otherwise>▶</c:otherwise>

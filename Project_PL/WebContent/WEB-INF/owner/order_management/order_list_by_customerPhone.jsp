@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>편라인 : Project PL</title>
-	<link href="${initParam.rootPath}/css/bootstrap.min.css" rel="stylesheet">
+	<link href="${initParam.rootPath}/css/bootstrap.min.css" rel="stylesheet">	
     <link href="${initParam.rootPath}/css/font-awesome.min.css" rel="stylesheet">
     <link href="${initParam.rootPath}/css/prettyPhoto.css" rel="stylesheet">
     <link href="${initParam.rootPath}/css/price-range.css" rel="stylesheet">
@@ -25,19 +26,6 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
-<script type="text/javascript">
-function productSearchCheck(){ 
-	var form1 = document.productSearch;
-	var searchValue = form1.searchValue;
-	var howToSearch = form1.howToSearch;
-	
-	if(searchValue.value.length == 0){
-		alert("내용을 입력하세요.");
-		searchValue.focus();
-		return false; //전송 못하게 하는 것 
-	}
-}
-</script>
 <body>
 	<header id="header"><!--header-->		
 		<div class="header-middle"><!--header-middle-->
@@ -61,6 +49,7 @@ function productSearchCheck(){
 			</div>
 		</div><!--/header-middle-->
 	</header><!--/header-->
+	
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -96,6 +85,7 @@ function productSearchCheck(){
 									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
 								</div>
 							</div>
+							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -108,14 +98,15 @@ function productSearchCheck(){
 									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
 								</div>
 							</div>
-						</div>	
+							
+						</div>
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
 						</a>
 						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
 							<i class="fa fa-angle-right"></i>
 						</a>
-					</div>
+					</div>			
 				</div>
 			</div>
 		</div>
@@ -126,8 +117,7 @@ function productSearchCheck(){
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>카테고리</h2>
-						<div class="panel-group category-products" id="accordian">
-							<!--category-productsr-->
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -155,7 +145,7 @@ function productSearchCheck(){
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품</a></h4>
+									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${param.pageNo}">본사물품</a></h4>
 								</div>
 							</div>
 							<div class="panel panel-default">
@@ -165,59 +155,127 @@ function productSearchCheck(){
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a href="#">고객센터</a>
-									</h4>
+									<h4 class="panel-title"><a href="#">고객센터</a></h4>
 								</div>
 							</div>
-						</div>
-						<!--/category-products-->
+						</div><!--/category-products-->					
 					</div>
-				</div>
-				<!-- 여기 부분이 이 페이지 부분임! -->
-				<c:choose>
-					<c:when test="${empty requestScope.productList}">
-							조회된 물품이 없습니다.
-					</c:when>
-					<c:otherwise>
-						<table style="width: 800px" border="1">
-							<tr>
-								<th style="text-align: center; background-color: #fe980f;">물품 이름</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 가격</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 개수</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 유통기한</th>
-								<th style="text-align: center; background-color: #fe980f;">물품 ID</th>
-								<th style="text-align: center; background-color: #fe980f;">카테고리 ID</th>
-								<th style="text-align: center; background-color: #fe980f;">편의점 ID</th>
-							</tr>
-							<c:forEach items="${requestScope.productList }" var="productList">
+				</div> <!-- 여기 특정 고객이 주문한 현황 리트스!!-->
+				<div class="order list by customerName">
+					<c:choose>
+						<c:when test="${fn:length(requestScope.list)==0 }">
+							<h3 style="color: #FF0000">주문한 물품이 없습니다.</h3>
+							<h3 style="color: #fe980f">고객 전화번호를 입력하세요.</h3> <!-- font-size: 20px -->
+							<form action="${initParam.rootPath }/owner/order_list_by_cutomerPhone.do" onsubmit="return customerPhoneCheck();">
+								<input type="text" name="customerPhone" placeholder="고객 전화번호" id="customerPhone">
+								<input type="hidden" name="pageNo" value="${param.pageNo }">
+								<input type="submit" value="검색" >
+							</form>
+						</c:when>
+						<c:otherwise>
+							<table style="width: 850px" border="1">
 								<tr>
-									<td style="text-align: center;">
-										<a href="${initParam.rootPath }/owner/productInfo.do?productName=${productList.itemName}">
-											${productList.itemName }
-										</a>
-									</td> 
-									<td style="text-align: center;">${productList.itemPrice }</td>
-									<td style="text-align: center;">${productList.itemCount }</td>
-									<td style="text-align: center;">${productList.itemExpirationDate }</td>
-									<td style="text-align: center;">${productList.itemId }</td>
-									<td style="text-align: center;">${productList.categoryId }</td>
-									<td style="text-align: center;">${productList.storeId }</td>
+									<th style="text-align: center; background-color: #fe980f;">주문 번호</th>
+									<th style="text-align: center; background-color: #fe980f;">고객 ID</th>
+									<th style="text-align: center; background-color: #fe980f;">편의점 ID</th>
+									<th style="text-align: center; background-color: #fe980f;">물품 ID</th>
+									<th style="text-align: center; background-color: #fe980f;">주문 개수</th>
+									<th style="text-align: center; background-color: #fe980f;">주문 날짜</th>
+									<th style="text-align: center; background-color: #fe980f;">주문 상태</th>
+									<th style="text-align: center; background-color: #fe980f;">물품 이름</th>
+									<th style="text-align: center; background-color: #fe980f;">물품 가격</th>
+									<th style="text-align: center; background-color: #fe980f;">카테고리 ID</th>
+									<th style="text-align: center; background-color: #fe980f;">카레고리 이름</th>
+									<th style="text-align: center; background-color: #fe980f;">편의점 이름</th>
+									<th style="text-align: center; background-color: #fe980f;">고객 이름</th>
+									<th style="text-align: center; background-color: #fe980f;">고객 핸드폰번호</th>
+									<th style="text-align: center; background-color: #fe980f;">주문 취소</th>
 								</tr>
-							</c:forEach>
+								<c:forEach items="${requestScope.list }" var="order">
+									<tr>
+										<td style="text-align: center;">${order.orderNumber }</td>
+										<td style="text-align: center;">${order.customerId }</td>
+										<td style="text-align: center;">${order.storeId }</td>
+										<td style="text-align: center;">${order.itemId }</td>
+										<td style="text-align: center;">${order.orderCount }</td>
+										<td style="text-align: center;">${order.orderDate }</td>
+										<td style="text-align: center;">
+											<c:choose>
+												<c:when test="${order.orderStatus==1}">주문대기</c:when>
+												<c:when test="${order.orderStatus==2}">주문완료</c:when>
+												<c:when test="${order.orderStatus==3}">주문취소</c:when>
+												<c:otherwise>오류!</c:otherwise>
+											</c:choose>
+											
+										</td>
+										<td style="text-align: center;">${order.itemName }</td>
+										<td style="text-align: center;">${order.itemPrice }</td>
+										<td style="text-align: center;">${order.categoryId }</td>
+										<td style="text-align: center;">${order.categoryName }</td>
+										<td style="text-align: center;">${order.storeName }</td>
+										<td style="text-align: center;">${order.customerName }</td>
+										<td style="text-align: center;">${order.customerPhone }</td>
+										<td style="text-align: center;">
+											<form action="${initParam.rootPath }/owner/updateOrderStatus.do" method="post" onsubmit="return confirm('정말 취소하시겠습니까?')">
+												<input type="hidden" name="orderNumber" value="${order.orderNumber }"> 
+												<input type="hidden" name="customerPhone" value="${order.customerPhone }">
+												<input type="hidden" name="pageNo" value="${param.pageNo}">
+												<input type="submit" value="주문취소">
+											</form>
+										</td>
+									</tr>
+								</c:forEach>
+								<tr>
+									<td colspan="15" align="center">
+										<c:choose>
+											<c:when test="${requestScope.pagingBean.previousPageGroup }">
+												<a href="${initParam.rootPath }/owner/order_list_by_cutomerPhone.do?pageNo=${requestScope.pagingBean.startPageOfPageGroup-1}&
+														customerPhone=${requestScope.list[0].customerPhone}">
+													◀ </a>
+											</c:when>
+											<c:otherwise>
+										 		◀
+										 	</c:otherwise>
+										</c:choose> 
+										<!-- Page Group 내의 page들 링크 처리- PageGroup의 시작/끝페이지 번호 - 반복문 처리--> 
+										<c:forEach begin="${requestScope.pagingBean.startPageOfPageGroup }"
+												   end="${requestScope.pagingBean.endPageOfPageGroup }"
+											       var="page">
+											<c:choose>
+												<c:when test="${page == requestScope.pagingBean.currentPage }">
+													[${page}]
+												</c:when>
+												<c:otherwise>
+													<a href="${initParam.rootPath }/owner/order_list_by_cutomerPhone.do?pageNo=${page }&customerPhone=${requestScope.list[0].customerPhone}">
+														${page }
+													</a>
+												</c:otherwise>
+											</c:choose>
+											&nbsp;&nbsp;
+										</c:forEach> <!-- 3. 다음 페이지 그룹 링크 다음 페이지 그룹이 있으면 링크 처리 없으면 그냥 화살표만 나오도록 처리.-->
+										<c:choose>
+											<c:when test="${requestScope.pagingBean.nextPageGroup }">
+												<a href="${initParam.rootPath }/owner/order_list_by_cutomerPhone.do?pageNo=${requestScope.pagingBean.endPageOfPageGroup+1}&customerPhone=${requestScope.list[0].customerPhone}">
+													▶ 
+												</a>
+											</c:when>
+											<c:otherwise>▶</c:otherwise>
+										</c:choose>
+									</td>
+								</tr>
+							</form>
 						</table>
-					</c:otherwise>
-				</c:choose>
-				<!-- 물품 검색하는 곳 -->
-				<div class="search_box pull-right">
-					<form name="productSearch" action="${initParam.rootPath }/owner/product_search.do" method="post" onsubmit="return productSearchCheck();">
-						<input type="text" name="searchValue" placeholder="Search" /> 
-					</form>
-				</div>			
+							<form action="${initParam.rootPath }/owner/orderSuccess.do" method="post" onsubmit="return confirm('정말 주문완료 하시겠습니까?')">
+							<input type="hidden" name="customerId" value="${requestScope.list[0].customerId }">
+							<input type="hidden" name="storeId" value="${requestScope.list[0].storeId }">
+							<input type="submit" value="주문 완료">
+						</c:otherwise>
+					</c:choose>
+						
+				</div>
 			</div>
 		</div>
 	</section>
-
 	<footer id="footer"><!--Footer-->
 		<div class="footer-top">
 			<div class="container">
@@ -243,6 +301,7 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -257,6 +316,7 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
@@ -271,6 +331,7 @@ function productSearchCheck(){
 								<h2>24 DEC 2014</h2>
 							</div>
 						</div>
+						
 						<div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
