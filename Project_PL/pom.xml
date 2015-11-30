@@ -75,6 +75,19 @@
 			<artifactId>tiles-core</artifactId>
 			<version>3.0.5</version>
 		</dependency>
+		<!-- 메일 전송 서비스 -->
+      <dependency>
+           <groupId>javax.mail</groupId>
+           <artifactId>mail</artifactId>
+           <version>1.4</version>
+       </dependency>
+       
+       <!-- spring - context 지원 -->
+        <dependency>
+         <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>3.0.5.RELEASE</version>
+         </dependency>
 	</dependencies>
 
 </project>

@@ -229,7 +229,7 @@
 							내용
 						</td>
 						<td align="center" colspan="5" valign="middle" style="width:400px;">
-							<textarea rows=20 cols=40 style="vertical-align: middle; width: 400px;" readonly>${requestScope.board.boardContent }</textarea>
+							${requestScope.board.boardContent }
 						</td>
 					</tr>
 				</table>

@@ -24,4 +24,25 @@
 				p:configLocation="/WEB-INF/config/mybatis-config.xml"
 				p:dataSource-ref="dataSource"/>
 	<bean name="SqlSession" class="org.mybatis.spring.SqlSessionTemplate" c:sqlSessionFactory-ref="sqlSessionFactory"/>
+	
+	<!-- email sender -->
+    <bean id="mailSender" class ="org.springframework.mail.javamail.JavaMailSenderImpl" >
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="username" value="zzangnara52@gmail.com" />
+        <property name="password" value="wjdrlf911!" />
+       
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.auth">true</prop>
+            </props>
+        </property>
+       
+    </bean>
+    <bean id="email" class="kr.or.kosta.pl.vo.Email">
+    </bean>
+    <bean id="emailSender" class="kr.or.kosta.pl.vo.EmailSender">
+    </bean>
 </beans>

@@ -172,7 +172,7 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a href="#">고객센터</a>
+										<a href="${initParam.rootPath }/basic/customerCenter.do">고객센터</a>
 									</h4>
 								</div>
 							</div>
@@ -206,6 +206,7 @@
 											</div>
 										</div>
 									</div>
+									
 								</div>
 							</div>
 						</c:forEach>

@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.kosta.pl.exception.CustomerNotFoundException;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
@@ -62,20 +63,31 @@ public class CustomerController {
 	/*-----------------------------------회원 정보------------------------------------------------*/
 	//회원 가입
 	@RequestMapping("/add.do")
-	public String add(@ModelAttribute Customer customer, Errors errors, ModelMap model) throws DuplicatedIdException {
+   public String add(@ModelAttribute Customer customer, Errors errors, ModelMap model) throws DuplicatedIdException {
 
-		CustomerValidator validate = new CustomerValidator();
-		validate.validate(customer, errors);
+      CustomerValidator validate = new CustomerValidator();
+      validate.validate(customer, errors);
+      System.out.println(errors);
+      System.out.println("총 검증 실패 개수 :" + errors.getErrorCount());
 
-		/*
-		 * if(errors.hasErrors()){ return
-		 * "/WEB-INF/register/register_form_customer.jsp"; }
-		 */
-		service.addCustomer(customer);
-		model.addAttribute("customerId", customer.getCustomerId());
-	
-		return "redirect:/customer/registerSuccess.do";
+      if (errors.hasErrors()) {
+         return "/WEB-INF/register/register_form_customer.jsp";
+      }
+      service.addCustomer(customer);
+      model.addAttribute("customerId", customer.getCustomerId());
+      return "redirect:/customer/registerSuccess.do";
+   }
+	//Id 중복 확인
+	@RequestMapping("findByIdJson.do")
+	@ResponseBody
+   	public String findByIdJson(@RequestParam String customerId){
+	    System.out.println("JSP에서 받은 값 :" + customerId);
+	    System.out.println("컨트롤러에서 JSP에값을 받아 조회한 값 : " + service.findCustomerById(customerId));
+	    Customer customer = service.findCustomerById(customerId);
+	    String chk = customer.getCustomerId();
+	    	return chk;
 	}
+	   
 	@RequestMapping("registerSuccess")
 	public String registerSuccess(@RequestParam String customerId, ModelMap model) {
 
@@ -168,11 +180,24 @@ public class CustomerController {
 	/*---------------------------------매장검색 시 사용되는 controller---------------------------------------*/
 	//매장 이름 조회
 	@RequestMapping("find_store_name.do")
-	public String findStore(@RequestParam(value="findStoreName") String storeName, ModelMap model){
-		List<Store> list = service.findStoreName(storeName);
-		model.addAttribute("findstore",list);
-		return "/WEB-INF/customer/find_store/find_store_name_success.jsp";
-	}
+	   public String findStore(@RequestParam String storeName, Store store, ModelMap model) { // 모델어트리뷰트
+	      List<Store> list = service.findStoreName(storeName);
+	      System.out.println(storeName);
+	      System.out.println(storeName.equals(""));
+
+	      if (list.size() < 1) {
+	         model.addAttribute("errorMessage", "찾으시는 매장이 없습니다.");
+	         return "/WEB-INF/customer/find_store/find_store_name.jsp";
+
+	      } else if (storeName.equals("")) {
+	         model.addAttribute("errorMessage", "찾으실 매장을 입력해주세요");
+	         return "/WEB-INF/customer/find_store/find_store_name.jsp";
+	      }
+
+	      model.addAttribute("findstore", list);
+	      return "/WEB-INF/customer/find_store/find_store_name_success.jsp";
+
+	   }
 	//카테고리 페이지로 이동 (매장 이름 으로 조회 후)
 	@RequestMapping("find_store_categoryPage")
 	public String findStoreCategoryPage(@RequestParam int categoryId, int storeId, ModelMap model){
@@ -251,7 +276,7 @@ public class CustomerController {
 		return "redirect:/basic/item_list.do";
 	}
 
-	/*------------------------------------게시판 조회------------------------------------------*/
+	/*------------------------------------계시판 조회------------------------------------------*/
 	@RequestMapping("/boardList")
 	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
 		int page = Integer.parseInt(pageNo);
@@ -289,8 +314,10 @@ public class CustomerController {
 		HashMap map = new HashMap();
 		map.put("boardTitle", boardTitle);
 		map.put("boardWriter", boardWriter);
-		map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+//		map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+		map.put("boardContent", boardContent);
 		service.insertBoard(map);
 		return "redirect:/customer/boardList.do";
 	}
+
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import common.util.PagingBean;
 import kr.or.kosta.pl.dao.CustomerDAO;
+import kr.or.kosta.pl.exception.CustomerNotFoundException;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Cart;
@@ -208,5 +209,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public void insertBoard(HashMap map) {
 		dao.insertBoard(map);
 	}
+	
+	
 
 }

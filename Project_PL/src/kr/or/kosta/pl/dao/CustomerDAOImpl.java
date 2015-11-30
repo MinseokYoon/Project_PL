@@ -178,7 +178,6 @@ public class CustomerDAOImpl implements CustomerDAO{
 		return session.selectList("customerMapper.selectOrderByCustomerIdLast", customerId);
 	
 	}
-	
 	/*-------------------------------게시판 처리--------------------------------------------*/
 	//게시판 페이지
 	@Override
@@ -206,5 +205,5 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public int insertBoard(HashMap map) {
 		return session.insert("customerMapper.insertBoard", map);
 	}
-	
+
 }

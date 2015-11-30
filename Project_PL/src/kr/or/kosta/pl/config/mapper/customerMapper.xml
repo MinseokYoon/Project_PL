@@ -67,7 +67,7 @@
 			<arg column="customer_phone" javaType="string"/>
 		</constructor>
 	</resultMap>
-
+	
 	<resultMap type="board" id="board-resultMap">
 		<id property="boardIndex" column="board_idx"/>
 		<result property="boardTitle" column="board_title"/>

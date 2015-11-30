@@ -24,7 +24,6 @@ public class Order implements Serializable{
 	
 	SimpleDateFormat date = new SimpleDateFormat("MM월 dd일 (E) hh시");
 	
-	
 	public Order() {}
 
 	//주문 테이블만의 생성자

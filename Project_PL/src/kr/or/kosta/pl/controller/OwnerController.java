@@ -244,7 +244,8 @@ public class OwnerController {
 		HashMap map = new HashMap();
 		map.put("boardTitle", boardTitle);
 		map.put("boardWriter", boardWriter);
-		map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+//		map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+		map.put("boardContent", boardContent);
 		service.insertBoard(map);
 		return "redirect:/owner/boardList.do";
 	}

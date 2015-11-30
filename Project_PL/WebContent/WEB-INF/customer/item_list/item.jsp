@@ -26,16 +26,31 @@
 	<link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <!--/head-->
+<script type="text/javascript" src="${initParam.rootPath }/js/jquery.js"></script>
 <script type="text/javascript">
-   function cart() {
-      var cart = confirm("장바구니에 담으시겠습니까?");
-         if(cart){
-            return true;
-         }else{
-            return false;
-         }
-   }
+function cart() {
+   
+	var store = $('#storeId').val();
+	var count = $('#itemCount').val();
+  
+	if(store == "default"){
+		alert("매장을 입력해 주세요.")
+		return false;
+	}
+	if(count == ""){
+		alert("개수를 입력해 주세요.")
+		return false;
+	}		
+  
+	var cart = confirm("장바구니에 담으시겠습니까?");
+	if(cart){
+		return true;
+	}else{
+	return false;
+	}
+}
 </script>
+
 <body>
 	<header id="header">
 		<!--header-->
@@ -54,7 +69,7 @@
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
+								<li><a href="login.html"><i class="fa fa-user"></i>마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
@@ -202,7 +217,7 @@
 								
 								<c:choose>
 									<c:when test="${empty requestScope.storeId}" >
-										<select name="storeId">			<!-- 물품 이름으로 매장 다중으로 받아옴 -->
+										<select name="storeId" id = "storeId">			<!-- 물품 이름으로 매장 다중으로 받아옴 -->
 											<option value="default">매장을 선택해 주세요.</option>
 											<c:forEach items="${requestScope.store}" var="store">
 												<option value="${store.storeId}">${store.storeName} </option>
@@ -222,7 +237,7 @@
 								<span>
 									<span>${requestScope.item.itemPrice}원</span>
 									<label>Quantity:</label>
-									<input type="number" value="1" name="countItem"/>  <!-- 숫자만 들어오는것 오류 확인해야함 -->
+									<input type="number" value="1" id="itemCount" name="countItem"/>  <!-- 숫자만 들어오는것 오류 확인해야함 -->
 									<button type="submit" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart

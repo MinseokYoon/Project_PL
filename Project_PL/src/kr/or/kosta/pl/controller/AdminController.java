@@ -268,19 +268,21 @@ public class AdminController {
 	
 	@RequestMapping("/insertBoard")
 	public String insertBoard(@RequestParam String boardTitle, String boardCategoryName, String boardContent, String boardWriter) {
-		if(boardContent.charAt(0) =='<') {
-			System.out.println("content : " + boardContent);
-			boardContent = boardContent.copyValueOf(boardContent.toCharArray(), 3, boardContent.length()-3);
-			System.out.println("잘라낸 후 : " + boardContent);
-		}
+//		if(boardContent.charAt(0) =='<') {
+//			System.out.println("content : " + boardContent);
+//			boardContent = boardContent.copyValueOf(boardContent.toCharArray(), 3, boardContent.length()-3);
+//			System.out.println("잘라낸 후 : " + boardContent);
+//		}
 		if(boardCategoryName.equals("일반")) {
-//			System.out.println("제목 : " + boardTitle);
-//			System.out.println("작성자 : " + boardWriter);
+			System.out.println("제목 : " + boardTitle);
+			System.out.println("작성자 : " + boardWriter);
+			System.out.println("내용 : " + boardContent);
 //			System.out.println("내용 : " + boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
 			HashMap map = new HashMap();
 			map.put("boardTitle", boardTitle);
 			map.put("boardWriter", boardWriter);
-			map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+//			map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+			map.put("boardContent", boardContent);
 			map.put("boardCategoryName", boardCategoryName);
 			map.put("boardCategory", 1);
 			service.insertBoard(map);
@@ -290,7 +292,8 @@ public class AdminController {
 			HashMap map = new HashMap();
 			map.put("boardTitle", boardTitle);
 			map.put("boardWriter", boardWriter);
-			map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+//			map.put("boardContent", boardContent.copyValueOf(boardContent.toCharArray(), 0, boardContent.length()-13));
+			map.put("boardContent", boardContent);
 			map.put("boardCategoryName", boardCategoryName);
 			map.put("boardCategory", 2);
 			service.insertBoard(map);

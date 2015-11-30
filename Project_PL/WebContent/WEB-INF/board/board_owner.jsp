@@ -157,7 +157,7 @@
 				</div>
 				<div class="col-sm-9 padding-right">
 				<h2>게시판</h2>
-				<table width="500px" border="1" bordercolor="d8d8d8">
+				<table width="700px" border="1" bordercolor="d8d8d8">
 					<tr height="30" bgcolor="#fe980f">
 						<th style="text-align: center">글번호</th>
 						<th style="text-align: center">분류</th>

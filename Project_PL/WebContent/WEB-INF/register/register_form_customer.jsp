@@ -4,6 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -26,6 +27,48 @@
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
 		<link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 	</head>
+	<script type="text/javascript" src="/Project_PL/script/jquery.js"></script>
+   <script type="text/javascript">
+      function checkPassword() {
+         var form = document.forms[0];
+         var customerPassword = form.customerPassword.value;
+         var customerPasswordCheck = form.customerPasswordCheck.value;
+         if (customerPassword != customerPasswordCheck) {
+            document.getElementById('checkPwd').style.color = "red";
+            document.getElementById('checkPwd').innerHTML = "동일한 암호를 입력하세요.";
+         } else {
+            document.getElementById('checkPwd').style.color = "black";
+            document.getElementById('checkPwd').innerHTML = "암호가 확인 되었습니다.";
+         }
+      }
+   </script>
+   <script type="text/javascript">
+      $(document).ready(function() {
+         $("#searchJsonBtn").on("click", function() {
+            $.ajax({
+               "url" : "/Project_PL/customer/findByIdJson.do",//요청할 서버 URL 
+               "type":"POST", 
+               "data": {"customerId":$("#customerId").val()},//요청파라미터 - query string형태, javascript 객체
+               "dataType": "text",//응답 데이터 형식(타입)-text(기본),json, jsonp, xml
+               "beforeSend":function(){
+                  if(!$("#customerId").val()){
+                     alert("조회할 ID 넣으세요");
+                     $("#customerId").focus();
+                     return false;
+                  }
+               },
+               "success" : function(text) {
+                          
+                          alert("중복된 아이디입니다.");         
+               },
+               "error" : function() {
+
+                  alert("사용가능한 ID입니다.");
+               }
+            });
+         });
+      });
+   </script>
 	<body>
 		<header id="header"><!--header-->
 			<div class="header-middle">
@@ -121,57 +164,65 @@
 		</section>
 		<!--/slider-->
 		<!--/slider-->
-		<section id="form"><!--form-->
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-4 col-sm-offset-4">
-						<div class="signup-form">
-							<!--login form-->
-							<h2>1분 1초가 아쉬운 당신 회원가입 하세요</h2>
-							<spring:hasBindErrors name="customer" />
-							<form action="${initParam.rootPath}/customer/add.do">
-								<input type="text" name="customerId" placeholder="아이디" />
-								<form:errors path="customer.id" />
-								<input type="password" name="customerPassword" placeholder="비밀번호" />
-								<form:errors path="customer.password" />
-								<input type="text" name="customerName" placeholder="이름" />
-								<form:errors path="customer.name" />
-								<input type="text" name="customerAddress" placeholder="주소(50자 이내)" height="100px" />
-								<form:errors path="customer.address" />
-								<input type="text" name="customerBirth" placeholder="생년월일 (예 : 20151117)" />
-								<form:errors path="customer.birth" />
-								<table width="100%">
-									<tr>
-										<td width="20%">
-											<h2>남자</h2>
-										</td>
-										<td><input type="radio" name="customerGender" value="1" />
-										</td>
-										<td width="20%">
-											<h2>여자</h2>
-										</td>
-										<td><input type="radio" name="customerGender" value="2" />
-										</td>
-									</tr>
-								</table>
-								<input type="text" name="customerPhone" placeholder="전화번호 (예: 01012345678)" />
-								<form:errors path="customer.phone" />
-								<table width="100%">
-									<tr>
-										<td>
-											<input type="text" name="customerEmail" placeholder="이메일 (예: example@example.com)" />
-										</td>
-									</tr>
-								</table>
-								<input type="hidden" name="customerPoint"/>
-								<button type="submit" class="btn btn-default">회원가입</button>
-							</form>
-						</div>
-						<!--/login form-->
-					</div>
-				</div>
-			</div>
-		</section>
+		<section id="form">
+      <!--form-->
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+               <div class="signup-form">
+                  <!--login form-->
+                  <h2>1분 1초가 아쉬운 당신 회원가입 하세요</h2>
+                  <spring:hasBindErrors name="customer" />
+                  <form action="${initParam.rootPath}/customer/add.do" method="post">
+                     <font color="red"><form:errors path="customer.customerId" /></font> 
+                     <input type="text" name="customerId" placeholder="아이디" id = "customerId" /> 
+                     <input type="button" name="idCheckBtn" value="중복확인" id ="searchJsonBtn"/>
+                     <font color="red"><form:errors path="customer.customerPassword" /></font>
+                     <input type="password" name="customerPassword" placeholder="비밀번호"/> 
+                     <div id="checkPwd"></div>   
+                     <font color="red"><span class="errorMessage" id="pwErrorMessage"><form:errors path="customer.customerPassword" /></span></font>
+                     <input type="password" name="customerPasswordCheck" placeholder="비밀번호 재입력" onkeyup="checkPassword()"/> 
+                     <font color="red"><form:errors path="customer.customerName" /></font>
+                     <input type="text" name="customerName" placeholder="이름" /> 
+                     <font color="red"><form:errors path="customer.customerAddress" /></font> 
+                     <input type="text" name="customerAddress" placeholder="주소(50자 이내)" height="100px" /> 
+                     <font color="red"><form:errors path="customer.customerBirth" /></font>
+                     <input type="text" name="customerBirth" placeholder="생년월일 (예 : 20151117)" /> 
+                     <font color="red"><form:errors path="customer.customerGender" /></font> 
+                     <table width="100%">
+                        <tr>
+                           <td width="20%">
+                              <h2>남자</h2>
+                           </td>
+                           <td><input type="radio" name="customer_gender" value="1" />
+                           </td>
+                           <td width="20%">
+                              <h2>여자</h2>
+                           </td>
+                           <td><input type="radio" name="customer_gender" value="2" />
+                           </td>
+                        </tr>
+                     </table>
+                     <font color="red"><form:errors path="customer.customerPhone" /></font>
+                     <input type="text" name="customerPhone" placeholder="전화번호 (예: 01012345678)" /> 
+                     <font color="red"><form:errors path="customer.customerEmail" /></font>
+                     <table width="100%">
+                        <tr>
+                           <td><input type="text" name="customerEmail"
+                              placeholder="이메일 (예: example@example.com)" /> 
+                              
+                           </td>
+                        </tr>
+                     </table>
+                     <input type="hidden" name="customerPoint" value="0" />
+                     <button type="submit" class="btn btn-default">회원가입</button>
+                  </form>
+               </div>
+               <!--/login form-->
+            </div>
+         </div>
+      </div>
+   </section>
 		<!--/form-->
 		<footer id="footer"><!--Footer-->
 			<div class="footer-top">
@@ -200,6 +251,7 @@
 									<h2>24 DEC 2014</h2>
 								</div>
 							</div>
+		
 							<div class="col-sm-3">
 								<div class="video-gallery text-center">
 									<a href="#">
@@ -214,6 +266,7 @@
 									<h2>24 DEC 2014</h2>
 								</div>
 							</div>
+		
 							<div class="col-sm-3">
 								<div class="video-gallery text-center">
 									<a href="#">
@@ -228,6 +281,7 @@
 									<h2>24 DEC 2014</h2>
 								</div>
 							</div>
+		
 							<div class="col-sm-3">
 								<div class="video-gallery text-center">
 									<a href="#">

@@ -141,7 +141,7 @@
 								<div id="food" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="${initParam.rootPath }/customer/form_food.do?categoryId=1">정보 수정</a></li>
+											<li><a href="${initParam.rootPath }/customer/form_myPage.do">정보 수정</a></li>
 											<li><a href="${initParam.rootPath }/customer/form_point.do">포인트 조회</a></li>
 										</ul>
 									</div>

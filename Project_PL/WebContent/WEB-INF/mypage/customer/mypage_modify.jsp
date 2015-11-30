@@ -175,10 +175,11 @@
 
 				  <div class="container">
 					  <div class="row">
-					     <div class="col-sm-15">
-					        <div class="modify-form">
+					     <div class="col-sm-4 col-sm-offset-4">
+					        <div class="signup-form">
 					           <!--login form-->
-					               <div style="Text-align:center; padding:20px; border:1px;"></div>
+					               <div style="Text-align:center; padding:20px; border:1px;">
+					                        </div>
 					              <h2>회원 정보 수정</h2>
 					              <spring:hasBindErrors name="customer"/>
 					              <form action="/Project_PL/customer/modify.do">
@@ -187,9 +188,11 @@
 					                 <input type="text" name="customerName" value="${sessionScope.sessionUser.customerName}" />    <form:errors path="customer.customerName" />
 					                 <input type="text" name="customerAddress" value="${sessionScope.sessionUser.customerAddress}" height="100px" />  <form:errors path="customer.customerAddress" />
 					                 <input type="text" name="customerBirth" value="${sessionScope.sessionUser.customerBirth}" /> <form:errors path="customer.customerBirth" />
-					                 <input type="text" name="customerPhone" value="${sessionScope.sessionUser.customerPhone}" /> 
-					                 <input type="text" name="customerEmail" value="${sessionScope.sessionUser.customerEmail}" /> 
-					                 <button type="submit" class="btn btn-default" Text-align:center>수정</button>     
+					                      <input type="text" name="customerPhone" value="${sessionScope.sessionUser.customerPhone}" /> 
+					                       <input type="text" name="customerEmail" value="${sessionScope.sessionUser.customerEmail}" /> 
+					                      <button type="submit" class="btn btn-default" Text-align:center>수정</button>     
+					                        <div style="Text-align:center; padding:50px; border:1px;">
+					                        </div>             
 					              </form>
 					           </div>
 					           <!--/login form-->
