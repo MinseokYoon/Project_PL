@@ -39,7 +39,7 @@
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-user"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
@@ -67,8 +67,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -79,8 +78,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -91,8 +89,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 						</div>

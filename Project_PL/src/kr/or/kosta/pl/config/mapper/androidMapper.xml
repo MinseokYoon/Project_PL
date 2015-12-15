@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="androidMapper">
+	<!-- product 외부매핑 -->
+	<resultMap type="product" id="product-resultmap">
+		<id property="itemId" column="item_id"/>
+		<result property="itemName" column="item_name"/>
+		<result property="itemPrice" column="item_price"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="storeId" column="store_id"/>
+		<result property="itemExpirationDate" column="item_expiration_date"/>
+		<result property="itemCount" column="item_count"/>
+		<result property="serverIndex" column="server_index"/>
+		<result property="categoryName" column="category_name"/>
+	</resultMap>
+	
+	<select id="selectStoreItemListByStoreName" parameterType="String" resultMap="product-resultmap">
+		select e.item_id, e.item_name, e.item_price, c.category_id, d.store_id, d.item_expiration_date, d.item_count, d.server_index, c.category_name
+		from pl_item_info e, pl_server_item d, pl_category c where d.store_id=(select store_id from pl_store where store_name=#{value}) and e.item_id = d.item_id and e.category_id = c.category_id
+	</select>
+	
+</mapper>

@@ -76,8 +76,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -90,8 +89,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -104,8 +102,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 						</div>

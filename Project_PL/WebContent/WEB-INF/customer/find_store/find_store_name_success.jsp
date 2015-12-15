@@ -29,6 +29,21 @@
 <link rel="apple-touch-icon-precomposed"
 	href="/Project_PL/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
+<script type="text/javascript" src="/Project_PL/script/jquery.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#categoryIdChk").on("click", function() {
+			var chk = document.findStoreForm.categoryId.value;
+			if (chk == "default") {
+				alert("카테고리를 선택해 주세요");
+				return false;
+			} else {
+				return true;
+			}
+		});
+	});
+</script>
+
 <body>
 	<header id="header"><!--header-->
 	<div class="header-middle">
@@ -44,12 +59,9 @@
 				<div class="col-sm-8">
 					<div class="shop-menu pull-right">
 						<ul class="nav navbar-nav">
-							<li><a href="">${sessionScope.hello }님반갑습니다.<i
-									class="fa fa-user"></i>
-									<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
-									<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
-									<li><a href="${initParam.rootPath }/basic/index.do"><i
-											class="fa fa-lock"></i> 로그아웃</a></li>
+							<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
+							<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
+							<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 						</ul>
 					</div>
 				</div>
@@ -82,10 +94,8 @@
 								<button type="button" class="btn btn-default get">편라인</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="/Project_PL/images/home/girl1.jpg"
-									class="girl img-responsive" alt="" /> <img
-									src="/Project_PL/images/home/pricing.png" class="pricing"
-									alt="" />
+								<img src="/Project_PL/images/home/girl1.png"
+									class="girl img-responsive" alt="" /> 
 							</div>
 						</div>
 						<div class="item">
@@ -98,10 +108,8 @@
 								<button type="button" class="btn btn-default get">편라인</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="/Project_PL/images/home/girl2.jpg"
-									class="girl img-responsive" alt="" /> <img
-									src="/Project_PL/images/home/pricing.png" class="pricing"
-									alt="" />
+								<img src="/Project_PL/images/home/girl2.png"
+									class="girl img-responsive" alt="" /> 
 							</div>
 						</div>
 
@@ -115,10 +123,8 @@
 								<button type="button" class="btn btn-default get">편라인</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="/Project_PL/images/home/girl3.jpg"
-									class="girl img-responsive" alt="" /> <img
-									src="/Project_PL/images/home/pricing.png" class="pricing"
-									alt="" />
+								<img src="/Project_PL/images/home/girl3.png"
+									class="girl img-responsive" alt="" />
 							</div>
 						</div>
 
@@ -185,7 +191,6 @@
 								<div class="panel-body">
 									<ul>
 										<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
-										<li><a href="#">지역검색</a></li>
 										<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 									</ul>
 								</div>
@@ -224,11 +229,10 @@
 									</div>
 									<!--login form-->
 									<h2>매장 검색 결과</h2>
-
 									<%-- <spring:hasBindErrors name="customer"/> --%>
 									<c:forEach items="${requestScope.findstore }" var="fs"
 										begin="0" end="10">
-										<form action="/Project_PL/customer/find_store_categoryPage.do">
+										<form action="/Project_PL/customer/find_store_categoryPage.do" method="post" name="findStoreForm">
 											<table border="1" style="width: 700px">
 												<tr>
 													<td>매장명</td>
@@ -241,6 +245,9 @@
 													<td>${fs.storePhone }</td>
 												</tr>
 											</table>
+											<!-- 지도 div -->
+											<div id="daumRoughmapContainer${fs.storeTimestamp}" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+											
 											<table>
 												<th><select name="categoryId">
 														<option value="default">품목을 선택해 주세요.</option>
@@ -249,16 +256,28 @@
 														<option value="1">식품</option>
 														<option value="4">아이스크림</option>
 														<option value="3">과자</option>
-												</select>
-												<input type="hidden" name="storeId" value ="${fs.storeId}" />
-													<button type="submit" class="btn btn-default"}>이동</button></th>
+													</select> 
+													<input type="hidden" name="storeId" value="${fs.storeId}" />
+													<button type="submit" class="btn btn-default" id="categoryIdChk" >이동</button></th>
 											</table>
-											</br>
 										</form>
-									</c:forEach>
+										</br>
+										
+										<!-- 지도스크립트 폼 -->
+										<script charset="UTF-8" class="daum_roughmap_loader_script" src="http://dmaps.daum.net/map_js_init/roughmapLoader.js"></script>
 
-									<div style="Text-align: center; padding: 80px; border: 1px;">
-									</div>
+										<!-- 실행 스크립트 -->
+										<script charset="UTF-8">
+											new daum.roughmap.Lander(
+													{
+														"timestamp" : "${fs.storeTimestamp}", 
+														"key" : "${fs.storeKey}",
+														"mapWidth" : "360",
+														"mapHeight" : "250"
+													}).render();
+										</script>
+									</c:forEach>
+									<div style="Text-align: center; padding: 80px; border: 1px;"></div><!-- 밑공백넣어줄려고 이렇게함 -->
 								</div>
 								<!--/login form-->
 							</div>

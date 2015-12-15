@@ -26,7 +26,7 @@
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <body>
-	<header id="header"><!--header-->		
+<header id="header"><!--header-->		
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
@@ -39,7 +39,7 @@
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-user"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
@@ -67,8 +67,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -79,8 +78,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -91,8 +89,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 						</div>
@@ -103,6 +100,7 @@
 							<i class="fa fa-angle-right"></i>
 						</a>
 					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -123,10 +121,34 @@
 										</a>
 									</h4>
 								</div>
+								<div id="food" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath}/admin/storeList.do">편의점 목록</a></li>
+											<li><a href="${initParam.rootPath}/admin/storeAdd.do">편의점등록</a></li>
+											<li><a href="${initParam.rootPath}/owner/add.do">점주등록</a></li>
+										</ul>
+									</div>
+								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordian" href="#product">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											물품 관리
+										</a>
+									</h4>
+								</div>
+								<div id="product" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/admin/itemList.do">물품 목록</a></li>
+											<li><a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a></li>
+											<li><a href="${initParam.rootPath }/admin/categoryList.do">카테고리 목록</a>
+											
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
@@ -134,7 +156,7 @@
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/adminBoard.do">게시판</a></h4>
 								</div>
 							</div>
-						</div><!--/category-products-->					
+						</div>			
 					</div>
 				</div>
 				<div class="col-sm-9 padding-right">

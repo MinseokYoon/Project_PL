@@ -28,47 +28,70 @@
 		<link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 	</head>
 	<script type="text/javascript" src="/Project_PL/script/jquery.js"></script>
-   <script type="text/javascript">
-      function checkPassword() {
-         var form = document.forms[0];
-         var customerPassword = form.customerPassword.value;
-         var customerPasswordCheck = form.customerPasswordCheck.value;
-         if (customerPassword != customerPasswordCheck) {
-            document.getElementById('checkPwd').style.color = "red";
-            document.getElementById('checkPwd').innerHTML = "동일한 암호를 입력하세요.";
-         } else {
-            document.getElementById('checkPwd').style.color = "black";
-            document.getElementById('checkPwd').innerHTML = "암호가 확인 되었습니다.";
-         }
-      }
-   </script>
-   <script type="text/javascript">
-      $(document).ready(function() {
-         $("#searchJsonBtn").on("click", function() {
-            $.ajax({
-               "url" : "/Project_PL/customer/findByIdJson.do",//요청할 서버 URL 
-               "type":"POST", 
-               "data": {"customerId":$("#customerId").val()},//요청파라미터 - query string형태, javascript 객체
-               "dataType": "text",//응답 데이터 형식(타입)-text(기본),json, jsonp, xml
-               "beforeSend":function(){
-                  if(!$("#customerId").val()){
-                     alert("조회할 ID 넣으세요");
-                     $("#customerId").focus();
-                     return false;
-                  }
-               },
-               "success" : function(text) {
-                          
-                          alert("중복된 아이디입니다.");         
-               },
-               "error" : function() {
+	<script type="text/javascript">
+		function checkPassword() {
+			var form = document.forms[0];
+			var customerPassword = form.customerPassword.value;
+			var customerPasswordCheck = form.customerPasswordCheck.value;
+			if (customerPassword != customerPasswordCheck) {
+				document.getElementById('checkPwd').style.color = "red";
+				document.getElementById('checkPwd').innerHTML = "동일한 암호를 입력하세요.";
+			} else {
+				document.getElementById('checkPwd').style.color = "black";
+				document.getElementById('checkPwd').innerHTML = "암호가 확인 되었습니다.";
+			}
+		}
+	</script>
 
-                  alert("사용가능한 ID입니다.");
-               }
-            });
-         });
-      });
-   </script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#checkId").on("click", function() {
+				var hidden = document.joinForm.id_check.value;
+				var pw1 = document.joinForm.pw1.value;
+				var pw2 = document.joinForm.pw2.value;
+				if (hidden == "Y") {
+					alert("ID중복확인을 해주세요");
+					return false;
+				} else if(pw1 != pw2) {
+					alert("패스워드가 틀립니다.")
+					return false;
+				} else {
+					return true;
+				}
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#searchJsonBtn").on("click", function() {
+				$.ajax({
+					"url" : "/Project_PL/customer/findByIdJson.do",//요청할 서버 URL 
+					"type":"POST", 
+					"data": {"customerId":$("#customerId").val()},//요청파라미터 - query string형태, javascript 객체
+					"dataType": "text",//응답 데이터 형식(타입)-text(기본),json, jsonp, xml
+					"beforeSend":function(){
+						if(!$("#customerId").val()){
+							alert("조회할 ID 넣으세요");
+							$("#customerId").focus();
+							return false;
+						}
+					},
+					"success" : function(text) {
+	                       alert("중복된 아이디입니다.");		
+	                       var t = document.joinForm.id_check.value = "Y";
+	             
+					},
+					"error" : function() {
+						alert("사용가능한 ID입니다.");
+						document.joinForm.id_check.value = "N";
+					}
+				});
+			});
+		});
+	</script>
+
 	<body>
 		<header id="header"><!--header-->
 			<div class="header-middle">
@@ -118,8 +141,7 @@
 										<button type="button" class="btn btn-default get">편라인</button>
 									</div>
 									<div class="col-sm-6">
-										<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" /> 
-										<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+										<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" /> 
 									</div>
 								</div>
 								<div class="item">
@@ -132,8 +154,7 @@
 										<button type="button" class="btn btn-default get">편라인</button>
 									</div>
 									<div class="col-sm-6">
-										<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" /> 
-										<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+										<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" /> 
 									</div>
 								</div>
 								<div class="item">
@@ -146,8 +167,7 @@
 										<button type="button" class="btn btn-default get">편라인</button>
 									</div>
 									<div class="col-sm-6">
-										<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-										<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+										<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" />
 									</div>
 								</div>
 							</div>
@@ -165,64 +185,65 @@
 		<!--/slider-->
 		<!--/slider-->
 		<section id="form">
-      <!--form-->
-      <div class="container">
-         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-               <div class="signup-form">
-                  <!--login form-->
-                  <h2>1분 1초가 아쉬운 당신 회원가입 하세요</h2>
-                  <spring:hasBindErrors name="customer" />
-                  <form action="${initParam.rootPath}/customer/add.do" method="post">
-                     <font color="red"><form:errors path="customer.customerId" /></font> 
-                     <input type="text" name="customerId" placeholder="아이디" id = "customerId" /> 
-                     <input type="button" name="idCheckBtn" value="중복확인" id ="searchJsonBtn"/>
-                     <font color="red"><form:errors path="customer.customerPassword" /></font>
-                     <input type="password" name="customerPassword" placeholder="비밀번호"/> 
-                     <div id="checkPwd"></div>   
-                     <font color="red"><span class="errorMessage" id="pwErrorMessage"><form:errors path="customer.customerPassword" /></span></font>
-                     <input type="password" name="customerPasswordCheck" placeholder="비밀번호 재입력" onkeyup="checkPassword()"/> 
-                     <font color="red"><form:errors path="customer.customerName" /></font>
-                     <input type="text" name="customerName" placeholder="이름" /> 
-                     <font color="red"><form:errors path="customer.customerAddress" /></font> 
-                     <input type="text" name="customerAddress" placeholder="주소(50자 이내)" height="100px" /> 
-                     <font color="red"><form:errors path="customer.customerBirth" /></font>
-                     <input type="text" name="customerBirth" placeholder="생년월일 (예 : 20151117)" /> 
-                     <font color="red"><form:errors path="customer.customerGender" /></font> 
-                     <table width="100%">
-                        <tr>
-                           <td width="20%">
-                              <h2>남자</h2>
-                           </td>
-                           <td><input type="radio" name="customer_gender" value="1" />
-                           </td>
-                           <td width="20%">
-                              <h2>여자</h2>
-                           </td>
-                           <td><input type="radio" name="customer_gender" value="2" />
-                           </td>
-                        </tr>
-                     </table>
-                     <font color="red"><form:errors path="customer.customerPhone" /></font>
-                     <input type="text" name="customerPhone" placeholder="전화번호 (예: 01012345678)" /> 
-                     <font color="red"><form:errors path="customer.customerEmail" /></font>
-                     <table width="100%">
-                        <tr>
-                           <td><input type="text" name="customerEmail"
-                              placeholder="이메일 (예: example@example.com)" /> 
-                              
-                           </td>
-                        </tr>
-                     </table>
-                     <input type="hidden" name="customerPoint" value="0" />
-                     <button type="submit" class="btn btn-default">회원가입</button>
-                  </form>
-               </div>
-               <!--/login form-->
-            </div>
-         </div>
-      </div>
-   </section>
+		<!--form-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-4">
+					<div class="signup-form">
+						<!--login form-->
+						<h2>1분 1초가 아쉬운 당신 회원가입 하세요</h2>
+						<spring:hasBindErrors name="customer" />
+						<form action="${initParam.rootPath}/customer/add.do" method="post" name="joinForm">
+							<font color="red"><form:errors path="customer.customerId" /></font> 
+							<input type="text" name="customerId" placeholder="아이디" id = "customerId" /> 
+							<input type="button" name="idCheckBtn" value="중복확인" id ="searchJsonBtn"/>
+							<font color="red"><form:errors path="customer.customerPassword" /></font>
+							<input type="password" name="customerPassword" placeholder="비밀번호" id="pw1"/> 
+							<div id="checkPwd"></div>	
+							<font color="red"><span class="errorMessage" id="pwErrorMessage"><form:errors path="customer.customerPassword" /></span></font>
+							<input type="password" name="customerPasswordCheck" placeholder="비밀번호 재입력" id="pw2" onkeyup="checkPassword()"/> 
+							<font color="red"><form:errors path="customer.customerName" /></font>
+							<input type="text" name="customerName" placeholder="이름" /> 
+							<font color="red"><form:errors path="customer.customerAddress" /></font> 
+							<input type="text" name="customerAddress" placeholder="주소(50자 이내)" height="100px" /> 
+							<font color="red"><form:errors path="customer.customerBirth" /></font>
+							<input type="text" name="customerBirth" placeholder="생년월일 (예 : 20151117)" /> 
+							<font color="red"><form:errors path="customer.customerGender" /></font> 
+							<table width="100%">
+								<tr>
+									<td width="20%">
+										<h2>남자</h2>
+									</td>
+									<td><input type="radio" name="customer_gender" value="1" />
+									</td>
+									<td width="20%">
+										<h2>여자</h2>
+									</td>
+									<td><input type="radio" name="customer_gender" value="2" />
+									</td>
+								</tr>
+							</table>
+							<font color="red"><form:errors path="customer.customerPhone" /></font>
+							<input type="text" name="customerPhone" placeholder="전화번호 (예: 01012345678)" /> 
+							<font color="red"><form:errors path="customer.customerEmail" /></font>
+							<table width="100%">
+								<tr>
+									<td><input type="email" name="customerEmail"
+										placeholder="이메일 (예: example@example.com)" /> 
+										
+									</td>
+								</tr>
+							</table>
+							<input type="hidden" name="customerPoint" value="0" />
+							<input type="hidden" name="id_check" id="id_check" value="Y"/>
+							<button type="submit" class="btn btn-default" id="checkId">회원가입</button>
+						</form>
+					</div>
+					<!--/login form-->
+				</div>
+			</div>
+		</div>
+	</section>
 		<!--/form-->
 		<footer id="footer"><!--Footer-->
 			<div class="footer-top">

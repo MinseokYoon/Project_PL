@@ -8,11 +8,14 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import common.util.PagingBeanForReview;
 import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Cart;
+import kr.or.kosta.pl.vo.Category;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Order;
 import kr.or.kosta.pl.vo.Product;
+import kr.or.kosta.pl.vo.Review;
 import kr.or.kosta.pl.vo.Store;
 
 @Repository
@@ -43,6 +46,14 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public int updateCustomer(Customer customer) {
 		return session.update("customerMapper.updateCustomer", customer);
 	}
+	//이름,폰번호로 아이디 찾기
+	@Override
+	public Customer selectCustomerByNameAndPhoneNumber(String name, String phoneNumber) {
+		HashMap map = new HashMap();
+		map.put("name", name);
+		map.put("phoneNumber", phoneNumber);
+		return session.selectOne("customerMapper.selectCustomerByNameAndPhoneNumber",map);	
+	}
 	
 	/*-------------------------------물품 조회--------------------------------------------*/
 	//메인 페이지 12개 랜덤 조회(젠체 물품 중)
@@ -50,30 +61,41 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public List<Product> selectItemList() {
 		
 		List<Product> list = new ArrayList();
-		int[] result = new int[12];
+		int lastNumber = session.selectOne("customerMapper.selectItemCount");
+		int count = 50;
+		int[] result = new int[count];
 
-		for (int i = 0; i < 12; i++) {
-			result[i] = (int) ((Math.random() * 120) + 1);
+		for (int i = 0; i < count; i++) {
+			result[i] = (int) ((Math.random() * lastNumber) + 1);
 			for (int k = 0; k < i; k++) {
 				if (result[i] == result[k]) {
-					result[i] = (int) ((Math.random() * 120) + 1);
+					result[i] = (int) ((Math.random() * lastNumber) + 1);
 					k = 0;
 				}
 			}
 		}
-		for(int i =0; i<12; i++){
+		for(int i =0; i< count; i++){
 			Product pd = session.selectOne("customerMapper.selectItemList", result[i]);		
-			list.add(pd);		
+			if(pd != null){
+				list.add(pd);
+			}
+			if(list.size() == 12){
+				break;
+			}
 		}	
 		return list;
+		
+		
 	}
 	//물품 이름으로 물건 1개 조회
 	@Override
 	public Product selectItemByName(String itemName) {
-
-		Product pd =session.selectOne("customerMapper.selectItemByName", itemName);
-
 		return session.selectOne("customerMapper.selectItemByName", itemName);
+	}
+	//물품 아이디로 물건 조회
+	@Override
+	public Product selectItemById(int itemId){
+		return session.selectOne("customerMapper.selectItemById", itemId);
 	}
 	//카테고리별 페이지 12개 랜덤 조회(카테고리 단위로)
 	@Override
@@ -83,11 +105,6 @@ public class CustomerDAOImpl implements CustomerDAO{
 		//mapper에서 카테고리 개수만큼 찾아와야함
 		list = session.selectList("customerMapper.selectItemListByCategory", categoryId);
 		
-//		for(int i =0; i<12; i++){
-//			Product pd = session.selectOne("customerMapper.selectItemListByCategory", categoryId);
-//			
-//			list.add(pd);		
-//		}	
 		return list;
 	}
 	//물품 이름으로 전체 조회
@@ -97,7 +114,46 @@ public class CustomerDAOImpl implements CustomerDAO{
 		list =session.selectList("customerMapper.selectItemByNameMany", itemName);
 		return list;
 	}
-	/*-------------------------------매장 검색--------------------------------------------*/
+	
+	//카테고리 리스트 전제 조회
+	@Override
+	public List<Category> selectCategoryList(){
+		return session.selectList("customerMapper.selectCategoryList");
+	}
+	//리뷰 등록
+	@Override
+	public int insertReview(String customerId, int itemId, String content) {
+		HashMap parameter = new HashMap();
+		parameter.put("customerId", customerId);
+		parameter.put("itemId", itemId);
+		parameter.put("content", content);	
+		return session.insert("customerMapper.insertReview", parameter);
+	}
+	
+	//리뷰 조회
+	@Override
+	public List<Review> selectReview(int itemId){
+		return session.selectList("customerMapper.selectReview", itemId);
+	}
+	
+	//리뷰 개수 갖고오기
+	@Override
+	public int selectCountReviews(String itemName) {
+		return session.selectOne("customerMapper.selectCountReviews",itemName);
+	}
+	
+	//리뷰 조회 페이징
+	@Override
+	public List<Review> selectReview(int itemId,int page){
+		HashMap map = new HashMap();
+		map.put("contentPerPage",PagingBeanForReview.CONTENTS_PER_PAGE);
+		map.put("itemId",itemId);
+		map.put("pageNo", page);
+		
+		List<Review> list = session.selectList("customerMapper.selectReviewPaging", map);
+		return list;
+	}
+		/*-------------------------------매장 검색--------------------------------------------*/
 	//매장 아이디로 찾기 1개
 		@Override
 	public Store selectStoreById(int storeId) {
@@ -118,6 +174,41 @@ public class CustomerDAOImpl implements CustomerDAO{
 	}
 	
 	/*-------------------------------장바구니 처리--------------------------------------------*/
+	//장바구니 있는지 조회
+	@Override
+	public Cart selectCartByCustomerIdItemId(String customerId, int storeId, int itemId) {
+		HashMap map = new HashMap();
+		map.put("customerId", customerId);
+		map.put("storeId", storeId);
+		map.put("itemId", itemId);
+		return session.selectOne("customerMapper.selectCartByCustomerIdItemId", map);
+	}
+	//장바구니 있을 시 개수만 변경
+	@Override
+	public int updateCart(int cartNumber, int totalCount) {
+		HashMap map = new HashMap();
+		map.put("cartNumber", cartNumber);
+		map.put("totalCount", totalCount);
+		return session.update("customerMapper.updateCart", map);
+	}
+	//서버 물품 조회
+	@Override
+	public int selectServerItemById(int storeId, int itemId) {
+		HashMap map = new HashMap();
+		map.put("storeId", storeId);
+		map.put("itemId", itemId);
+		
+		return session.selectOne("customerMapper.selectServerItemCount", map);
+	}
+	@Override
+	public int updateServerItemCount(int storeId, int itemId, int totalCount) {
+		HashMap map = new HashMap();
+		map.put("storeId", storeId);
+		map.put("itemId", itemId);
+		map.put("totalCount", totalCount);
+		System.out.println(storeId + " " + itemId +  " " + totalCount);
+		return session.update("customerMapper.updateServerItem", map);
+	}
 	//장바구니 추가
 	@Override
 	public int insertCart(String customerId, int storeId, int itemId, int countItem) {
@@ -130,6 +221,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 		
 		return session.insert("customerMapper.insertCart", parameter);
 	}
+	
 	//고객 아이디로 장바구니 검색 
 	@Override
 	public List<Cart> selectCartByCustomerId(String customerId) {
@@ -171,13 +263,30 @@ public class CustomerDAOImpl implements CustomerDAO{
 		return session.selectList("customerMapper.selectOrderByCustomerIdnow", customerId);
 	
 	}
-	//이전 주문 조회
+	//이전 주문 조회 
 	@Override
 	public List<Order> selectOrderByCustomerIdLast(String customerId) {
-		
 		return session.selectList("customerMapper.selectOrderByCustomerIdLast", customerId);
-	
 	}
+	
+	//이전 주문 조회 페이징
+	@Override
+	public List<Order> selectOrderByCustomerIdLastPaging(String customerId,int pageNo) {
+		HashMap map = new HashMap();
+		map.put("contentPerPage",PagingBeanForReview.CONTENTS_PER_PAGE);
+		map.put("customerId", customerId);
+		map.put("pageNo", pageNo);
+		
+		List<Order> list = session.selectList("customerMapper.selectOrderByCustomerIdLastPaging", map);
+		return list;
+	}
+	
+	//이전 주문조회 개수 
+	@Override
+	public int selectCountLastOrder(String customerId) {
+		return session.selectOne("customerMapper.selectCountLastOrder",customerId);
+	}
+	
 	/*-------------------------------게시판 처리--------------------------------------------*/
 	//게시판 페이지
 	@Override
@@ -205,5 +314,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 	public int insertBoard(HashMap map) {
 		return session.insert("customerMapper.insertBoard", map);
 	}
+
+
 
 }

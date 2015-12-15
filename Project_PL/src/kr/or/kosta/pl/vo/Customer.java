@@ -1,6 +1,8 @@
 package kr.or.kosta.pl.vo;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
 	
 	private String customerId;
 	private String customerPassword;
@@ -14,6 +16,8 @@ public class Customer {
 	private int storeId;
 	
 	public Customer(){}
+	
+	
 	
 	public Customer(String customerId, String customerPassword, String customerName, String customerAddress,
 			String customerBirth, int customerGender, String customerPhone, String customerEmail, int customerPoint) {

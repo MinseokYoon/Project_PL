@@ -72,8 +72,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -86,8 +85,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -100,8 +98,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 						</div>
@@ -158,8 +155,7 @@
 								<div id="beverage" class="panel-collapse collapse">
 									<div class="panel-body">
 										<ul>
-											<li><a href="#">매장명 검색</a></li>
-											<li><a href="#">지역검색</a></li>
+											<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
 											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 										</ul>
 									</div>
@@ -173,7 +169,7 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a href="#">고객센터</a>
+										<a href="${initParam.rootPath }/basic/customerCenter.do">고객센터</a>
 									</h4>
 								</div>
 							</div>

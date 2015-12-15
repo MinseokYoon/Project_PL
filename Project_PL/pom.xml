@@ -63,6 +63,12 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>4.2.2.RELEASE</version>
 		</dependency>
+		<!-- Transaction Module -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>4.2.2.RELEASE</version>
+		</dependency>
 		<!-- tiles api 설정 tiles 로 검색 후 tiles jsp suports와 tiles core library 설정을 
 			사용. -->
 		<dependency>
@@ -81,6 +87,12 @@
            <artifactId>mail</artifactId>
            <version>1.4</version>
        </dependency>
+       <!-- Spring 모듈 추가 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.2.2.RELEASE</version>
+		</dependency>
        
        <!-- spring - context 지원 -->
         <dependency>
@@ -88,6 +100,40 @@
             <artifactId>spring-context-support</artifactId>
             <version>3.0.5.RELEASE</version>
          </dependency>
+		<!-- Fileupload 처리 - Apache Commons Fileupload API가 필요 
+			-CommandMultipartResolver가 파일 업로드 처리를 위해 사용하는 외부 API
+		-->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+		<!-- json 사용 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20151123</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20151123</version>
+		</dependency>
+		
+		
+         
 	</dependencies>
 
 </project>

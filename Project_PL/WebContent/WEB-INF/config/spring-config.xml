@@ -5,9 +5,11 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
 	<context:component-scan base-package="kr.or.kosta.pl.vo, kr.or.kosta.pl.controller, kr.or.kosta.pl.service, kr.or.kosta.pl.dao"/>
 	<mvc:annotation-driven/>
@@ -39,10 +41,30 @@
                 <prop key="mail.smtp.auth">true</prop>
             </props>
         </property>
-       
     </bean>
-    <bean id="email" class="kr.or.kosta.pl.vo.Email">
-    </bean>
-    <bean id="emailSender" class="kr.or.kosta.pl.vo.EmailSender">
-    </bean>
+    
+    <bean id="email" class="kr.or.kosta.pl.vo.Email"/>
+    
+    <bean id="emailSender" class="kr.or.kosta.pl.vo.EmailSender"/>
+    
+ 	<!-- Transaction 처리 -->
+	<!-- Transaction Manager 등록 : DataSourceTransactionManager - mybatis사용하는 DataSource 등록한다.-->
+	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+	p:dataSource-ref="dataSource"/>
+	<!-- 
+		tx namespace 추가
+		tx:annotation-driven : transaction-manager추가.
+	 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+    <!-- multipartResolver를 Bean에 등록 -->
+    <bean name="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+    
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1"></bean>
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="2"></bean>
+    
+    <!-- messageSource bean 등록 -->
+   <bean name="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
+        p:basename="common.util.error_message"/>
+    
 </beans>

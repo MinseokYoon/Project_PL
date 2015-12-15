@@ -29,10 +29,15 @@
 <script type="text/javascript" src="${initParam.rootPath }/js/jquery.js"></script>
 <script type="text/javascript">
 function cart() {
-   
-	var store = $('#storeId').val();
-	var count = $('#itemCount').val();
-  
+  	var a = $('#storeId').get(0).options[$('#storeId').get(0).selectedIndex].text;
+   	var b = a.substring(a.lastIndexOf("-")+1, a.lastIndexOf("개"));
+	
+   	var store = $('#storeId').val();
+	var count = $('#CountItem').val();
+
+  	var c = window.parseInt(b);
+  	var d = window.parseInt(count);
+  	
 	if(store == "default"){
 		alert("매장을 입력해 주세요.")
 		return false;
@@ -40,7 +45,10 @@ function cart() {
 	if(count == ""){
 		alert("개수를 입력해 주세요.")
 		return false;
-	}		
+	} else if(d > c){
+		alert("본 매장의 한정 수량은"+c+"개입니다." );
+		return false;
+	}
   
 	var cart = confirm("장바구니에 담으시겠습니까?");
 	if(cart){
@@ -49,6 +57,37 @@ function cart() {
 	return false;
 	}
 }
+
+$(document).ready(function(){
+	//카테고리 선택시 아이템 조회
+	$("#category").on("change", function(){
+		var idx = this.selectedIndex;
+		$.ajax({
+			"type":"POST",
+			"url":"/Project_PL/customer/itemListByCategory.do",
+			"data": {"categoryId":$("#category").val()},
+			"dataType": "JSON",	//응답 데이터 형식(타입)-
+			"beforeSend":function(){
+				if($("#category").val()=="default"){
+					$("itemId").empty().append("<option value='default'>물품 내역2</option>");
+					return false;
+				}
+			},
+			"success":function(item){
+				var str = "<option value='default'>물품 이름</option>";
+				for(var i = 0; i<item.length; i++){
+					str = str + " <option value='"+item[i].itemId+"'>"+ item[i].itemName+"</option>";
+					
+				}
+				$("#itemId").html(str);
+			},
+			"error": function(){
+				alert("오류발생");
+			}	
+		});
+	});
+});
+
 </script>
 
 <body>
@@ -69,7 +108,7 @@ function cart() {
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="login.html"><i class="fa fa-user"></i>마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
@@ -114,8 +153,9 @@ function cart() {
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#food"> <span class="badge pull-right">
-											<i class="fa fa-plus"></i></span> 물품 검색
+										<a data-toggle="collapse" data-parent="#accordian" href="#food">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											물품 검색
 										</a>
 									</h4>
 								</div>
@@ -134,7 +174,8 @@ function cart() {
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#beverage"> <span class="badge pull-right">
+										<a data-toggle="collapse" data-parent="#accordian" href="#beverage"> 
+											<span class="badge pull-right">
 											<i class="fa fa-plus"></i></span> 편의점 검색
 										</a>
 									</h4>
@@ -143,7 +184,6 @@ function cart() {
 									<div class="panel-body">
 										<ul>
 											<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
-											<li><a href="#">지역검색</a></li>
 											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 										</ul>
 									</div>
@@ -157,7 +197,7 @@ function cart() {
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a href="#">고객센터</a>
+										<a href="${initParam.rootPath }/basic/customerCenter.do">고객센터</a>
 									</h4>
 								</div>
 							</div>
@@ -220,7 +260,7 @@ function cart() {
 										<select name="storeId" id = "storeId">			<!-- 물품 이름으로 매장 다중으로 받아옴 -->
 											<option value="default">매장을 선택해 주세요.</option>
 											<c:forEach items="${requestScope.store}" var="store">
-												<option value="${store.storeId}">${store.storeName} </option>
+												<option value="${store.storeId}">${store.storeName}-${store.storeItemCount }개 </option>
 											</c:forEach>
 										</select>
 									</c:when>
@@ -237,7 +277,7 @@ function cart() {
 								<span>
 									<span>${requestScope.item.itemPrice}원</span>
 									<label>Quantity:</label>
-									<input type="number" value="1" id="itemCount" name="countItem"/>  <!-- 숫자만 들어오는것 오류 확인해야함 -->
+									<input type="number" value="1" id="CountItem" name="countItem"/>  <!-- 숫자만 들어오는것 오류 확인해야함 -->
 									<button type="submit" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart
@@ -255,142 +295,83 @@ function cart() {
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<!-- 다른 것들 지웠음 -->
-								<li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+								<li class="active"><a href="#reviews" data-toggle="tab">Reviews (${requestScope.reviewCount })</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">
 							<div class="tab-pane fade active in" id="reviews">
 								<div class="col-sm-12">
+									<c:forEach items="${requestScope.reviewList }" var="review">
 									<ul>
-										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+										<li><a href=""><i class="fa fa-user"></i>${review.reviewWriter}</a></li>
+										<li><a href=""><i class="fa fa-clock-o"></i>${review.stringDate1 }</a></li>
+										<li><a href=""><i class="fa fa-calendar-o"></i>${review.stringDate2 }</a></li>
 									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-										elit, sed do eiusmod tempor incididunt ut labore et dolore
-										magna aliqua.Ut enim ad minim veniam, quis nostrud
-										exercitation ullamco laboris nisi ut aliquip ex ea commodo
-										consequat.Duis aute irure dolor in reprehenderit in voluptate
-										velit esse cillum dolore eu fugiat nulla pariatur.</p>
+									<p>${review.reivewContent } </p>
+									</c:forEach>
+									<p/>
+									<!-- 페이징 처리 시작-->
+										<c:choose>
+											<c:when test="${requestScope.pagingBeanForReview.previousPageGroup }">
+												<a href="${initParam.rootPath }/customer/item.do?pageNo=${requestScope.pagingBeanForReview.startPageOfPageGroup-1}">
+													◀ 
+												</a>
+											</c:when>
+											<c:otherwise>
+									 			◀
+									 		</c:otherwise>
+										</c:choose> 
+										<!-- Page Group 내의 page들 링크 처리
+											- PageGroup의 시작/끝페이지 번호 - 반복문 처리
+										 --> 
+										<c:forEach begin="${requestScope.pagingBeanForReview.startPageOfPageGroup }" end="${requestScope.pagingBeanForReview.endPageOfPageGroup }" var="page">
+											<c:choose>
+												<c:when test="${page == requestScope.pagingBeanForReview.currentPage }"> 
+													[${page}]
+												</c:when>
+												<c:otherwise>
+													<a href="${initParam.rootPath }/customer/item.do?pageNo=${page }&itemName=${requestScope.item.itemName}&categoryId=${requestScope.item.categoryId }"> ${page } </a>
+												</c:otherwise>
+											</c:choose>
+											&nbsp;&nbsp;
+										</c:forEach> 
+										<!-- 3. 다음 페이지 그룹 링크
+										   	 다음 페이지 그룹이 있으면 링크 처리 없으면 그냥 화살표만 나오도록 처리.
+										--> 
+										<c:choose>
+											<c:when test="${requestScope.pagingBeanForReview.nextPageGroup }">
+												<a href="${initParam.rootPath }/customer/item.do?pageNo=${requestScope.pagingBeanForReview.endPageOfPageGroup+1}">
+					  								▶
+												</a>
+											</c:when>
+											<c:otherwise>▶</c:otherwise>
+										</c:choose>
+									<!-- 페이징 처리 끝 -->
 									<p>
 										<b>Write Your Review</b>
 									</p>
-									<form action="#">
-										<span> <input type="text" placeholder="Your Name" /> <input
-											type="email" placeholder="Email Address" />
+									<p/><p/>
+									<form action="${initParam.rootPath }/customer/review_add.do">
+										<p>
+											<select id="category" name="category">
+												<option value="${requestScope.item.categoryId }">${requestScope.item.categoryName}</option>
+											</select>
+											<p/>
+											<select id="itemId" name="itemId">
+												<option value="${requestScope.item.itemId }">${requestScope.item.itemName }</option>
+											</select>
+										</p>
+										<span> <input readonly="readonly" name="customerId" value="${sessionScope.sessionUser.customerId}" /> 
 										</span>
-										<textarea name=""></textarea>
-										<b>Rating: </b> <img src="${initParam.rootPath}/images/product-details/rating.png" alt="" />
-										<button type="button" class="btn btn-default pull-right">Submit</button>
+										<textarea name="content"></textarea>
+										<button type="submit" class="btn btn-default pull-right">제출</button>
 									</form>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!--/category-tab-->
-					<div class="recommended_items">
-						<!--recommended_items-->
-						<h2 class="title text-center">recommended items</h2>
-						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								<div class="item active">
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="${initParam.rootPath}/images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart">
-														<i class="fa fa-shopping-cart"></i>Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="${initParam.rootPath}/images/home/recommend2.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart">
-														<i class="fa fa-shopping-cart"></i>Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="${initParam.rootPath}/images/home/recommend3.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart">
-														<i class="fa fa-shopping-cart"></i>Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="item">
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="${initParam.rootPath}/images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart">
-														<i class="fa fa-shopping-cart"></i>Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="${initParam.rootPath}/images/home/recommend2.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart">
-														<i class="fa fa-shopping-cart"></i>Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="${initParam.rootPath}/images/home/recommend3.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart">
-														<i class="fa fa-shopping-cart"></i>Add to cart
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev"> 
-								<i class="fa fa-angle-left"></i>
-							</a> 
-							<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next"> 
-								<i class="fa fa-angle-right"></i>
-							</a>
-						</div>
-					</div>
-					<!--/recommended_items-->
+
 				</div>
 			</div>
 		</div>

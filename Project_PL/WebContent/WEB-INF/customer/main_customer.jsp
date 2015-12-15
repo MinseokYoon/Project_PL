@@ -71,8 +71,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -85,8 +84,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -99,8 +97,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 						</div>
@@ -158,7 +155,6 @@
 									<div class="panel-body">
 										<ul>
 											<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
-											<li><a href="#">지역검색</a></li>
 											<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 										</ul>
 									</div>
@@ -192,7 +188,7 @@
 											<img src="${initParam.rootPath}/images/${pd.categoryId }/${pd.itemName }.png" alt="" />
 											<h2>${pd.itemPrice}</h2>
 											<p>${pd.itemName }</p>
-											<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName}&categoryId=${pd.categoryId}" class="btn btn-default add-to-cart">
+											<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName}&categoryId=${pd.categoryId}&pageNo=${param.pageNo}" class="btn btn-default add-to-cart">
 												<i class="fa fa-shopping-cart"></i>물품 조회
 											</a>
 										</div>
@@ -200,7 +196,7 @@
 											<div class="overlay-content">
 												<h2>${pd.itemPrice}</h2>
 												<p>${pd.itemName }</p>
-												<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}" class="btn btn-default add-to-cart">
+												<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}&pageNo=${param.pageNo}" class="btn btn-default add-to-cart">
 													<i class="fa fa-shopping-cart"></i>물품 조회
 												</a>
 											</div>
@@ -226,7 +222,7 @@
 														<img src="${initParam.rootPath}/images/${pd.categoryId }/${pd.itemName }.png" alt="" />
 														<h2>${pd.itemPrice}</h2>
 														<p>${pd.itemName }</p>
-														<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}" class="btn btn-default add-to-cart">
+														<a href="${initParam.rootPath}/customer/item.do?itemName=${pd.itemName }&categoryId=${pd.categoryId}&pageNo=${param.pageNo}" class="btn btn-default add-to-cart">
 															<i class="fa fa-shopping-cart"></i>물품 조회
 														</a>
 													</div>

@@ -72,8 +72,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -86,8 +85,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -100,8 +98,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 						</div>
@@ -194,9 +191,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								 
 								<%int sum = 0;%>
-								<c:forEach items="${requestScope.order }" var="order">
+								<c:forEach items="${requestScope.lastOrderList }" var="order">
 								<% int eachSum = 0;%>
 									<tr>
 										<td class="cart_product"><a href=""><img
@@ -231,6 +227,47 @@
 									</tr>
 								<%sum = sum + eachSum; %>
 								</c:forEach>
+									<tr>
+										<td colspan="6" align="center">
+											<!-- 페이징 처리 시작-->
+											<c:choose>
+												<c:when test="${requestScope.pagingBeanForReview.previousPageGroup }">
+													<a href="${initParam.rootPath }/customer/last_order.do?pageNo=${requestScope.pagingBeanForReview.startPageOfPageGroup-1}">
+														◀ 
+													</a>
+												</c:when>
+												<c:otherwise>
+										 			◀
+										 		</c:otherwise>
+											</c:choose> 
+											<!-- Page Group 내의 page들 링크 처리
+												- PageGroup의 시작/끝페이지 번호 - 반복문 처리
+											 --> 
+											<c:forEach begin="${requestScope.pagingBeanForReview.startPageOfPageGroup }" end="${requestScope.pagingBeanForReview.endPageOfPageGroup }" var="page">
+												<c:choose>
+													<c:when test="${page == requestScope.pagingBeanForReview.currentPage }"> 
+														[${page}]
+													</c:when>
+													<c:otherwise>
+														<a href="${initParam.rootPath }/customer/last_order.do?pageNo=${page }"> ${page } </a>
+													</c:otherwise>
+												</c:choose>
+												&nbsp;&nbsp;
+											</c:forEach> 
+											<!-- 3. 다음 페이지 그룹 링크
+											   	 다음 페이지 그룹이 있으면 링크 처리 없으면 그냥 화살표만 나오도록 처리.
+											--> 
+											<c:choose>
+												<c:when test="${requestScope.pagingBeanForReview.nextPageGroup }">
+													<a href="${initParam.rootPath }/customer/last_order.do?pageNo=${requestScope.pagingBeanForReview.endPageOfPageGroup+1}">
+														▶
+													</a>
+												</c:when>
+												<c:otherwise>▶</c:otherwise>
+											</c:choose>
+											<!-- 페이징 처리 끝 -->
+										</td>
+									</tr>
 							</tbody>
 						</table>
 					</div>

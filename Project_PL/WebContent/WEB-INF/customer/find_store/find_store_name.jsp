@@ -44,7 +44,6 @@
 				<div class="col-sm-8">
 					<div class="shop-menu pull-right">
 						<ul class="nav navbar-nav">
-							<li>${sessionScope.hello }님반갑습니다.</li>
 							<li><a href="${initParam.rootPath }/customer/mypage.do"><i class="fa fa-user"></i>마이페이지</a></li>
 							<li><a href="${initParam.rootPath }/customer/cartpage.do"><i class="fa fa-shopping-cart"></i>장바구니</a></li>
 							<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
@@ -80,10 +79,8 @@
 								<button type="button" class="btn btn-default get">편라인</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="/Project_PL/images/home/girl1.jpg"
-									class="girl img-responsive" alt="" /> <img
-									src="/Project_PL/images/home/pricing.png" class="pricing"
-									alt="" />
+								<img src="/Project_PL/images/home/girl1.png"
+									class="girl img-responsive" alt="" /> 
 							</div>
 						</div>
 						<div class="item">
@@ -96,10 +93,8 @@
 								<button type="button" class="btn btn-default get">편라인</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="/Project_PL/images/home/girl2.jpg"
-									class="girl img-responsive" alt="" /> <img
-									src="/Project_PL/images/home/pricing.png" class="pricing"
-									alt="" />
+								<img src="/Project_PL/images/home/girl2.png"
+									class="girl img-responsive" alt="" /> 
 							</div>
 						</div>
 
@@ -113,10 +108,8 @@
 								<button type="button" class="btn btn-default get">편라인</button>
 							</div>
 							<div class="col-sm-6">
-								<img src="/Project_PL/images/home/girl3.jpg"
-									class="girl img-responsive" alt="" /> <img
-									src="/Project_PL/images/home/pricing.png" class="pricing"
-									alt="" />
+								<img src="/Project_PL/images/home/girl3.png"
+									class="girl img-responsive" alt="" />
 							</div>
 						</div>
 
@@ -183,7 +176,6 @@
 								<div class="panel-body">
 									<ul>
 										<li><a href="${initParam.rootPath }/customer/find_store_name_form.do">매장명 검색</a></li>
-										<li><a href="#">지역검색</a></li>
 										<li><a href="${initParam.rootPath }/customer/find_store_nearby.do">주변 편의점</a></li>
 									</ul>
 								</div>
@@ -223,9 +215,9 @@
 									<h2>매장검색</h2>
 									<%-- <spring:hasBindErrors name="customer"/> --%>
 									<form action="/Project_PL/customer/find_store_name.do">
-
-										<input type="text" name="findStoreName"
-											placeholder="찾을실 매장을 검색해주세요" />
+										<font color="red">${requestScope.errorMessage }</font>
+										<input type="text" name="storeName"
+											placeholder="찾을 매장을 검색해주세요" />
 										<%-- <form:errors path="customer.customerId"/> --%>
 										<button type="submit" class="btn btn-default">검색</button>
 									</form>

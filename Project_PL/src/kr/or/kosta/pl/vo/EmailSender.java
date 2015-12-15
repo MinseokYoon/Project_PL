@@ -1,5 +1,7 @@
 package kr.or.kosta.pl.vo;
 
+import java.io.Serializable;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -9,7 +11,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 
 
-public class EmailSender {
+public class EmailSender implements Serializable {
 	
 	 @Autowired
      protected JavaMailSender  mailSender;

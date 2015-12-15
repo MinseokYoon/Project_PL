@@ -7,16 +7,20 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import common.util.PagingBean;
+import common.util.PagingBeanForReview;
 import kr.or.kosta.pl.dao.CustomerDAO;
 import kr.or.kosta.pl.exception.CustomerNotFoundException;
 import kr.or.kosta.pl.exception.DuplicatedIdException;
 import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Cart;
+import kr.or.kosta.pl.vo.Category;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Order;
 import kr.or.kosta.pl.vo.Product;
+import kr.or.kosta.pl.vo.Review;
 import kr.or.kosta.pl.vo.Store;
 
 @Service("customerService")
@@ -58,6 +62,13 @@ public class CustomerServiceImpl implements CustomerService{
 	public void modifyCustomer(Customer customer) {
 		dao.updateCustomer(customer);
 	}
+	//이름,핸드폰번호로 아이디 찾기
+	@Override
+	public Customer findCustomerByNameAndPhoneNumber(String name, String phoneNumber) {
+		
+		Customer customer = dao.selectCustomerByNameAndPhoneNumber(name,phoneNumber);
+		return customer;
+	}
 
 	/*-------------------------------물품 조회--------------------------------------------*/
 	//메인 페이지 12개 랜덤 조회(젠체 물품 중)
@@ -71,6 +82,13 @@ public class CustomerServiceImpl implements CustomerService{
 	public Product findItemById(String itemName) {
 		return dao.selectItemByName(itemName);
 	}
+	
+	//물품 아이디로 물건 1개 조회
+	@Override
+	public Product findItemById2(int itemId){
+		return dao.selectItemById(itemId);
+	}
+	
 	//물품 상세 정보 페이지 내 관련물품 사진 작은거 9개
 	@Override
 	public List<Product> findItemListByCategorySmallRecommand(int categoryId) {
@@ -124,6 +142,42 @@ public class CustomerServiceImpl implements CustomerService{
 		return dao.selectItemByNameMany(itemName);
 	}
 	
+	//카테고리 리스트 전체 조회
+	@Override
+	public List<Category> findCategoryList(){
+		return dao.selectCategoryList();
+	}
+	
+	//아이템 리스트 카테고리로 전체 조회
+	@Override
+	public List<Product> findItemListByCategory(int categoryId){
+		return dao.selectItemListByCategory(categoryId);
+	}
+	//리뷰 등록
+	@Override
+	public void addReview(String customerId, int itemId, String content) {
+		dao.insertReview(customerId, itemId, content);
+	}
+	//리뷰 조회
+	@Override
+	public List<Review> findReview(int itemId){
+		return dao.selectReview(itemId);
+	}
+
+	//리뷰 조회 페이징 
+	@Override
+	public Map getAllReviewsPaging(int page, int itemId,String itemName) {
+		HashMap map = new HashMap();
+		map.put("reviewList", dao.selectReview(itemId,page));
+		
+		PagingBeanForReview pagingBeanForReview = new PagingBeanForReview(dao.selectCountReviews(itemName), page);
+		map.put("pagingBeanForReview", pagingBeanForReview);
+		map.put("reviewCount", dao.selectCountReviews(itemName));
+		
+		return map;
+	}
+	
+	
 	/*-------------------------------매장 검색--------------------------------------------*/
 	//매장 아이디로 찾기 1개
 	@Override
@@ -144,11 +198,41 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 	
 	/*-------------------------------장바구니 처리--------------------------------------------*/
+	//장바구니에 같은 품목 있는지 조회
+	@Override
+	public Cart findCartByCusotmerIdItemId(String customerId, int storeId, int itemId) {
+		
+		return dao.selectCartByCustomerIdItemId(customerId, storeId, itemId);
+	}
+	@Override
+	public int updateCart(int cartNumber, int totalCount) {
+		
+		return dao.updateCart(cartNumber, totalCount);
+	}
+	
+	@Override
+	public int updateCart2(int storeId, int itemId, int countItem) {
+		int totalCount = 0;
+		totalCount = dao.selectServerItemById(storeId, itemId) - countItem;
+	
+		return dao.updateServerItemCount(storeId, itemId, totalCount);
+	}
+
 	//장바구니 추가
 	@Override
+	@Transactional
 	public void addCart(String customerId, int storeId, int itemId, int countItem) {
+		
+		//서버에서 물건 개수 조회 후 개수 줄이기
+		int totalCount = 0;
+		totalCount = dao.selectServerItemById(storeId, itemId) - countItem;
+	
+		//주문 개수를 빼서 업데이트 
+		dao.updateServerItemCount(storeId, itemId, totalCount);
+		
 		dao.insertCart(customerId, storeId, itemId, countItem);
 	}
+	
 	//고객 아이디로 장바구니 검색
 	@Override
 	public List<Cart> findCartByCusotmerId(String customerId) {
@@ -163,8 +247,19 @@ public class CustomerServiceImpl implements CustomerService{
 	/*-------------------------------주문 처리--------------------------------------------*/
 	//주문 삽입
 	@Override
-	public void addOrder(String customerId, int storeId, int itemId, int orderCount, int orderStatus) {
-		dao.insertOrder(customerId, storeId, itemId, orderCount, orderStatus);
+	@Transactional
+	public void addOrder(String[] customerId, int[] storeId, int[] itemId, int[] orderCount, int[] orderStatus) {
+		
+		for(int i = 0; i < customerId.length; i++){
+			dao.insertOrder(customerId[i], storeId[i], itemId[i], orderCount[i], orderStatus[i]);
+		}
+		for(int k = 0; k < customerId.length; k++){
+			dao.deleteCart(customerId[k], storeId[k], itemId[k]);
+		}
+	}
+	//주문 삽입 - 안드로이드
+	public void addOrderAndroid(String customerId, int storeId, int itemId, int orderCount, int orderStatus) {
+			dao.insertOrder(customerId, storeId, itemId, orderCount, orderStatus);
 	}
 	//주문 조회
 	@Override
@@ -172,11 +267,22 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return dao.selectOrderByCustomerId(customerId);
 	}
-	//주문 조회
+	//이전 주문 조회
 	@Override
 	public List<Order> findOrderByCusotmerIdLast(String customerId) {
-		
 		return dao.selectOrderByCustomerIdLast(customerId);
+	}
+	
+	//이전 주문 조회 - 페이징 
+	@Override
+	public Map getLastOrderPaging(String customerId,int pageNo) {
+	
+		HashMap map = new HashMap();
+		map.put("lastOrderList", dao.selectOrderByCustomerIdLastPaging(customerId,pageNo)); //페이징처리 매퍼로 바꿔야 함 
+		PagingBeanForReview pagingBeanForReview = new PagingBeanForReview(dao.selectCountLastOrder(customerId), pageNo);
+		map.put("pagingBeanForReview", pagingBeanForReview);
+		
+		return map;
 	}
 	
 	/*-------------------------------게시판 처리--------------------------------------------*/
@@ -209,7 +315,5 @@ public class CustomerServiceImpl implements CustomerService{
 	public void insertBoard(HashMap map) {
 		dao.insertBoard(map);
 	}
-	
-	
 
 }

@@ -87,6 +87,75 @@ public class BasicController {
         model.addAttribute("errorMessage","Id와 Password가 일치하지 않습니다.");
       return "/WEB-INF/login/login.jsp";
    }
+   
+   //아이디 찾는 form 가는 컨트롤러
+   @RequestMapping("/findId_form")
+   public String findIdForm(){
+	   return "/WEB-INF/login/findId_form.jsp";
+   }
+   //비밀번호 찾는 form 가는 컨트롤러
+   @RequestMapping("/findPassword_form")
+   public String findPasswordForm(){
+	   
+	   return "/WEB-INF/login/findPassword_form_ById.jsp";
+   }
+   //아이디 찾기
+   @RequestMapping("/findId")
+   public String findId(@RequestParam String name,@RequestParam String phoneNumber,ModelMap model){
+	   
+ 	   Customer customer = customerService.findCustomerByNameAndPhoneNumber(name,phoneNumber);
+	   
+	   if(customer == null){
+		   return "/WEB-INF/login/findId_fail.jsp";
+	   }
+	   
+	   model.addAttribute("customer",customer);
+	   
+	   return "/WEB-INF/login/findId_success.jsp";
+   }
+   //비밀번호 찾는 컨트롤러 - 1 - 아이디로 우선 조회후 비밀번호 찾기
+   @RequestMapping("/findPassword")
+   public String findPassword(@RequestParam String customerId,ModelMap model){
+	   
+	   Customer customer = customerService.findCustomerById(customerId);
+	   
+	   if(customer == null){
+		   model.addAttribute("errorMessage","없는 Id입니다.");
+		   return "/WEB-INF/login/findPassword_form_ById.jsp";
+	   }
+	   
+	   return "/WEB-INF/login/findPassword_form_ByValues.jsp"; 
+   }
+   
+   //비밀번호 찾는 컨트롤러 - 2 - 입력한 값들이 일치할 경우 메일로 비밀번호 전송 
+   @RequestMapping("/findPassword_2")
+   public String findPassword2(@RequestParam String customerId,@RequestParam String customerName, @RequestParam String customerPhoneNumber,ModelMap model){
+	   
+	   Customer customer = customerService.findCustomerById(customerId);
+	   
+	   if(customer == null){//없는 아이디를 입력할 경우 
+		   model.addAttribute("errorMessage","입력하신 정보가 일치하지 않습니다.");
+		   return "/WEB-INF/login/findPassword_form_ById.jsp";
+	   }else{//아이디는 일치하는 경우
+		   if(customer.getCustomerName().equals(customerName) && customer.getCustomerPhone().equals(customerPhoneNumber)){//이름과 폰번호가 일치하는 경우
+			   email.setContent("비밀번호는"+customer.getCustomerPassword()+"입니다.");
+			   email.setReceiver(customer.getCustomerEmail());
+			   email.setSubject(customerId+"님 비밀번호 찾기 메일입니다.");
+			   try {
+				emailSender.SendEmail(email);
+			} catch (Exception e) {
+				System.out.println("메일 오류");
+				e.printStackTrace();
+			}
+			   return "/WEB-INF/login/findPassword_success.jsp";
+		   }else{//이름과 폰번호가 일치하지 않는 경우
+			   model.addAttribute("errorMessage","일치하지 않는 값입니다.");
+			   return "/WEB-INF/login/findPassword_form_ByValues.jsp";
+		   }
+	   }
+	   
+   }
+   
    /*--------------------------------메인 페이지 이동---------------------------------*/
    //고객 메인 페이지 이동
    @RequestMapping("/item_list")
@@ -144,15 +213,15 @@ public class BasicController {
    }
    
    /*--------------------------------계시판 페이지 이동---------------------------------*/
-   //고객페이지 게시판 이동
-	@RequestMapping("/ownerBoard")
-	public String ownerBoard() {
-		return "/owner/boardList.do";
-	}
-	//점주페이지 게시판 이동
+	//고객페이지 게시판 이동
 	@RequestMapping("/customerBoard")
 	public String customerBoard() {
 		return "/customer/boardList.do";
+	}
+	//점주페이지 게시판 이동
+	@RequestMapping("/ownerBoard")
+	public String ownerBoard() {
+		return "/owner/boardList.do";
 	}
 	//관리자페이지 게시판 이동
 	@RequestMapping("/adminBoard")
@@ -162,7 +231,10 @@ public class BasicController {
    
    /*--------------------------------고객센터 페이지 이동---------------------------------*/
    @RequestMapping("/customerCenter")
-   public String customerCenter(){
+   public String customerCenter(ModelMap model){
+	 
+	   
+	   model.addAttribute("category", customerService.findCategoryList());
       return "/WEB-INF/customerCenter/customerCenter.jsp";
    }
    

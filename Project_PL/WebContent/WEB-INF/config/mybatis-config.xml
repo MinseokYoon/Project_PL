@@ -29,5 +29,6 @@
 		<mapper resource="kr/or/kosta/pl/config/mapper/customerMapper.xml"/>
 		<mapper resource="kr/or/kosta/pl/config/mapper/ownerMapper.xml"/>
 		<mapper resource="kr/or/kosta/pl/config/mapper/adminMapper.xml"/>
+		<mapper resource="kr/or/kosta/pl/config/mapper/androidMapper.xml"/>
 	</mappers>
 </configuration>

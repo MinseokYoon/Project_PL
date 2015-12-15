@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="adminMapper">
  
+ 	<!-- 		외부매핑			 -->
+ 	
+ 	<!-- 관리자 -->
 	<resultMap type="admin" id="admin-resultmap">
 		<id property="adminId" column="admin_id" />
 		<result property="adminPassword" column="admin_password" />
@@ -9,6 +12,7 @@
 		<result property="adminPhone" column="admin_phone" />
 	</resultMap>
 
+	<!-- 물품 -->
 	<resultMap type="product" id="product-resultmap">
 		<id property="itemId" column="item_id" />
 		<result property="itemName" column="item_name" />
@@ -16,12 +20,26 @@
 		<result property="categoryId" column="category_id" />
 		<result property="categoryName" column="category_name"/>
 	</resultMap>
-
+	
+	<!-- 카테고리 -->
 	<resultMap type="category" id="category-resultmap">
 		<id property="categoryId" column="category_id" />
 		<result property="categoryName" column="category_name" />
 	</resultMap>
 	
+	<!-- 편의점 -->
+	<resultMap type="store" id="store-resultmap">
+		<id property="storeId" column="store_id" />
+		<result property="storeName" column="store_name" />
+		<result property="ownerId" column="owner_id" />
+		<result property="storeAddress" column="store_address" />
+		<result property="storePhone" column="store_phone" />
+		<result property="storeLicense" column="store_license" />
+		<result property="ownerName" column="owner_name" />
+		<result property="ownerPhone" column="owner_phone" />
+	</resultMap>
+	
+	<!-- 게시판 -->
 	<resultMap type="board" id="board-resultMap">
 		<id property="boardIndex" column="board_idx"/>
 		<result property="boardTitle" column="board_title"/>
@@ -33,7 +51,11 @@
 		<result property="boardCategoryName" column="board_category_name"/>
 	</resultMap>
 	
-
+	
+	
+	<!-- ////////////////////// 관리자 //////////////////////////// -->
+	
+	<!-- 관리자 공통 sql -->
 	<sql id="select-column-sql">
 		admin_id,admin_password,admin_name,admin_phone
 	</sql>
@@ -42,48 +64,56 @@
 		<include refid="select-column-sql" />
 		from pl_admin
 	</sql>
-
+	
+	
+	<!-- 관리자 등록 -->
 	<insert id="insertAdmin" parameterType="admin">
 		insert into pl_admin (
 		<include refid="select-column-sql" />
 		)
 		values (#{adminId}, #{adminPassword}, #{adminName}, #{adminPhone})
 	</insert>
-
-	<delete id="deleteAdminById" parameterType="string">
-		delete from pl_admin
-		where admin_id=#{adminId}
-	</delete>
-
+	
+	<!-- 관리자 수정 -->
 	<update id="updateAdmin" parameterType="admin">
 		update pl_admin set
 		admin_password=#{adminPassword}, admin_name=#{adminName},
 		admin_phone=#{adminPhone}
 		where admin_id=#{adminId}
 	</update>
-
+	
+	<!-- 관리자 삭제 -->
+	<delete id="deleteAdminById" parameterType="string">
+		delete from pl_admin
+		where admin_id=#{adminId}
+	</delete>
+	
+	<!-- ID로 관리자 찾기 -->
 	<select id="selectAdminById" parameterType="string" resultMap="admin-resultmap">
 		<include refid="select-sql" />
 		where admin_id=#{adminId}
 	</select>
-
+	
+	<!-- Name으로 관리자 찾기 -->
 	<select id="selectAdminsByName" parameterType="string"
 		resultMap="admin-resultmap">
 		<include refid="select-sql" />
 		where admin_name=#{adminName}
 	</select>
-
+	
+	<!-- 관리자 오름차순으로 조회-->
 	<select id="selectAdmins" parameterType="string" resultMap="admin-resultmap">
 		<include refid="select-sql" />
 		order by admin_id asc
 	</select>
 
+	<!-- 관리자 수 조회-->
 	<select id="selectCountAdmins" resultType="_int">
 		select count(admin_id)
 		from pl_admin
 	</select>
 
-	<!-- paging -->
+	<!-- 관리자 paging처리 -->
 	<select id="selectAdminsPaging" parameterType="hashmap"
 		resultMap="admin-resultmap">
 		select
@@ -104,9 +134,9 @@
 
 
 
-	<!-- //////////////////////물품//////////////////////////// -->
+	<!-- ////////////////////// 물품 //////////////////////////// -->
 
-
+	<!-- 물품 공통 sql -->
 	<sql id="itemSelect-column-sql">
 		item_id,item_name,item_price,category_id
 	</sql>
@@ -117,64 +147,239 @@
 		from pl_item_info
 	</sql>
 
-	<insert id="insertProduct" parameterType="product">
+	<!-- 물품 등록 -->
+	<insert id="insertProduct" parameterType="hashmap">
 		insert into pl_item_info (
 		<include refid="itemSelect-column-sql" />
 		)
-		values (#{itemId}, #{itemName}, #{itemPrice}, #{categoryId})
+		values (item_index_seq.nextval, #{itemName}, #{itemPrice}, #{categoryId})
 	</insert>
-
-	<delete id="deleteProductByItemId" parameterType="int">
-		delete from
-		pl_item_info where item_id=#{itemId}
-	</delete>
-
-	<update id="updateProduct" parameterType="product">
+	
+	<!-- 물품 수정 -->
+	<update id="updateProduct" parameterType="hashmap">
 		update pl_item_info set
 		item_name=#{itemName}, item_price=#{itemPrice},
 		category_id=#{categoryId}
 		where item_id=#{itemId}
 	</update>
+	
+	<!-- 물품 삭제 -->
+	<delete id="deleteProductByItemId" parameterType="int">
+		delete from pl_item_info 
+		where item_id=#{itemId}
+	</delete>
 
+
+	<!-- ID로 물품 찾기 -->
 	<select id="selectProductByItemId" parameterType="int"
 		resultMap="product-resultmap">
 		<include refid="itemSelect-sql" />
 		where item_id=#{itemId}
 	</select>
 
-	<select id="selectProductsByItemName" parameterType="string"
+	<!-- Name으로 물품 찾기 -->
+	<select id="selectProductByName" parameterType="string"
 		resultMap="product-resultmap">
-		<include refid="itemSelect-sql" />
-		where item_name like '%'||#{itemName}||'%'
+		select i.item_id,i.item_name,i.item_price,i.category_id, c.category_name 
+		from pl_item_info i, pl_category c 
+		where i.category_id = c.category_id and item_name=#{value}
 	</select>
-
-	<select id="selectProducts" parameterType="string"
-		resultMap="product-resultmap">
+	
+	<!-- 물품 오름차순으로  조회-->
+	<select id="selectProducts" parameterType="string" resultMap="product-resultmap">
 		<include refid="itemSelect-sql" />
 		order by item_id asc
 	</select>
-
+	
+	<!-- 물품 수 조회-->
 	<select id="selectCountProducts" resultType="_int">
 		select
 		count(item_id) from pl_item_info
 	</select>
+	
+	<!-- 물품 paging처리 -->
+	<select id="selectProductsPaging" parameterType="hashmap" resultMap="product-resultmap">
+	select item_id, item_name, item_price, category_id, category_name 
+	from(
+			select ceil(rownum/#{contentsPerPage}) page,item_id, item_name, item_price, category_id, category_name 
+			from(	
+				select 	p.item_id, p.item_name, p.item_price, p.category_id, c.category_name 
+				from 	PL_ITEM_INFO p, PL_CATEGORY c
+				where 	p.category_id = c.category_id
+				order by item_id asc
+			)
+	)
+	where page = #{pageNo}
+	</select> 
+	
+ 	<!-- Name으로 부분 검색 -->
+	<select id="selectProductsByItemName" parameterType="hashmap" resultMap="product-resultmap">
+	 	select 	p.item_id, p.item_name, p.item_price, p.category_id, c.category_name 
+				from 	PL_ITEM_INFO p, PL_CATEGORY c
+				where 	p.category_id = c.category_id
+				and 	p.item_name like '%'||#{itemName}||'%'
+	 </select>
 
-	<!-- paging -->
-	<select id="selectProductsPaging" parameterType="hashmap"
-		resultMap="product-resultmap">
+	 
+	
+<!-- ////////////////////// 카테고리 //////////////////////////// -->
+	
+	<!-- 카테고리 공통 sql -->
+	<sql id="categorySelect-column-sql">
+		category_id,category_name
+	</sql>
+
+	<sql id="categorySelect-sql">
 		select
-		<include refid="itemSelect-column-sql" />
+		<include refid="categorySelect-column-sql" />
+		from PL_CATEGORY
+	</sql>
+	
+	<!-- 카테고리 등록 -->
+	<insert id="insertCategory" parameterType="category">
+		insert into PL_CATEGORY (
+		<include refid="categorySelect-column-sql" />
+		)
+		values (#{categoryId},#{categoryName,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 카테고리 삭제 -->
+	<delete id="deleteCategoryById" parameterType="int">
+		delete from
+		PL_CATEGORY where category_id=#{categoryId}
+	</delete>
+
+	<!-- ID로 카테고리 찾기 -->
+	<select id="selectCategoryById" parameterType="int" resultMap="category-resultmap">
+		<include refid="categorySelect-sql"/>
+		where category_id=#{categoryId}
+	</select>
+	
+	<!-- 카테고리 오름차순으로 조회-->
+	<select id="selectCategorys" parameterType="string"
+		resultMap="category-resultmap">
+		<include refid="categorySelect-sql" />
+		order by category_id asc
+	</select>
+	
+	<!-- 카테고리 수 조회-->
+	<select id="selectCountCategorys" resultType="_int">
+		select
+		count(category_id) from pl_category
+	</select>
+	
+	<!-- 카테고리 paging처리 -->
+	<select id="selectCategorysPaging" parameterType="hashmap"
+		resultMap="category-resultmap">
+		select
+		<include refid="categorySelect-column-sql" />
 		from (select
-		<include refid="itemSelect-column-sql" />
+		<include refid="categorySelect-column-sql" />
 		, ceil(rownum/#{contentsPerPage}) page
 		from(select
-		<include refid="itemSelect-column-sql" />
-		from pl_item_info
-		order by item_id))
+		<include refid="categorySelect-column-sql" />
+		from pl_category
+		order by category_id))
 		where page = #{pageNo}
 	</select>
 	
-	<!--////////////////////////////////// 게시판 관련 ///////////////////////////////////////////////////-->
+	<!-- 카테고리 리스트 -->
+	<select id="selectCategoryList" resultMap="category-resultmap">
+		select category_id, category_name from pl_category
+	</select>
+	
+<!-- ////////////////////// 편의점 //////////////////////////// -->
+	
+	<!-- 편의점 공통 sql -->
+	<sql id="storeSelect-column-sql">
+		store_id,store_name,owner_id,store_address,store_phone,store_license
+	</sql>
+	<sql id="storeSelect-sql">
+		select
+		<include refid="storeSelect-column-sql" />
+		from pl_store
+	</sql>
+	
+	<!-- 편의점 등록 -->
+	<insert id="insertStore" parameterType="store">
+		insert into pl_store (
+		<include refid="storeSelect-column-sql" />
+		)
+		values (#{storeId}, #{storeName}, #{ownerId}, #{storeAddress}, #{storePhone}, #{storeLicense})
+	</insert>
+	
+	<!-- 편의점 수정 -->
+	<update id="updateStore" parameterType="store">
+  		update pl_store set 
+  							STORE_NAME=#{storeName},
+  							STORE_ADDRESS=#{storeAddress}, 
+  							STORE_PHONE=#{storePhone}, 
+  							STORE_LICENSE=#{storeLicense}
+  		where STORE_ID=#{storeId}
+  	</update>
+	
+	<!-- 편의점 삭제 -->
+	<delete id="deleteStoreById" parameterType="int">
+  		delete from pl_store where store_id=#{storeId}
+  	</delete>
+	
+	<!-- ID로 편의점 찾기 -->
+	<select id="selectStoreById" parameterType="int" resultMap="store-resultmap">
+		<include refid="storeSelect-sql" />
+		where store_id=#{storeId}
+	</select>
+	
+	
+	<!-- Name으로 편의점 찾기 -->
+	<select id="selectStoresByName" parameterType="hashmap" resultMap="store-resultmap">
+	 	select 	s.store_id, s.store_name, s.store_address, s.store_phone, s.store_license,
+				o.owner_name, o.owner_phone
+		from 	pl_store s, pl_owner o
+		where 	s.owner_id = o.owner_id
+		and 	s.store_name like '%'||#{storeName}||'%'
+	 </select>
+	
+	<!-- 편의점 오름차순으로 조회-->
+	<select id="selectStores" parameterType="string"
+		resultMap="store-resultmap">
+		<include refid="storeSelect-sql" />
+		order by store_id asc
+	</select>
+	
+	<!-- 편의점 수 조회-->
+	<select id="selectCountStores" resultType="_int">
+		select count(store_id) from pl_store
+	</select>
+	
+	<!-- 편의점 paging처리 -->
+	<select id="selectStoresPaging" parameterType="hashmap" resultMap="store-resultmap">
+	select store_id, store_name, store_address, store_phone, store_license, owner_name, owner_phone 
+	from(
+			select ceil(rownum/#{contentPerPage}) page,store_id, store_name, store_address, store_phone, store_license, owner_name, owner_phone 
+			from(	
+				select 	s.store_id, s.store_name, s.store_address, s.store_phone, s.store_license,
+						o.owner_name, o.owner_phone
+				from 	pl_store s, pl_owner o
+				where 	s.owner_id = o.owner_id
+			)
+	)
+	where page = #{pageNo}
+	</select>
+	
+	<!-- ID로 점주 찾기 -->
+   <select id="selectByOwnerId" parameterType="string" resultMap="store-resultmap">
+      select store_id, store_name, owner_id, store_address, store_phone, store_license from pl_store
+      where owner_id=#{ownerId}
+	</select>
+	
+<!-- ////////////////////// 게시판 //////////////////////////// -->
+	
+	<!-- 게시판 수 조회-->
+	<select id="selectBoardCount" resultType="_int">
+		select count(board_idx) from pl_board
+	</select>
+	
+	<!-- 게시판 paging처리 -->
 	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name
 		from (
@@ -183,10 +388,6 @@
 				select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name from pl_board where board_category=1 order by board_date desc
 			)
 		) where page = #{pageNo}
-	</select>
-	
-	<select id="selectBoardCount" resultType="_int">
-		select count(board_idx) from pl_board
 	</select>
 	
 	<select id="selectBoardInfo" parameterType="_int" resultMap="board-resultMap">
@@ -206,64 +407,7 @@
 		update pl_board set board_read_count=(select board_read_count from pl_board where board_idx=#{value})+1 where board_idx=#{value}
 	</update>
 
-<!-- ///////////////////////////////////////////////카테고리/////////////////////////////////////////// -->
-	<sql id="categorySelect-column-sql">
-		category_id,category_name
-	</sql>
 
-	<sql id="categorySelect-sql">
-		select
-		<include refid="categorySelect-column-sql" />
-		from PL_CATEGORY
-	</sql>
-
-
-
-	<insert id="insertCategory" parameterType="category">
-		insert into PL_CATEGORY (
-		<include refid="categorySelect-column-sql" />
-		)
-		values (#{categoryId},#{categoryName,jdbcType=VARCHAR})
-	</insert>
-
-	<select id="selectCategoryById" parameterType="int" resultMap="category-resultmap">
-		<include refid="categorySelect-sql"/>
-		where category_id=#{categoryId}
-	</select>
-	
-	<delete id="deleteCategoryById" parameterType="int">
-		delete from
-		PL_CATEGORY where category_id=#{categoryId}
-	</delete>
-	
-	
-	
-	
-	<select id="selectCategorys" parameterType="string"
-		resultMap="category-resultmap">
-		<include refid="categorySelect-sql" />
-		order by category_id asc
-	</select>
-
-	<select id="selectCountCategorys" resultType="_int">
-		select
-		count(category_id) from pl_category
-	</select>
-
-	<!-- paging -->
-	<select id="selectCategorysPaging" parameterType="hashmap"
-		resultMap="category-resultmap">
-		select
-		<include refid="categorySelect-column-sql" />
-		from (select
-		<include refid="categorySelect-column-sql" />
-		, ceil(rownum/#{contentsPerPage}) page
-		from(select
-		<include refid="categorySelect-column-sql" />
-		from pl_category
-		order by category_id))
-		where page = #{pageNo}
-	</select>
 </mapper>
 
 

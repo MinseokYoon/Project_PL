@@ -29,6 +29,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${initParam.rootPath}/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
+<script type="text/javascript" src="${initParam.rootPath }/js/jquery.js"></script>
 <script type="text/javascript">
    function mail() {
       var cart = confirm("제출 하시겠습니까?");
@@ -38,6 +39,36 @@
             return false;
          }
    }
+   
+   $(document).ready(function(){
+		//카테고리 선택시 아이템 조회
+		$("#category").on("change", function(){
+			var idx = this.selectedIndex;
+			$.ajax({
+				"type":"POST",
+				"url":"/Project_PL/customer/itemListByCategory.do",
+				"data": {"categoryId":$("#category").val()},
+				"dataType": "JSON",	//응답 데이터 형식(타입)-
+				"beforeSend":function(){
+					if($("#category").val()=="default"){
+						$("itemId").empty().append("<option value='default'>물품 내역2</option>");
+						return false;
+					}
+				},
+				"success":function(item){
+					var str = "<option value='default'>물품 내역</option>";
+					for(var i = 0; i<item.length; i++){
+						str = str + " <option value='"+item[i].itemId+"'>"+ item[i].itemName+"</option>";
+						
+					}
+					$("#itemId").html(str);
+				},
+				"error": function(){
+					alert("오류발생");
+				}	
+			});
+		});
+	});
 </script>
 
 <body>
@@ -74,8 +105,50 @@
 	    	<div class="row">    		
 	    		<div class="col-sm-12">    			   			
 					<h2 class="title text-center">Contact <strong>Us</strong></h2>    			    				    				
-					<div id="gmap" class="contact-map">
+				
+					<div class="category-tab shop-details-tab">
+						<!--category-tab-->
+						<div class="col-sm-12">
+							<ul class="nav nav-tabs">
+								<!-- 다른 것들 지웠음 -->
+								<li class="active"><a href="#reviews" data-toggle="tab">물품후기</a></li>
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane fade active in" id="reviews">
+								<div class="col-sm-12">
+
+									<p>
+										<b>물품 사용 후기를 남겨주세요.</b>
+									</p>
+									<p/><p/>
+									<form action="${initParam.rootPath }/customer/review_add.do">
+										<p>
+											<select id="category" name="category">
+												<option value="default">분류</option>
+												<c:forEach items="${requestScope.category }" var="category">
+													<option value="${category.categoryId }">${category.categoryName }</option>
+												</c:forEach>
+											</select>
+											<p/>
+											<select id="itemId" name="itemId">
+												<option value="default">물품 내역</option>
+											</select>
+										</p>
+										<span> <input readonly="readonly" name="customerId" value="${sessionScope.sessionUser.customerId}" /> 
+										</span>
+										<textarea name="content"></textarea>
+										<button type="submit" class="btn btn-default pull-right">제출</button>
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
+					
+					
+					
+					
+					
 				</div>			 		
 			</div>    	
     		<div class="row">  	
@@ -107,29 +180,14 @@
 	    				<h2 class="title text-center">Contact Info</h2>
 	    				<address>
 	    					<p>Kosta Inc.</p>
-							<p>윤민석, 최정길, 강지선, 안동신, 권효균, 김경모</p>
+							<p>윤민석, 최정길, 강지선</p>
+							<p>안동신, 권효균, 김경모</p>
 							<p>성남시 분당구 삼평동</p>
 							<p>Mobile: 010-4786-7987</p>
-							<p>Fax: 0-000-000-0000</p>
+							<p>fax: 00-0-000-000-00</p>
 							<p>Email: PLine@naver.com</p>
 	    				</address>
-	    				<div class="social-networks">
-	    					<h2 class="title text-center">Social Networking</h2>
-							<ul>
-								<li>
-									<a href="#"><i class="fa fa-facebook"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-twitter"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-google-plus"></i></a>
-								</li>
-								<li>
-									<a href="#"><i class="fa fa-youtube"></i></a>
-								</li>
-							</ul>
-	    				</div>
+	    				
 	    			</div>
     			</div>    			
 	    	</div>  

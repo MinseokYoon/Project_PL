@@ -11,19 +11,42 @@
 		<result property="ownerPhone" column="owner_phone"/>
 	</resultMap>
 	
+	
+	<!-- customer 매핑 -->
+	<resultMap type="customer" id="customer-point-resultmap">
+		<result column="customer_point" property="customerPoint"/>
+	</resultMap>
+
+
 	<!-- product 외부매핑 -->
 	<resultMap type="product" id="product-resultmap">
 		<id property="itemId" column="item_id"/>
 		<result property="itemName" column="item_name"/>
 		<result property="itemPrice" column="item_price"/>
 		<result property="categoryId" column="category_id"/>
+		<result property="categoryName" column="category_name"/>
 		<result property="storeId" column="store_id"/>
 		<result property="itemExpirationDate" column="item_expiration_date"/>
 		<result property="itemCount" column="item_count"/>
 		<result property="serverIndex" column="server_index"/>
-		<result property="categoryName" column="category_name"/>
 	</resultMap>
 	
+	<resultMap type="product" id="product-con-resultmap">
+		<constructor>
+			<idArg column="item_id" javaType="_int"/>
+			<arg column="item_name" javaType="string"/>
+			<arg column="item_price" javaType="_int"/>
+			<arg column="category_id" javaType="_int"/>
+			<arg column="category_name" javaType="string"/>
+			<arg column="store_id" javaType="_int"/>
+			<arg column="item_expiration_date" javaType="Date"/>
+			<arg column="item_count" javaType="_int"/>
+			<arg column="server_index" javaType="_int"/>	
+		</constructor>
+	</resultMap>
+	
+	
+	<!-- board 외부매핑 -->
 	<resultMap type="board" id="board-resultMap">
 		<id property="boardIndex" column="board_idx"/>
 		<result property="boardTitle" column="board_title"/>
@@ -35,6 +58,8 @@
 		<result property="boardCategoryName" column="board_category_name"/>
 	</resultMap>
 	
+	
+	<!-- order 외부매핑 -->
 	<resultMap type="order" id="orderlist-resultmap">
       <constructor>
          <idArg column="order_number" javaType="_int"/>
@@ -54,6 +79,8 @@
       </constructor>
    </resultMap>
 	
+	
+	
 	<!-- 공통 sql문  -->
 	<sql id="select-column-sql">owner_id, owner_password, owner_name, owner_phone</sql>
 	<sql id="selectOwner-sql">
@@ -61,73 +88,92 @@
 		from pl_owner
 	</sql>
   
- 
   
   
-  
-  	<!--기본 sql문 -->
-  	
+  	<!--                       기본 sql문                                      -->
+  	<!--owner 추가-->
   	<insert id="insertOwner" parameterType="owner">
   		insert into pl_owner (<include refid="select-column-sql"/>)
   		values (#{ownerId},#{ownerPassword},#{ownerName},#{ownerPhone})
   	</insert>
-  	
-  	<select id="selectOwnerById" parameterType="string" resultMap="owner-resultmap">
-  		<include refid="selectOwner-sql"/>
-  		where owner_id = #{ownerId}
-  	</select>
-  	
+  	<!--owner 삭제-->
   	<delete id="deleteOwnerById" parameterType="string">
   		delete from pl_owner where owner_id=#{ownerId}
   	</delete>
-  	
+  	<!--owner 수정-->
   	<update id="updateOwner" parameterType="owner">
   		update pl_owner set owner_id=#{ownerId}, owner_password=#{ownerPassword}, owner_name=#{ownerName},
   		owner_phone=#{ownerPhone}
   		where owner_id=#{ownerId}
   	</update>
   	
+  	
+  	
+  	<!--                       Owner 조회관련 sql문                                     -->
+  	<!--Id로 Owner 조회-->
+  	<select id="selectOwnerById" parameterType="string" resultMap="owner-resultmap">
+  		<include refid="selectOwner-sql"/>
+  		where owner_id = #{ownerId}
+  	</select>
+  	<!--모든 Owner 조회-->
   	<select id="selectOwners" resultMap="owner-resultmap">
   		<include refid="selectOwner-sql"/>
   	</select>
-  	
+  	<!--이름으로 Owner 조회-->
   	<select id="selectOwnersByName" parameterType="string" resultMap="owner-resultmap">
   		<include refid="selectOwner-sql"/>
   		where owner_name = #{ownerName}
   	</select>
-  	
+  	<!--Owner 수 조회-->
 	<select id="selectCountOwners" resultType="_int">
 		select count(owner_id) from pl_owner
 	</select>
+	<!--Owner 수 조회-->
+	<!-- paging -->
+	<select id="selectOwnersPaging" parameterType="hashmap"
+		resultMap="owner-resultmap">
+		select
+				owner_id, owner_name, owner_phone
+		from (select
+				owner_id, owner_name, owner_phone
+		, ceil(rownum/#{contentsPerPage}) page
+		from(select
+				owner_id, owner_name, owner_phone
+		from pl_owner
+		order by owner_id))
+		where page = #{pageNo}
+	</select>
 	
+	
+	
+	<!--                      제품관련 sql문                                     -->
+	<!--제품 수 조회-->
 	<select id="selectCountProducts" resultType="_int" parameterType="string" >
 		select count(server_index) from pl_server_item 
 		where store_id=(select store_id from pl_store where owner_id=#{value})
 	</select>
-	
-	<!-- 편의점 전체물품 조회 sql -->
-	<select id="selectProductsPaging" parameterType="hashmap" resultMap="product-resultmap">
-	select item_name, item_price, item_count, item_expiration_date, item_id, category_id, store_id 
-	from(
-			select ceil(rownum/#{contentPerPage}) page,item_name, item_price, item_count, item_expiration_date, item_id, category_id, store_id 
-			from(	
-				select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id 
-				from PL_ITEM_INFO e, PL_SERVER_ITEM d
-				where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) and e.item_id = d.item_id
-			)
-	)
-	where page = #{pageNo}
+	<!--편의점 전체물품 조회-->
+	<select id="selectProductsPaging" parameterType="hashmap" resultMap="product-con-resultmap">
+		select item_id, item_name, item_price, category_id, category_name,  store_id, item_expiration_date, item_count, server_index    
+		from(
+				select ceil(rownum/#{contentPerPage}) page, item_id, item_name, item_price, category_id,category_name, store_id, item_expiration_date, item_count, server_index
+				from(	
+					select e.item_id, e.item_name, e.item_price, e.category_id, c.category_name, d.store_id, d.item_expiration_date, d.item_count, d.server_index
+					from PL_ITEM_INFO e, PL_SERVER_ITEM d, PL_CATEGORY c
+					where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) and e.item_id = d.item_id and c.category_id = e.category_id
+				)
+		)
+		where page = #{pageNo}
 	</select>
-	
-	<!-- 물품이름으로 재고 검색하는 sql -->
+	<!--이름으로 제품 조회-->
 	<select id="selectProductByName" parameterType="hashmap" resultMap="product-resultmap">
-		select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id 
-				from PL_ITEM_INFO e, PL_SERVER_ITEM d
-				where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) and e.item_id = d.item_id 
-				and e.item_name like '%'||#{productName}||'%'
+		select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id, c.category_name
+				from PL_ITEM_INFO e, PL_SERVER_ITEM d, PL_CATEGORY c 
+				where d.store_id=(select store_id from PL_STORE where owner_id=#{ownerId}) 
+				and e.item_id = d.item_id and c.category_id = e.category_id 
+				and e.item_name like '%'||#{productName}||'%' 
 	</select>
-
-	<!-- 물품 한개만 검색하는 sql -->
+	<!--제품 한개만 조회-->
 	<select id="selectOneProduct" parameterType="hashmap" resultMap="product-resultmap">
 		select e.item_name, e.item_price, d.item_count, d.item_expiration_date, e.item_id, e.category_id, d.store_id, c.category_name
 				from PL_ITEM_INFO e, PL_SERVER_ITEM d,pl_category c
@@ -136,9 +182,7 @@
 				and e.item_name = #{productName} 
 				and c.category_id = e.category_id 
 	</select>
-	
-	
-	<!-- 물품 입고하는 sql -->
+	<!--제품 수정-->
 	<update id="updateInputProduct" parameterType="hashmap">
 		update pl_server_item
 		set item_count = #{resultCount}
@@ -146,14 +190,15 @@
 		and item_id = #{itemId}
 	</update>
 
-	
+
+
+	<!--                      주문관련 sql문                                     -->
+	<!--주문 개수 조회-->
 	<select id="selectCountOrders" resultType="_int" parameterType="string">
 		select count(order_number) from pl_order
 		where store_id = (select store_id from pl_store where owner_id=#{value})
 	</select>
-	
-	
-	<!-- 이거 수정해야함 -->
+	<!--주문 리스트 페이징 조회-->
 	<select id="selectOrdersPaging" parameterType="hashmap" resultMap="orderlist-resultmap">
 		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
 		from(
@@ -166,20 +211,19 @@
      				and o.store_id = s.store_id 
      				and o.customer_id = r.customer_id 
      				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
+     				order by o.order_number desc
 				)
 		)
 		where page = #{pageNo}
 	</select>
-	<!-- 위에서 customerId받는거 웹에서 owner가 입력받아서 하는거 , hashmap에 cutomerId추가해야함(id로 입력말고 이름으로 입력받는지 물어보기) -->
-	
-	
+	<!--핸드폰번호로 주문 조회-->
 	<select id="selectCountOrdersByPhone" resultType="_int" parameterType="hashmap">
 		select count(order_number)
 		from pl_order
 		where store_id = (select store_id from pl_store where owner_id=#{ownerId})
 		and customer_id = (select customer_id from pl_customer where customer_phone=#{customerPhone})
 	</select>
-	
+	<!--핸드폰번호로 주문 페이징 조회-->
 	<select id="selectOrdersByPhonePaging" parameterType="hashmap" resultMap="orderlist-resultmap">
 		select order_number, customer_id, store_id, item_id, order_count, order_date, order_status,item_name, item_price, category_id, category_name,store_name,customer_name, customer_phone 
 		from(
@@ -194,31 +238,42 @@
      				and s.store_id=(select store_id from PL_STORE where owner_id=#{ownerId})
      				and o.order_status = 1
      				and r.customer_phone = #{customerPhone}
+     				order by o.order_number asc
 				)
 		)
-		where page = #{pageNo}
+		where page = #{pageNo} 
 	</select>
-	
-	<!-- 선택한 주문 상태 바꾸는 거  -->
+	<!--선택한 주문 상태 바꾸는 거-->
 	<update id="updateOrderStatus" parameterType="string">
 		update pl_order
 		set order_status = 3
 		where order_number = #{value}
 	</update>
-	
-	<!-- 모든 주문완료하는 거 -->
+	<!--모든 주문완료-->
 	<update id="updateAllOrdersStatus" parameterType="hashmap">
 		update pl_order
 		set order_status = 2
 		where customer_id=#{customerId} and store_id = #{storeId} and order_status = 1
 	</update>
+	<!-- 현재 물품 개수 조회 -->
+	<select id="selectItemcountNow" parameterType="hashmap" resultType="_int">
+		select item_count from pl_server_item
+     	where store_id = #{storeId} and item_id = #{itemId}
+	</select>	
+	<!-- 주문시 물품 개수 수정 -->
+	<update id="updateOrderCount" parameterType="hashmap">
+		update pl_server_item set item_count = #{nowCount}
+		where store_id=#{storeId} and item_id=#{itemId}
+	</update>
 	
-	<!-- 본사물품 전체 개수  -->
+	
+	
+	<!--                      본사물품 관련 sql문                                     -->
+	<!--본사물품 전체 개수조회-->
 	<select id="selectHeadOfficeProductCount" resultType="_int" parameterType="string">
 		select count(item_id) from pl_item_info
 	</select>
-	
-	<!-- 본사 전체 물품 조회 페이지 -->
+	<!--본사 전체물품 조회 페이징-->
 	<select id="selectHeadOfficeProductsPaging"  parameterType="hashmap" resultMap="product-resultmap">
 		select item_id,item_name,item_price
 		from(
@@ -230,21 +285,29 @@
 		)
 		where page = #{pageNo}
 	</select>
-	
-	<!-- 본사물품 조회하는거  -->
+	<!--이름으로 본사물품 조회-링크로 클릭해서 검색하는거-->
 	<select id="selectHeadOfficeProductByName" parameterType="string" resultMap="product-resultmap">
 		select i.item_id, i.item_name, i.item_price, i.category_id, c.category_name 
 		from pl_item_info i, pl_category c
 		where i.category_id = c.category_id and item_name = #{value}
 	</select>
-	
-	<!-- 본사물품 인서트 하는거  -->
+	<!--본사물품 서버에 인서트 하는거-->
 	<insert id="insertServerItem" parameterType="hashmap">
 		insert into pl_server_item (server_index , store_id , item_id , item_expiration_date , item_count)
 		values (server_item_index_seq.nextval , (select store_id from PL_STORE where owner_id=#{ownerId}) , #{itemId} , #{date} , #{inputCount})
 	</insert>
-
-
+	
+	<!-- 본사물품 검색하는 기능-이름을 쳐서 검색하는거 -->
+	<select id="selectHeadOfficeProductBySearchName" parameterType="string" resultMap="product-resultmap">
+		select item_id,item_name,item_price
+		from pl_item_info
+		where item_name like '%'||#{value}||'%'
+	</select>
+	
+	
+	
+	<!--                      게시판 관련 sql문                                     -->
+	<!--게시판 페이징 조회-->
 	<select id="selectBoardsPaging" parameterType="_int" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name
 		from (
@@ -254,27 +317,43 @@
 			)
 		) where page = #{pageNo}
 	</select>
-	
+	<!--게시판 개수 조회-->
 	<select id="selectBoardCount" resultType="_int">
 		select count(board_idx) from pl_board
 	</select>
-	
+	<!--게시판 정보 조회-->
 	<select id="selectBoardInfo" parameterType="_int" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer from pl_board where board_idx=#{index}
 	</select>
-	
+	<!--게시판 조회수 조회-->
 	<select id="selectNotice" resultMap="board-resultMap">
 		select board_idx, board_title, board_date, board_read_count, board_content, board_writer, board_category, board_category_name 
 		from (select * from pl_board where board_category=2 order by board_date desc) where rownum between 1 and 3
 	</select>
-	
+	<!--게시판 추가-->
 	<insert id="insertBoard" parameterType="hashmap">
 		insert into pl_board values(board_index_seq.nextval, #{boardTitle}, sysdate, 0, #{boardContent}, #{boardWriter}, 1, '일반')
 	</insert>
-	
+	<!--게시판 수정-->
 	<update id="updateBoardReadCount" parameterType="_int">
 		update pl_board set board_read_count=(select board_read_count from pl_board where board_idx=#{value})+1 where board_idx=#{value}
 	</update>
 	
+	
+	
+	<!-- *********************  고객 포인트 관련  ********************** -->
+	<!-- 고객 포인트 조회 -->
+	<select id="selectCustomerPoint" parameterType="string" resultType="_int">
+		select customer_point
+		from pl_customer
+		where customer_id=#{value}
+	</select>
+	<!-- 고객 포인트 적립 -->
+	<update id="updateCustomerPoint" parameterType="hashmap">
+		update pl_customer 
+		set customer_point = #{customerTotalPoint}
+		where customer_id = #{customerId}
+	</update>
+
 </mapper>
 

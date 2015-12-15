@@ -1,6 +1,7 @@
 package kr.or.kosta.pl.vo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Product implements Serializable {
@@ -14,10 +15,21 @@ public class Product implements Serializable {
 	private Date itemExpirationDate;
 	private int itemCount;
 	private int serverIndex;
+	private String itemStringDate;
+	
+	SimpleDateFormat date = new SimpleDateFormat("yyyy년 MM월 dd일 (E) hh시");
 
 	public Product() {
 	}
-
+	
+	public Product(int itemId, String itemName, int itemPrice, int categoryId) {
+		super();
+		this.itemId = itemId;
+		this.itemName = itemName;
+		this.itemPrice = itemPrice;
+		this.categoryId = categoryId;
+	}
+	
 	public Product(int itemId, String itemName, int itemPrice, int categoryId, String categoryName) {
 		super();
 		this.itemId = itemId;
@@ -39,6 +51,8 @@ public class Product implements Serializable {
 		this.itemExpirationDate = itemExpirationDate;
 		this.itemCount = itemCount;
 		this.serverIndex = serverIndex;
+		String itemStringDate1 = date.format(itemExpirationDate);
+		this.itemStringDate = itemStringDate1;
 	}
 
 	public int getItemId() {
@@ -113,17 +127,27 @@ public class Product implements Serializable {
 		this.serverIndex = serverIndex;
 	}
 
+	public String getItemStringDate() {
+		return itemStringDate;
+	}
+
+	public void setItemStringDate(String itemStringDate) {
+		this.itemStringDate = itemStringDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + categoryId;
 		result = prime * result + ((categoryName == null) ? 0 : categoryName.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + itemCount;
 		result = prime * result + ((itemExpirationDate == null) ? 0 : itemExpirationDate.hashCode());
 		result = prime * result + itemId;
 		result = prime * result + ((itemName == null) ? 0 : itemName.hashCode());
 		result = prime * result + itemPrice;
+		result = prime * result + ((itemStringDate == null) ? 0 : itemStringDate.hashCode());
 		result = prime * result + serverIndex;
 		result = prime * result + storeId;
 		return result;
@@ -145,6 +169,11 @@ public class Product implements Serializable {
 				return false;
 		} else if (!categoryName.equals(other.categoryName))
 			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
 		if (itemCount != other.itemCount)
 			return false;
 		if (itemExpirationDate == null) {
@@ -161,6 +190,11 @@ public class Product implements Serializable {
 			return false;
 		if (itemPrice != other.itemPrice)
 			return false;
+		if (itemStringDate == null) {
+			if (other.itemStringDate != null)
+				return false;
+		} else if (!itemStringDate.equals(other.itemStringDate))
+			return false;
 		if (serverIndex != other.serverIndex)
 			return false;
 		if (storeId != other.storeId)
@@ -172,7 +206,10 @@ public class Product implements Serializable {
 	public String toString() {
 		return "Product [itemId=" + itemId + ", itemName=" + itemName + ", itemPrice=" + itemPrice + ", categoryId="
 				+ categoryId + ", categoryName=" + categoryName + ", storeId=" + storeId + ", itemExpirationDate="
-				+ itemExpirationDate + ", itemCount=" + itemCount + ", serverIndex=" + serverIndex + "]";
+				+ itemExpirationDate + ", itemCount=" + itemCount + ", serverIndex=" + serverIndex + ", itemStringDate="
+				+ itemStringDate + ", date=" + date + "]";
 	}
+	
+	
 
 }

@@ -40,7 +40,7 @@
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-user"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
@@ -69,8 +69,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -81,8 +80,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							
@@ -94,8 +92,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							
@@ -136,26 +133,28 @@
 									</div>
 								</div>
 							</div>
+							
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">재고관리</a>
+										<a data-toggle="collapse" data-parent="#accordian" href="#beverage">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											물품 관리
+										</a>
 									</h4>
 								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품</a></h4>
+								<div id="beverage" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">매장 재고 관리</a></li>
+											<li><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품 입고</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">고객센터</a></h4>
 								</div>
 							</div>
 						</div><!--/category-products-->					
@@ -167,19 +166,16 @@
 							<h3 style="color: #fe980f">등록된 물품이 없습니다.</h3>
 						</c:when>
 						<c:otherwise>
-							<table style="width: 800px" border="1">
+							<table style="width: 870px" border="1">
 								<tr>
 									<th style="text-align: center; background-color: #fe980f;">주문 번호</th>
 									<th style="text-align: center; background-color: #fe980f;">고객 ID</th>
-									<th style="text-align: center; background-color: #fe980f;">편의점 ID</th>
-									<th style="text-align: center; background-color: #fe980f;">물품 ID</th>
 									<th style="text-align: center; background-color: #fe980f;">주문 개수</th>
 									<th style="text-align: center; background-color: #fe980f;">주문 날짜</th>
 									<th style="text-align: center; background-color: #fe980f;">주문 상태</th>
 									<th style="text-align: center; background-color: #fe980f;">물품 이름</th>
 									<th style="text-align: center; background-color: #fe980f;">물품 가격</th>
-									<th style="text-align: center; background-color: #fe980f;">카테고리 ID</th>
-									<th style="text-align: center; background-color: #fe980f;">카레고리 이름</th>
+									<th style="text-align: center; background-color: #fe980f;">분류</th>
 									<th style="text-align: center; background-color: #fe980f;">편의점 이름</th>
 									<th style="text-align: center; background-color: #fe980f;">고객 이름</th>
 									<th style="text-align: center; background-color: #fe980f;">고객 핸드폰번호</th>
@@ -188,10 +184,8 @@
 									<tr>
 										<td style="text-align: center;">${order.orderNumber }</td>
 										<td style="text-align: center;">${order.customerId }</td>
-										<td style="text-align: center;">${order.storeId }</td>
-										<td style="text-align: center;">${order.itemId }</td>
 										<td style="text-align: center;">${order.orderCount }</td>
-										<td style="text-align: center;">${order.orderDate }</td>
+										<td style="text-align: center;">${order.customerDate }</td>
 										<td style="text-align: center;">
 											<c:choose>
 												<c:when test="${order.orderStatus==1}">주문대기</c:when>
@@ -201,8 +195,7 @@
 											</c:choose>
 										</td>
 										<td style="text-align: center;">${order.itemName }</td>
-										<td style="text-align: center;">${order.itemPrice }</td>
-										<td style="text-align: center;">${order.categoryId }</td>
+										<td style="text-align: center;">${order.itemPrice }원</td>
 										<td style="text-align: center;">${order.categoryName }</td>
 										<td style="text-align: center;">${order.storeName }</td>
 										<td style="text-align: center;">${order.customerName }</td>

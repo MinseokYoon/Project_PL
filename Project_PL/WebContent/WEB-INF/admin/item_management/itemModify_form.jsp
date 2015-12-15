@@ -3,10 +3,22 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<script type="text/javascript" src="${initParam.rootPath }/script/jquery.js"></script>
 <script type="text/javascript" src="${initParam.rootPath }/script/formcheck.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#modifyForm").on("submit", modifyFormCheck);
+	 $("#regForm2").on("submit", function(){
+		 if($("#categoryId").val()=="none"){
+				alert("카테고리를 선택해 주세요");
+				return false;
+			}
+				var chk = document.getElementById('upImage'); 
+				if(!chk.value){
+					alert("파일을 등록해 주세요");
+					return false;
+				} 
+				return true;
+	 });
 });
 </script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -14,6 +26,7 @@ $(document).ready(function(){
 
 <html>
 <head>
+
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>편라인 : Project PL</title>
 	<link href="${initParam.rootPath}/css/bootstrap.min.css" rel="stylesheet">
@@ -34,7 +47,7 @@ $(document).ready(function(){
     <link rel="apple-touch-icon-precomposed" href="${initParam.rootPath}/images/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <body>
-	<header id="header"><!--header-->		
+<header id="header"><!--header-->		
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
@@ -47,7 +60,7 @@ $(document).ready(function(){
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-user"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
@@ -75,8 +88,7 @@ $(document).ready(function(){
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -87,8 +99,7 @@ $(document).ready(function(){
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -99,8 +110,7 @@ $(document).ready(function(){
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 						</div>
@@ -111,6 +121,7 @@ $(document).ready(function(){
 							<i class="fa fa-angle-right"></i>
 						</a>
 					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -124,27 +135,41 @@ $(document).ready(function(){
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">편의점 관리</a></h4>
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordian" href="#food">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											편의점 관리
+										</a>
+									</h4>
+								</div>
+								<div id="food" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath}/admin/storeList.do">편의점 목록</a></li>
+											<li><a href="${initParam.rootPath}/admin/storeAdd.do">편의점등록</a></li>
+											<li><a href="${initParam.rootPath}/owner/add.do">점주등록</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemList.do">물품 관리</a></h4>
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordian" href="#product">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											물품 관리
+										</a>
+									</h4>
 								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/categoryAdd.do">카테고리 등록</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>
+								<div id="product" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/admin/itemList.do">물품 목록</a></li>
+											<li><a href="${initParam.rootPath }/admin/itemForm.do">물품 등록</a></li>
+											<li><a href="${initParam.rootPath }/admin/categoryList.do">카테고리 목록</a>
+											
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
@@ -152,50 +177,68 @@ $(document).ready(function(){
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/adminBoard.do">게시판</a></h4>
 								</div>
 							</div>
-						</div><!--/category-products-->					
+						</div>			
 					</div>
 				</div>
 				<div class="product list paging">
-					<h2>물품 정보 수정</h2>
+					<h3>물품 정보 수정</h3>
 					<spring:hasBindErrors name="product"/>
-					<form action="${initParam.rootPath}/admin/itemModify.do" method="post" id="itemModifyForm">
-						<input type="hidden" name="pageNo" value="${param.pageNo }">
-						<table border="1" style="width:500px">
-							<tr>
-								<th>물품 ID</th>
-								<td>
-									${requestScope.product.itemId }
-									<input type="hidden" name="itemId" id="itemId" value="${requestScope.product.itemId }">
-								</td>
-							</tr>
-							<tr>
-								<th>품명</th>
-								<td>
-									<input type="text" id="itemName" name="itemName" size="25" value="${requestScope.product.itemName }" >
-									<span class="errorMessage"><form:errors path="product.itemName" delimiter=" | "/></span>
-								</td>
-							</tr>
-							<tr>
-								<th>가격</th>
-								<td>
-									<input type="text" id="itemPrice" name="itemPrice" size="25" value="${requestScope.product.itemPrice }">
-									<span class="errorMessage"><form:errors path="product.itemPrice" delimiter=" | "/></span>	
-								</td>
-							</tr>
-							<tr>
-								<th>카테고리</th>
-								<td>
-									<input type="text" id="categoryId" name="categoryId" size="25" value="${requestScope.product.categoryId}">
-									<span class="errorMessage"><form:errors path="product.categoryId" delimiter=" | "/></span>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<input type="submit" value="수정"> <input type="reset" value="초기화">
-								</td>
-							</tr>
-						</table>
-					</form>	
+					<form action="${initParam.rootPath}/admin/itemModify.do" method="post" enctype="multipart/form-data" id="regForm2" name="regForm2">
+                  <input type="hidden" name="pageNo" value="${param.pageNo }">
+                  <table border="1" style="width:800px">
+                     <tr>
+                        <%-- <td rowspan="6"><img src="${initParam.rootPath}/images/${requestScope.product.categoryId}/${requestScope.product.itemName}.png" alt="" /></td> --%>
+                        <th style="text-align: center; background-color: #FAE0D4;">물품 ID</th>
+                        <td>
+                           ${requestScope.product.itemId }
+                           <input type="hidden" name="itemId" id="itemId" value="${requestScope.product.itemId }">
+                        </td>
+                     </tr>
+                     <tr>
+                        <th style="text-align: center; background-color: #FAE0D4;">품명</th>
+                        <td>
+                        	 ${requestScope.product.itemName } 
+                           <input type="hidden" name="itemName" id="itemName" size="25" value="${requestScope.product.itemName }">
+                          
+                           <%-- 
+                           <input type="text" id="itemName" name="itemName" size="25" value="${requestScope.product.itemName }" >
+                           <span class="errorMessage"><form:errors path="product.itemName" delimiter=" | "/></span> --%>
+                        </td>
+                     </tr>
+                     <tr>
+                        <th style="text-align: center; background-color: #FAE0D4;">가격</th>
+                        <td>
+                           <input type="text" id="itemPrice" name="itemPrice" size="25" value="${requestScope.product.itemPrice }">
+                           <span class="errorMessage"><form:errors path="product.itemPrice" delimiter=" | "/></span>   
+                        </td>
+                     </tr>
+                     <tr>
+                        <th style="text-align: center; background-color: #FAE0D4;">카테고리</th>
+                        <td>
+                     <select name="categoryId" id="categoryId">         
+                        <option value="none"><%-- ${requestScope.categoryName} --%>카테고리를 선택하세요</option>
+                        <c:forEach items="${requestScope.category}" var="category">
+                           <option value="${category.categoryId}">${category.categoryName}</option>
+                        </c:forEach>
+                     </select>
+                  </td>
+               </tr>
+               <tr>
+                  <th style="text-align: center; background-color: #FAE0D4;">물품 사진</th>
+                  <td><input type="file" name="upImage" id="upImage"> </td>
+               </tr>
+                        <%-- <td>
+                           <input type="text" id="categoryId" name="categoryId" size="25" value="${requestScope.product.categoryId}">
+                           <span class="errorMessage"><form:errors path="product.categoryId" delimiter=" | "/></span>
+                        </td>
+                     </tr> --%>
+                     <tr>
+                        <td colspan="2">
+                           <input type="submit" value="수정"> <input type="reset" value="초기화">
+                        </td>
+                     </tr>
+                  </table>
+               </form>   
 				</div>
 			</div>
 		</div>

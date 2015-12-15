@@ -23,6 +23,7 @@ import kr.or.kosta.pl.vo.Board;
 import kr.or.kosta.pl.vo.Cart;
 import kr.or.kosta.pl.vo.Customer;
 import kr.or.kosta.pl.vo.Order;
+import kr.or.kosta.pl.vo.Product;
 import kr.or.kosta.pl.vo.Store;
 
 @Controller
@@ -39,7 +40,6 @@ public class CustomerController {
 		
 		Customer customer = (Customer)session.getAttribute("sessionUser");
 		List<Order> order = service.findOrderByCusotmerId(customer.getCustomerId());
-		
 		model.addAttribute("order", order);
 		
 		return "/WEB-INF/mypage/customer/mypage_customer.jsp";
@@ -67,8 +67,6 @@ public class CustomerController {
 
       CustomerValidator validate = new CustomerValidator();
       validate.validate(customer, errors);
-      System.out.println(errors);
-      System.out.println("총 검증 실패 개수 :" + errors.getErrorCount());
 
       if (errors.hasErrors()) {
          return "/WEB-INF/register/register_form_customer.jsp";
@@ -81,8 +79,6 @@ public class CustomerController {
 	@RequestMapping("findByIdJson.do")
 	@ResponseBody
    	public String findByIdJson(@RequestParam String customerId){
-	    System.out.println("JSP에서 받은 값 :" + customerId);
-	    System.out.println("컨트롤러에서 JSP에값을 받아 조회한 값 : " + service.findCustomerById(customerId));
 	    Customer customer = service.findCustomerById(customerId);
 	    String chk = customer.getCustomerId();
 	    	return chk;
@@ -90,8 +86,13 @@ public class CustomerController {
 	   
 	@RequestMapping("registerSuccess")
 	public String registerSuccess(@RequestParam String customerId, ModelMap model) {
-
+		Customer sex = service.findCustomerById(customerId);
 		model.addAttribute("customer", service.findCustomerById(customerId));
+		 if(sex.getCustomerGender() == 1){
+	    	  model.addAttribute("customerGender1","남자");
+	      } else {
+			model.addAttribute("customerGender1", "여자");
+	      }
 		return "/WEB-INF/register/register_success_customer.jsp";
 
 	}
@@ -158,13 +159,23 @@ public class CustomerController {
 	   public String formMoify(){
 	      return "/WEB-INF/mypage/customer/mypage_modify.jsp";
 	   }
-	 //이전 주문 목록
+	 //이전 주문 목록 - 페이징처리 필요
 	 @RequestMapping("/last_order")
-		public String lastOrder(HttpSession session, ModelMap model){
-			Customer customer = (Customer)session.getAttribute("sessionUser");
+		public String lastOrder(@RequestParam(defaultValue="1") String pageNo,HttpSession session, ModelMap model){
+		 	int page = 1;
+			try{
+				page = Integer.parseInt(pageNo);
+			}catch(NumberFormatException e){}
+		 
+		 	Customer customer = (Customer)session.getAttribute("sessionUser");
 			List<Order> order = service.findOrderByCusotmerIdLast(customer.getCustomerId());
 			
 			model.addAttribute("order", order);
+			
+			//페이징처리
+			Map attributes = service.getLastOrderPaging(customer.getCustomerId(),page);
+			model.addAllAttributes(attributes);
+			
 			return "/WEB-INF/mypage/customer/mypage_last_order.jsp";
 		}
 	 
@@ -180,24 +191,26 @@ public class CustomerController {
 	/*---------------------------------매장검색 시 사용되는 controller---------------------------------------*/
 	//매장 이름 조회
 	@RequestMapping("find_store_name.do")
-	   public String findStore(@RequestParam String storeName, Store store, ModelMap model) { // 모델어트리뷰트
-	      List<Store> list = service.findStoreName(storeName);
-	      System.out.println(storeName);
-	      System.out.println(storeName.equals(""));
+	public String findStore(@RequestParam String storeName, Store store, ModelMap model) { 
+		List<Store> list = service.findStoreName(storeName);
 
-	      if (list.size() < 1) {
-	         model.addAttribute("errorMessage", "찾으시는 매장이 없습니다.");
-	         return "/WEB-INF/customer/find_store/find_store_name.jsp";
+		if (list.size() < 1) {
+			model.addAttribute("errorMessage", "찾으시는 매장이 없습니다.");
+			return "/WEB-INF/customer/find_store/find_store_name.jsp";
 
-	      } else if (storeName.equals("")) {
-	         model.addAttribute("errorMessage", "찾으실 매장을 입력해주세요");
-	         return "/WEB-INF/customer/find_store/find_store_name.jsp";
-	      }
+		} else if (storeName.equals("")) {
+			model.addAttribute("errorMessage", "찾으실 매장을 입력해주세요");
+			return "/WEB-INF/customer/find_store/find_store_name.jsp";
+			
+		} else if (storeName.trim().length() <2 ) {
+			model.addAttribute("errorMessage", "찾으실 매장의 단어를 두글자 이상입력해주세요");
+			return "/WEB-INF/customer/find_store/find_store_name.jsp";
+		}
+		
+		model.addAttribute("findstore", list);
+		return "/WEB-INF/customer/find_store/find_store_name_success.jsp";
 
-	      model.addAttribute("findstore", list);
-	      return "/WEB-INF/customer/find_store/find_store_name_success.jsp";
-
-	   }
+	}
 	//카테고리 페이지로 이동 (매장 이름 으로 조회 후)
 	@RequestMapping("find_store_categoryPage")
 	public String findStoreCategoryPage(@RequestParam int categoryId, int storeId, ModelMap model){
@@ -222,7 +235,12 @@ public class CustomerController {
 	/*---------------------------------물품 상세 정보 페이지---------------------------------------*/
 	
 	@RequestMapping("/item.do")
-	public String itemPage(@RequestParam(value="itemName") String itemName, @RequestParam int categoryId, @RequestParam(defaultValue="0") int storeId, ModelMap model){
+	public String itemPage(@RequestParam(defaultValue="1") String pageNo,@RequestParam(value="itemName") String itemName, @RequestParam int categoryId, @RequestParam(defaultValue="0") int storeId, ModelMap model){
+		int page = 1;
+		
+		try{
+			page = Integer.parseInt(pageNo);
+		}catch(NumberFormatException e){}
 		
 		//물품검색으로 왔을 경우, 매장이름 검색으로 왔을 경우 공통 
 		model.addAttribute("item", service.findItemById(itemName));
@@ -231,9 +249,67 @@ public class CustomerController {
 		
 		model.addAttribute("store", service.findStoreNameByCount(itemName));
 		
+		model.addAttribute("category", service.findCategoryList());
 		if(storeId != 0){	//매장이름 검색으로 왔을 경우
 			model.addAttribute("storeId", service.findStoreById(storeId));
 		}
+		
+		Product pd = (Product)service.findItemById(itemName);
+		int itemId = pd.getItemId();
+		//기존에 있던거임 아래꺼
+		model.addAttribute("review", service.findReview(itemId));
+		
+		//페이징처리
+		Map attributes = service.getAllReviewsPaging(page,itemId,itemName);
+		model.addAllAttributes(attributes);
+		
+		return "/WEB-INF/customer/item_list/item.jsp";
+	}
+	
+	//리뷰 카테고리로 물품 가져오기
+	@RequestMapping("/itemListByCategory")
+	@ResponseBody
+	public List<Product> itemListByCategory(int categoryId){
+		
+		List<Product> item = service.findItemListByCategory(categoryId);
+		return item;
+	}
+	
+	//리뷰 등록
+	@RequestMapping("review_add")
+	public String reviewAdd(@RequestParam String customerId, @RequestParam int itemId, @RequestParam String content,
+							ModelMap model){
+		
+		service.addReview(customerId, itemId, content);
+		Product pd = (Product) service.findItemById2(itemId);
+		model.addAttribute("itemName", pd.getItemName());
+		model.addAttribute("categoryId", pd.getCategoryId());
+		
+		return "redirect:/customer/review_success.do";
+	}
+	
+	@RequestMapping("review_success")
+	public String reviewSuccess(@RequestParam String itemName, @RequestParam int categoryId, ModelMap model){
+		
+		int page = 1;
+		
+		model.addAttribute("item", service.findItemById(itemName));
+		
+		model.addAttribute("list", service.findItemListByCategorySmallRecommand(categoryId));  
+		
+		model.addAttribute("store", service.findStoreNameByCount(itemName));
+		
+		model.addAttribute("category", service.findCategoryList());
+		
+		Product pd = (Product)service.findItemById(itemName);
+		int itemId = pd.getItemId();
+		//기존에 있던거임 아래꺼
+		model.addAttribute("review", service.findReview(itemId));
+		
+		//페이징처리
+		Map attributes = service.getAllReviewsPaging(page,itemId,itemName);
+		model.addAllAttributes(attributes);
+		
 		return "/WEB-INF/customer/item_list/item.jsp";
 	}
 
@@ -249,9 +325,17 @@ public class CustomerController {
 		int storeIdd = Integer.parseInt(storeId);
 		int itemIdd = Integer.parseInt(itemId);			//내용들 숫자 변환
 		int countItemm = Integer.parseInt(countItem);
-		
-		service.addCart(customerId, storeIdd, itemIdd, countItemm);
-		
+		Cart cart =  service.findCartByCusotmerIdItemId(customerId, storeIdd, itemIdd);	//장바구니에 같은 물건 존재 확인
+		if(cart == null){
+			service.addCart(customerId, storeIdd, itemIdd, countItemm);
+		}
+		else{
+			int totalCount = cart.getCartCount() + countItemm;
+			
+			service.updateCart2(storeIdd, itemIdd, countItemm);
+			service.updateCart(cart.getCartNumber(), totalCount);
+			
+		}
 		return "redirect:/customer/cartpage.do";		//장바구니 페이지
 	}
 	//장바구니 삭제
@@ -266,13 +350,9 @@ public class CustomerController {
 	@RequestMapping("/order")
 	public String order(@RequestParam String[] customerId, @RequestParam int[] storeId, @RequestParam int[] itemId, 
 						@RequestParam int[] orderCount, @RequestParam int[] orderStatus){
-		for(int i = 0; i <customerId.length; i++){
-			service.addOrder(customerId[i], storeId[i], itemId[i], orderCount[i], orderStatus[i]);
-		}
 		
-		for(int i = 0; i <customerId.length; i++){
-			service.deleteCart(customerId[i], storeId[i], itemId[i]);
-		}
+		service.addOrder(customerId, storeId, itemId, orderCount, orderStatus);
+		
 		return "redirect:/basic/item_list.do";
 	}
 
@@ -280,7 +360,6 @@ public class CustomerController {
 	@RequestMapping("/boardList")
 	public String boardList(@RequestParam(defaultValue = "1") String pageNo, ModelMap model) {
 		int page = Integer.parseInt(pageNo);
-		System.out.println("pageNo = " + page);
 		List<Board> notice = service.getNotice();
 		Map map = service.getAllBoard(page);
 		
@@ -295,8 +374,6 @@ public class CustomerController {
 		int index = Integer.parseInt(boardIndex);
 		Board board = service.getBoardInfo(index);
 
-		System.out.println("--asdfasdf");
-		
 		model.addAttribute("board", board);
 		return "/WEB-INF/board/board_info_customer.jsp";
 	}

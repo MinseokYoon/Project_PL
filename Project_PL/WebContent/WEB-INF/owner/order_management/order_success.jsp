@@ -39,7 +39,7 @@
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-user"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
@@ -68,8 +68,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -80,8 +79,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							
@@ -93,8 +91,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							
@@ -135,26 +132,28 @@
 									</div>
 								</div>
 							</div>
+							
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">재고관리</a>
+										<a data-toggle="collapse" data-parent="#accordian" href="#beverage">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											물품 관리
+										</a>
 									</h4>
 								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${param.pageNo}">본사물품</a></h4>
+								<div id="beverage" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">매장 재고 관리</a></li>
+											<li><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품 입고</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">고객센터</a></h4>
 								</div>
 							</div>
 						</div><!--/category-products-->					

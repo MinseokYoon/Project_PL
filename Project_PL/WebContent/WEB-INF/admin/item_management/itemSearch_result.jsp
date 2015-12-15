@@ -46,14 +46,14 @@ function productSearchCheck(){
 				<div class="row">
 					<div class="col-sm-14">
 						<div class="logo pull-left">
-							<a href="${initParam.rootPath }/basic/adminHome.do"><img src="/Project_PL/images/home/pl_logo.png" alt="" /></a>
+							<a href="${initParam.rootPath }/basic/adminHome.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a>
 							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.adminName }</b>님 환영합니다.
 						</div>
 					</div>
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/admin/adminMypageForm.do"><i class="fa fa-user"></i> 마이페이지</a></li>
 								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
@@ -62,7 +62,6 @@ function productSearchCheck(){
 			</div>
 		</div><!--/header-middle-->
 	</header><!--/header-->
-	
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -82,8 +81,7 @@ function productSearchCheck(){
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="/Project_PL/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-									<img src="/Project_PL/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -94,11 +92,9 @@ function productSearchCheck(){
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="/Project_PL/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="/Project_PL/images/home/pricing.png"  class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
-							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>P</span>-LINE</h1>
@@ -107,13 +103,10 @@ function productSearchCheck(){
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="/Project_PL/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="/Project_PL/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" />
 								</div>
 							</div>
-							
 						</div>
-						
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
 						</a>
@@ -126,7 +119,6 @@ function productSearchCheck(){
 			</div>
 		</div>
 	</section><!--/slider-->
-	
 	<section>
 		<div class="container">
 			<div class="row">
@@ -136,71 +128,87 @@ function productSearchCheck(){
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">편의점 관리</a></h4>
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordian" href="#food">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											편의점 관리
+										</a>
+									</h4>
+								</div>
+								<div id="food" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath}/admin/storeList.do">편의점 목록</a></li>
+											<li><a href="${initParam.rootPath}/admin/storeAdd.do">편의점등록</a></li>
+											<li><a href="${initParam.rootPath}/owner/add.do">점주등록</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
-							
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemList.do">물품 관리</a></h4>
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordian" href="#product">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											물품 관리
+										</a>
+									</h4>
+								</div>
+								<div id="product" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/admin/itemList.do">물품 목록</a></li>
+											<li><a href="${initParam.rootPath }/admin/itemForm.do">물품 등록</a></li>
+											<li><a href="${initParam.rootPath }/admin/categoryList.do">카테고리 목록</a>
+											
+										</ul>
+									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/itemAdd.do">물품 등록</a></h4>
+									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/adminBoard.do">게시판</a></h4>
 								</div>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/categoryAdd.do">카테고리 등록</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">고객센터관리</a></h4>
-								</div>
-							</div>
-							
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/admin/boardList.do">게시판</a></h4>
-								</div>
-							</div>
-						</div><!--/category-products-->					
+						</div>			
 					</div>
 				</div>
+				<div class="col-sm-9 padding-right">
 				<!-- 여기 부분이 이 페이지 부분임! -->
+				<h3>물품 검색 결과</h3>
 			<c:choose>
 					<c:when test="${empty requestScope.product}">
-							조회된 물품이 없습니다.
+							조회된 물품이 없습니다.<p>
+							<a href="${initParam.rootPath }/admin/itemList.do">뒤로 가기</a>	
 					</c:when>
 					<c:otherwise>
-						<table style="width: 800px" border="1">
+						<table style="width: 500px" border="1">
 							<tr>
-								<th>물품 ID</th>
-								<th>품명</th>
-								<th>가격</th>
-								<th>분류</th>
+								<th style="text-align: center; background-color: #FAE0D4;">물품 ID</th>
+								<th style="text-align: center; background-color: #FAE0D4;">품명</th>
+								<th style="text-align: center; background-color: #FAE0D4;">가격</th>
+								<th style="text-align: center; background-color: #FAE0D4;">분류</th>
+								<th style="text-align: center; background-color: #FAE0D4;">카테고리명</th>
 							</tr>
 							<c:forEach items="${requestScope.product }" var="product">
 								<tr>
 									<td>${product.itemId }</td>
-									<td><a href="${initParam.rootPath}/admin/findByItemId.do?itemId=${product.itemId }&pageNo=${requestScope.pagingBean.currentPage}">${product.itemName}</a>
+									<td><a href="${initParam.rootPath}/admin/findByItemId.do?itemId=${product.itemId }&categoryName=${product.categoryName}&pageNo=${requestScope.pagingBean.currentPage}">${product.itemName}</a>
 									</td> 
 									<td>${product.itemPrice }</td>
 									<td>${product.categoryId }</td>
+									<td>${product.categoryName }</td>
 								</tr>
 							</c:forEach>
 						</TABLE>
 					</c:otherwise>
-				</c:choose>
+				</c:choose><p>
 				<!-- 물품 검색하는 곳 -->
-				<div class="search_box pull-right">
+				<div class="search_box pull-left">
 					<form name="productSearch" action="${initParam.rootPath }/admin/productsByItemName.do" method="post" onsubmit="return productSearchCheck();">
 						<input type="text" name="searchValue" placeholder="Search" /> 
 					</form>
 				</div>
-					
 				</div>
 			</div>
 		</div>

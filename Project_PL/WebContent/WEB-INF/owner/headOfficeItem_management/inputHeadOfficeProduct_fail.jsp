@@ -87,31 +87,28 @@
 
 
 <body>
-	<header id="header"><!--header-->
-		<div class="header-middle">
-			<!--header-middle-->
+	<header id="header"><!--header-->		
+		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-14">
 						<div class="logo pull-left">
-							<a href="/Project_PL/.jsp"><img src="/Project_PL/images/pline.png" alt="" /></a>
-							 &nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.ownerName }</b>님 환영합니다.
+							<a href="${initParam.rootPath }/basic/ownerHome.do"><img src="${initParam.rootPath}/images/pline.png" alt="" /></a>
+							&nbsp&nbsp&nbsp<b>${sessionScope.sessionUser.ownerName }</b>님 환영합니다.
 						</div>
 					</div>
 					<div class="col-sm-13">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-lock"></i> 마이페이지</a></li>
-								<li><a href="${initParam.rootPath }/index.do"><i class="fa fa-user"></i> 로그아웃</a></li>
+								<li><a href="${initParam.rootPath }/owner/ownerMypageForm.do"><i class="fa fa-user"></i> 마이페이지</a></li>
+								<li><a href="${initParam.rootPath }/basic/index.do"><i class="fa fa-lock"></i> 로그아웃</a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!--/header-middle--> 
-	</header>
-	<!--/header-->
+		</div><!--/header-middle-->
+	</header><!--/header-->
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
@@ -184,8 +181,7 @@
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>카테고리</h2>
-						<div class="panel-group category-products" id="accordian">
-							<!--category-productsr-->
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -199,44 +195,36 @@
 									<div class="panel-body">
 										<ul>
 											<li><a href="${initParam.rootPath }/owner/order_list.do?pageNo=${param.pageNo}">주문현황</a></li>
-										<li><a href="${initParam.rootPath }/owner/order_processing.do?pageNo=${param.pageNo}">주문처리</a></li>
+											<li><a href="${initParam.rootPath }/owner/order_processing.do?pageNo=${param.pageNo}">주문처리</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordian" href="#beverage">
+											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+											물품 관리
+										</a>
+									</h4>
+								</div>
+								<div id="beverage" class="panel-collapse collapse">
+									<div class="panel-body">
+										<ul>
+											<li><a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">매장 재고 관리</a></li>
+											<li><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품 입고</a></li>
 										</ul>
 									</div>
 								</div>
 							</div>
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a href="${initParam.rootPath }/owner/product_list.do?pageNo=${param.pageNo}">재고관리</a>
-									</h4>
+									<h4 class="panel-title"><a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a></h4>
 								</div>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do">본사물품</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="${initParam.rootPath }/owner/headOfficeProducts_list.do?pageNo=${param.pageNo}">본사물품</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a href="${initParam.rootPath }/basic/ownerBoard.do">게시판</a>
-									</h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a href="#">고객센터</a>
-									</h4>
-								</div>
-							</div>
-						</div>
-						<!--/category-products-->
+						</div><!--/category-products-->					
 					</div>
 				</div>
 				<!-- 여기 부분이 이 페이지 부분임! -->

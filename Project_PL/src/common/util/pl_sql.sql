@@ -27,6 +27,9 @@ create table PL_STORE (
 	constraint STORE_to_OWNER_fk foreign key (OWNER_ID) references PL_OWNER (OWNER_ID)
 )
 
+alter table PL_STORE add (store_timestamp VARCHAR2(50));
+alter table PL_STORE add (store_key VARCHAR2(50));
+
 
 -- 고객 PL_CUSTOMER 테이블 --
 create table PL_CUSTOMER (
@@ -101,7 +104,7 @@ create table PL_CART (
 	constraint CART_to_ITEM_INFO_fk foreign key (ITEM_ID) references PL_ITEM_INFO (ITEM_ID)
 )
 
-
+-- 게시판 PL_BOARD 테이블 --
 create table PL_BOARD (
 	BOARD_IDX NUMBER(8) primary key,
 	BOARD_TITLE VARCHAR2(60) NOT NULL,
@@ -111,6 +114,15 @@ create table PL_BOARD (
 	BOARD_WRITER VARCHAR2(15) NOT NULL,
 	BOARD_CATEGORY NUMBER(1) NOT NULL,
 	BOARD_CATEGORY_NAME VARCHAR2(6) NOT NULL
+)
+
+--리뷰 PL_REVIEW 테이블 -- 
+create table PL_REVIEW (
+	REVIEW_IDX NUMBER(8) primary key,
+	REVIEW_DATE DATE NOT NULL,
+	REVIEW_WRITER VARCHAR2(15) NOT NULL,
+	REVIEW_ITEM NUMBER(8) NOT NULL,
+	REVIEW_CONTENT VARCHAR2(3000) NOT NULL
 )
 
 
@@ -156,6 +168,14 @@ create sequence cart_index_seq
    
 -- 주문 인덱스 시퀀스 --
 create sequence order_index_seq
+	start with 1
+	increment by 1
+	maxvalue 99999999
+	cycle
+	nocache;
+
+-- 리뷰 인덱스 시퀀스 --
+create sequence review_index_seq
 	start with 1
 	increment by 1
 	maxvalue 99999999
@@ -278,3 +298,10 @@ select * from (select * from pl_board where board_category=2 order by board_date
 select * from pl_board where board_category=1 order by board_date desc
 
 board_index_seq.nextval
+
+
+select * from pl_server_item where store_id =100
+
+select count(item_id) from pl_item_info
+
+select * from PL_ITEM_INFO where item_id = 6

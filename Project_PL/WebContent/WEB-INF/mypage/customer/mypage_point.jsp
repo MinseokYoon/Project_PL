@@ -76,8 +76,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl1.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl1.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -90,8 +89,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl2.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl2.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 							<div class="item">
@@ -104,8 +102,7 @@
 									<button type="button" class="btn btn-default get">편라인</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="${initParam.rootPath}/images/home/girl3.jpg" class="girl img-responsive" alt="" /> 
-									<img src="${initParam.rootPath}/images/home/pricing.png" class="pricing" alt="" />
+									<img src="${initParam.rootPath}/images/home/girl3.png" class="girl img-responsive" alt="" /> 
 								</div>
 							</div>
 						</div>
@@ -186,7 +183,7 @@
 					              <div>(500점 이상부터 사용 가능합니다.)</div>
 					              <spring:hasBindErrors name="customer"/>
 					              <form action="/Project_PL/basic/item_list.do">
-					                 <input readonly="readonly" name="customerPoint" value="${sessionScope.sessionUser.customerPoint}원 " />
+					                 <input readonly="readonly" name="customerPoint" value="${sessionScope.sessionUser.customerPoint}point " />
 								<div>이용해 주셔서 감사합니다.</div>
 					                      <button type="submit" class="btn btn-default" Text-align:center>메인으로 돌아가기</button>     
 					                        <div style="Text-align:center; padding:50px; border:1px;">
