@@ -2,7 +2,7 @@ package kr.or.kosta.pl.vo;
 
 import java.io.Serializable;
 
-public class Email implements Serializable {
+public class Email implements Serializable{
 	
 	private String subject;
     private String content;

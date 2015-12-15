@@ -2,7 +2,7 @@ package kr.or.kosta.pl.vo;
 
 import java.io.Serializable;
 
-public class Customer implements Serializable {
+public class Customer implements Serializable{
 	
 	private String customerId;
 	private String customerPassword;
