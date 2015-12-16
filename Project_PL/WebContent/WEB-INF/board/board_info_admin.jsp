@@ -160,9 +160,9 @@
 					</div>
 				</div>
 				<h2>게시판</h2>
-				<table width="500px" align="center" border="1">
+				<table width="500px" align="center" border="1" style="margin-bottom: 100px;">
 					<tr height="30px">
-						<td width="100px" align="center" colspan="2"  bgcolor="#C6DBDC">
+						<td width="100px" align="center" colspan="2"  bgcolor="#C6DBDC" style="margin: 10px">
 							글번호
 						</td>
 						<td align="center">

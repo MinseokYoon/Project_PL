@@ -161,7 +161,7 @@
 				</div>
 				<div class="col-sm-9 padding-right">
 				<h2>게시판</h2>
-				<table width="700px" border="1" bordercolor="d8d8d8">
+				<table width="700px" border="0" bordercolor="d8d8d8">
 					<tr height="30" bgcolor="#fe980f">
 						<th style="text-align: center">글번호</th>
 						<th style="text-align: center">분류</th>
@@ -227,7 +227,7 @@
 					</tr>
 				</table>
 				<form action="${initParam.rootPath }/admin/boardWrite.do" method="post">
-					<input type="submit" value="글쓰기"/>
+					<input type="submit" value="글쓰기" style="margin-bottom: 50px"/>
 				</form>
 			</div>
 			</div>
